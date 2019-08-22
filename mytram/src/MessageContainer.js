@@ -10,5 +10,5 @@ const MessageContainer = (props) => {
     </div>
   )
 
-}
+} 
 export default MessageContainer
