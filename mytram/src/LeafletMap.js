@@ -10,19 +10,17 @@ const mapInitialCenter = { lat: 60.19501135150039, lng: 24.943557594049953 }
 const LeafletMap = (props) => {
 
   const [trams, setTrams] = useState([])
-  //const [showTrams, setShowTrams] = useState([])
+  const [showTrams, setShowTrams] = useState([])
 
-
+ 
 
 
   let newData = props.data[0]
-  if (newData) {
-
-    let VP = newData.VP
-
-       
-     
+  if (newData) { 
+    let VP = newData.VP 
+    //console.log(new Date())
       if (!trams.map(tram => tram.veh).includes(VP.veh)) {
+        //console.log(new Date(), 'trams: ', trams.length)
       setTrams(trams.concat(
         {
           linja: VP.desi,
@@ -30,23 +28,10 @@ const LeafletMap = (props) => {
           lat: VP.lat,
           long: VP.long
         }
-      )) 
-
-    } else {
-
-
-      /* setTrams(trams.map(
-      tram => tram.veh === VP.veh ?
-        {
-          linja: VP.desi,
-          veh: VP.veh,
-          lat: VP.lat,
-          long: VP.long
-        }
-        : tram)) */
-      // console.log(new Date())
-     }  
+      ))  
+    }  
   }
+
 
   //console.log(trams)
   //console.log(newData)
@@ -83,6 +68,11 @@ const LeafletMap = (props) => {
         </Marker>
         {MarkerFactory()}
       </Map>
+      <div>
+        <ul>
+        {props.data.map(data => <li>öö{data.vp && data.vp.veh}</li>)}
+        </ul>
+      </div>
     </div>
   );
 }

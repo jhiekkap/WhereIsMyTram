@@ -7,7 +7,7 @@ import LeafletMap from './LeafletMap'
    
 const App = () => {
    
- 
+  
   return (
      
       <Connector mqttProps="wss://mqtt.hsl.fi:443/"> 
