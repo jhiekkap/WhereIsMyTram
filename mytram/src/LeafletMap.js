@@ -1,73 +1,27 @@
-import React, { useState } from 'react'
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-import { subscribe } from 'mqtt-react'
+import React from 'react'
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet' 
 
 const mapInitialCenter = { lat: 60.19501135150039, lng: 24.943557594049953 }
 
+const LeafletMap = ({showTram}) => {
+   
 
-
-const LeafletMap = props => {
-  const [trams, setTrams] = useState([])
-  const [showTrams, setShowTrams] = useState([])
-
-  const MarkerFactory = () => {
-    
-    let currentTrams = []
-    for(let i=0;i<trams.length;i++){
-      let VP = props.data[i].VP
-      currentTrams.push({
-        linja: VP.desi,
-        veh: VP.veh,
-        lat: VP.lat,
-        long: VP.long,
-      })
-    }
-  
-    return currentTrams.map(tram => (
-      <Marker
-        key={tram.veh + tram.linja}
-        position={{
-          lat: tram.lat,
-          lng: tram.long,
-        }}
-      >
-        <Popup closeButton={false}>{tram.linja}</Popup>
-      </Marker>
-    ))
+  const ShowChosenTram = () => { 
+    if(showTram.lat !== undefined){
+      console.log('valittu ratikka:',showTram)
+        return ( 
+          <Marker 
+             position={{
+              lat: showTram.lat,
+              lng: showTram.long,
+            }} 
+          >
+            <Popup closeButton={false}>{showTram.linja}</Popup>
+          </Marker> 
+      )     
+    } 
   }
-
-    let newData = props.data[0]
-  if (newData) {
-    let VP = newData.VP
-    //console.log(new Date())
-    if (!trams.map(tram => tram.veh).includes(VP.veh)) {
-      //console.log(new Date(), 'trams: ', trams.length)
-      setTrams(
-        trams.concat({
-          linja: VP.desi,
-          veh: VP.veh,
-          lat: VP.lat,
-          long: VP.long,
-        })
-      )
-    } else {
-      //console.log('hep', new Date())
-      /* let newTrams =  
-        trams.map(tram => tram.veh === VP.veh ? {
-          linja: VP.desi,
-          veh: VP.veh,
-          lat: VP.lat,
-          long: VP.long,
-        }: tram) 
-        //console.log(newTrams)
-        setTrams(newTrams) */
-    }
-  }  
-
-  //console.log(trams)
-  //console.log(props.data)
-
- 
+  
 
   return (
     <div className='App'>
@@ -83,21 +37,10 @@ const LeafletMap = props => {
             Easily customizable.
           </Popup>
         </Marker>
-        {MarkerFactory(trams)}
-      </Map>
-      <div>
-        {/* <ul>
-          {props.data.map(data => (
-            <li>öö{data.vp && data.vp.veh}</li>
-          ))}
-        </ul> */}
-      </div>
+          {ShowChosenTram()}
+      </Map> 
     </div>
   )
 }
 
-  export default subscribe({
-  topic: '/hfp/v2/journey/ongoing/vp/tram/#',
-})(LeafletMap) 
-
-//export default LeafletMap
+export default LeafletMap
