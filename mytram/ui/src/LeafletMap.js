@@ -1,5 +1,14 @@
 import React from 'react'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import L from "leaflet";
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("./img/icons8-office-xs-50.png"),
+  iconUrl: require("./img/icons8-office-xs-50.png"),
+  shadowUrl: require("../node_modules/leaflet/dist/images/marker-shadow.png"),
+  iconSize: [40, 40] 
+});
 
 const mapsInitialCenter = { lat: 60.19501135150039, lng: 24.943557594049953 }
 

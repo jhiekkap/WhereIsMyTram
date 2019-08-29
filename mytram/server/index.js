@@ -34,7 +34,8 @@ client.on('message', function (topic, message) {
 app.get("/trams", async (req, res) => { 
      console.log(new Date())
       try { 
-      res.json(trams.filter(tram => tram.VP.desi === '10')) 
+      //res.json(trams.filter(tram => tram.VP.desi === '10')) 
+      res.json(trams)
     } catch (error) {
       console.log('error: ',error) 
     }  
