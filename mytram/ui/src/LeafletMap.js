@@ -8,8 +8,7 @@ const LeafletMap = ({ showTrams }) => {
 
   const ShowChosenTrams = () => {
 
-    if (showTrams) {
-
+    if (showTrams) { 
       return showTrams.map((tram, i) =>
         <Marker
           key={i}
@@ -32,14 +31,14 @@ const LeafletMap = ({ showTrams }) => {
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        {/* <Marker position={mapsInitialCenter}>
+         <Marker position={mapsInitialCenter}>
           <Popup>
             A pretty CSS3 popup.
             <br />
             Easily customizable.
           </Popup>
-        </Marker> */}
-        {/* ShowChosenTrams() */}
+        </Marker>  
+        {ShowChosenTrams()}
       </Map>
     </div>
   )
