@@ -1,1 +1,0 @@
-{"ast":null,"code":"\"use strict\"; // ES3 safe\n\nvar _undefined = void 0;\n\nmodule.exports = function (value) {\n  return value !== _undefined && value !== null;\n};","map":null,"metadata":{},"sourceType":"script"}
