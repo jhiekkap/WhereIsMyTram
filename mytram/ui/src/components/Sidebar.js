@@ -4,8 +4,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 const Sidebar = props => {
   const {
     closeSidebar,
-    showSidebar,
-    showSidebarCloseButton,
+    showSidebar, 
     trams, 
     showTrams,
     setShowTrams
@@ -24,8 +23,7 @@ const Sidebar = props => {
   }
 
   const handleTramsDropdownChange = e => {
-    console.log('TRAM CHOSEN: ', e.target.value) 
-    //console.log('TRAMS:', trams.find(tram => tram.VP.veh.toString() === e.target.value))
+    console.log('TRAM CHOSEN: ', e.target.value)  
     let chosenTram = trams.find(tram => tram.VP.veh.toString() === e.target.value)
     console.log('chosen Tram:', chosenTram)
     setShowTrams(showTrams.concat(chosenTram))
@@ -39,8 +37,7 @@ const Sidebar = props => {
   let tramsInOrder = [...trams].filter(tram => !showTrams.map(tram => tram.VP.veh).includes(tram.VP.veh))
   tramsInOrder.sort(sortByLineNumbers)
 
- 
-
+  
   return (
     <div style={style} className='sidebar' id='mySidebar'>
       <a

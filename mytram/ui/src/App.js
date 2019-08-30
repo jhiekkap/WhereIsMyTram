@@ -12,7 +12,9 @@ const App = () => {
 
 
   const update = () => {
-    fetch('http://localhost:3001/trams')
+    
+    //fetch('http://localhost:3001/trams')
+    fetch('/trams')
       .then(response => response.json())
       .then(body => {
         //console.log(body)

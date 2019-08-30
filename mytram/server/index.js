@@ -2,12 +2,13 @@ const express = require("express");
 const app = express();
 const port = 3001;   
 const mqtt = require('mqtt')
-const client = mqtt.connect('wss://mqtt.hsl.fi:443/')
-let trams = []
+const client = mqtt.connect('wss://mqtt.hsl.fi:443/') 
 const cors = require('cors')
 
 app.use(cors())
 
+let trams = []
+ 
 client.on('connect', function () {
     client.subscribe('/hfp/v2/journey/ongoing/vp/tram/#', function (err) {
         if (err) {
@@ -40,9 +41,7 @@ app.get("/trams", async (req, res) => {
       console.log('error: ',error) 
     }  
   });
-  
-
-
+   
 app.listen(port, () => console.log("Server running in port: " + port));
 
 
