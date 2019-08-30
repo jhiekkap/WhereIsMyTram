@@ -5,9 +5,9 @@ import L from 'leaflet'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('./img/icons8-office-xs-50.png'),
-  iconUrl: require('./img/icons8-office-xs-50.png'),
-  shadowUrl: require('../node_modules/leaflet/dist/images/marker-shadow.png'),
+  iconRetinaUrl: require('../img/icons8-office-xs-50.png'),
+  iconUrl: require('../img/icons8-office-xs-50.png'),
+  shadowUrl: require('../../node_modules/leaflet/dist/images/marker-shadow.png'),
   iconSize: [40, 40],
 })
 
@@ -16,6 +16,7 @@ const mapsInitialCenter = { lat: 60.170627, lng: 24.939946 }
 const LeafletMap = props => {
 
   const { trams, showTrams, setShowTrams, openSidebar,
+    closeSidebar,
     showSidebar,
     showSidebarOpenButton,
   } = props
@@ -64,7 +65,8 @@ const LeafletMap = props => {
       <Map  
       id='map'  
       center={mapsInitialCenter} 
-      zoom={16}>
+      zoom={16}
+      onclick={()=>closeSidebar()}> 
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
-import LeafletMap from './LeafletMap'
-import SelectTram from './SelectTram'
-import Sidebar from './Sidebar'
+import LeafletMap from './components/LeafletMap' 
+import Sidebar from './components/Sidebar'
 
 const App = () => {
   const [trams, setTrams] = useState([])
@@ -28,47 +27,37 @@ const App = () => {
 
   useEffect(() => update(), [new Date()])
 
-  function openSidebar() {
-    setShowSidebar(true)
-    //setShowSidebarCloseButton(true)
-    setShowSidebarOpenButton(false)
-    //document.getElementById("mySidebar").style.width = "250px";
-    //document.getElementById("main").style.marginLeft = "250px";
+  const openSidebar = () => {
+    setShowSidebar(true) 
+    setShowSidebarOpenButton(false) 
     console.log('open!')
   }
 
-  function closeSidebar() {
+  const closeSidebar = () =>  {
     setShowSidebar(false)
-    setTimeout(function () { setShowSidebarOpenButton(true) }, 300);
-    //document.getElementById("mySidebar").style.width = "0";
-    //document.getElementById("main").style.marginLeft= "0";
-    console.log('close button!')
+    setTimeout(function () { setShowSidebarOpenButton(true) }, 300); 
+    console.log('close!')
   }
 
   return (
-    <div className='App'>
-      <div className='App-header'>
-        <h2>Where´s my tram?</h2>
-      </div>
+    <div className='App'> 
         <Sidebar 
         closeSidebar={closeSidebar}
         showSidebar={showSidebar}
         showSidebarCloseButton={showSidebarCloseButton}
         trams={trams} 
+        showTrams={showTrams}
+        setShowTrams={setShowTrams}
         />  
       <LeafletMap
         showTrams={showTrams}
         setShowTrams={setShowTrams}
         trams={trams}
         openSidebar={openSidebar}
+        closeSidebar={closeSidebar}
         showSidebar={showSidebar}
         showSidebarOpenButton={showSidebarOpenButton}f
-      />
-      <SelectTram
-        trams={trams}
-        showTrams={showTrams}
-        setShowTrams={setShowTrams}
-      />
+      /> 
     </div>
   )
 }

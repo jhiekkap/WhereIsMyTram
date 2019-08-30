@@ -1,12 +1,14 @@
 import React from 'react'
-import { Container, Row, Col, Form, Button } from 'react-bootstrap' 
+import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
 const Sidebar = props => {
   const {
-    closeSidebar, 
+    closeSidebar,
     showSidebar,
-    showSidebarCloseButton, 
-    trams
+    showSidebarCloseButton,
+    trams, 
+    showTrams,
+    setShowTrams
   } = props
 
   const style = showSidebar ? { width: '400px' } : { width: '0' }
@@ -22,33 +24,22 @@ const Sidebar = props => {
   }
 
   const handleTramsDropdownChange = e => {
-    console.log('CHOOSE TRAM: ', e.target.value)
-/* 
-    let newTagList = []
-
-    if (e.target.value === 'EVERYTHING') {
-      newTagList = allTags.map(tag => ({ name: tag.name, value: true }))
-    } else if (e.target.value === 'NOTHING') {
-      newTagList = allTags.map(tag => ({ name: tag.name, value: false }))
-    } else {
-      newTagList = allTags.map(tag =>
-        tag.name === e.target.value
-          ? { name: e.target.value, value: !tag.value }
-          : tag
-      )
-    }
-    console.log('TRUE: ', newTagList.filter(tag => tag.value === true).length)
-    console.log('FALSE: ', newTagList.filter(tag => tag.value === false).length) */
-
-    //let newInterestingEventsList = filterByTags(newTagList)
-
-    //setShowIndex(0)
-   /*  setAllTags(newTagList) */
-    //setFirstTimeHere(false)
-    //filterByTime(timeFilter, newInterestingEventsList)
+    console.log('TRAM CHOSEN: ', e.target.value) 
+    //console.log('TRAMS:', trams.find(tram => tram.VP.veh.toString() === e.target.value))
+    let chosenTram = trams.find(tram => tram.VP.veh.toString() === e.target.value)
+    console.log('chosen Tram:', chosenTram)
+    setShowTrams(showTrams.concat(chosenTram))
   }
 
-  //const BasicSelect = () => <Select options={options} />
+  
+  /// COMPARE FUNCTION FOR ARRAY SORT()
+  const sortByLineNumbers = (a, b) => {
+    return parseInt(a.VP.desi) < parseInt(b.VP.desi) ? -1 : parseInt(a.VP.desi) > parseInt(b.VP.desi)  ? 1 : 0
+  }
+  let tramsInOrder = [...trams].filter(tram => !showTrams.map(tram => tram.VP.veh).includes(tram.VP.veh))
+  tramsInOrder.sort(sortByLineNumbers)
+
+ 
 
   return (
     <div style={style} className='sidebar' id='mySidebar'>
@@ -64,23 +55,19 @@ const Sidebar = props => {
           <Form.Group controlId='exampleForm.ControlSelect2'>
             <Row  >
               <Col md="auto">
-                <Form.Label>Choose tag</Form.Label>
+                <Form.Label>Where's my tram?</Form.Label>
               </Col>
             </Row>
             <Row>
               <Col sm={10}>
                 <Form.Control
-                  as='select'
-                  size={5}
-                  multiple={true}
-                  value={trams
-                    .map(tram => tram.VP.veh)}
+                  as='select' 
                   onChange={handleTramsDropdownChange}
-                >
-                  {trams.map((tram, i) => (
-                    <option 
-                    key={i} 
-                    value={tram.VP.veh}>
+                ><option>{trams.length !== showTrams.length ? 'add a tram' : 'all trams are on the map'}</option>
+                  {tramsInOrder.map((tram, i) => ( 
+                    <option
+                      key={i}
+                      value={tram.VP.veh}>
                       linja: {tram.VP.desi} veh:{tram.VP.veh}
                     </option>
                   ))}
@@ -127,13 +114,13 @@ const Sidebar = props => {
           </Row>
           <Row>
             <Col sm={5}>
-              <Button variant='outline-secondary'>clear filters</Button>
+              <Button onClick={()=>setShowTrams([])} variant='outline-secondary'>hide all trams</Button>
             </Col>
             <Col sm={6}>
-              <Button variant='outline-secondary'>show a list</Button>
+              <Button onClick={()=>setShowTrams(trams)} variant='outline-secondary'>show all trams</Button>
             </Col>
           </Row>
-        </Form> 
+        </Form>
       </Container>
     </div>
   )
