@@ -4,7 +4,7 @@
 - Ratikkakuskin tauon päättymisen hälytin
 
 - tähänastinen versio pyörii Herokussa:
-https://agile-gorge-39829.herokuapp.com/
+https://desolate-thicket-15993.herokuapp.com/
 
 Herokun backend : https://github.com/jhiekkap/tramServer
 

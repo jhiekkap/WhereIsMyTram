@@ -40,7 +40,7 @@ const LeafletMap = props => {
           closeButton={false} 
           value={tram.VP.veh}>line:{tram.VP.desi}
           <br/>vehicle:{tram.VP.veh}
-          <br/>{tram.VP.drst === 0 ? 'dors closed' : 'doors open'}
+          <br/>{tram.VP.drst === 0 ? 'doors closed' : 'doors open'}
           <br/><span onClick={()=>handleHideTram(tram.VP.veh)}>hide x</span>
           </Popup>
         </Marker>
