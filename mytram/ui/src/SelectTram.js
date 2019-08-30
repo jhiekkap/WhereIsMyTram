@@ -33,10 +33,10 @@ const SelectTram = ({ trams, showTrams, setShowTrams }) => {
       </select>
       </span>
       <span>
-        <button onClick={()=>setShowTrams(trams)}>näytä kaikki ratikat}</button>
+        <button onClick={()=>setShowTrams(trams)}>näytä kaikki ratikat</button>
       </span>
       {showTrams.length !== 0 && <span>
-        <button onClick={()=>setShowTrams([])}>piilota kaikki ratikat}</button>
+        <button onClick={()=>setShowTrams([])}>piilota kaikki ratikat</button>
       </span>} 
     </div>
   )

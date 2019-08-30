@@ -1,5 +1,6 @@
 import React from 'react'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Button } from 'react-bootstrap'
 import L from 'leaflet'
 
 delete L.Icon.Default.prototype._getIconUrl
@@ -10,9 +11,14 @@ L.Icon.Default.mergeOptions({
   iconSize: [40, 40],
 })
 
-const mapsInitialCenter = { lat: 60.19501135150039, lng: 24.943557594049953 }
+const mapsInitialCenter = { lat: 60.170627, lng: 24.939946 }
 
-const LeafletMap = ({ trams, showTrams, setShowTrams }) => {
+const LeafletMap = props => {
+
+  const { trams, showTrams, setShowTrams, openSidebar,
+    showSidebar,
+    showSidebarOpenButton,
+  } = props
 
   const handleHideTram = (veh) => {
      console.log('piilota ratikka nro: ',veh)
@@ -34,20 +40,35 @@ const LeafletMap = ({ trams, showTrams, setShowTrams }) => {
       ))
     }
   }
+  const style = showSidebar ? { marginLeft: '200px' } : { marginLeft: '0' }
+
   return (
-    <div className='App'>
-      <Map id='mapid' center={mapsInitialCenter} zoom={12}>
+    <div id='map' style={style} title='Double-click map to set a new center'>
+      {showSidebarOpenButton && (
+        <Button
+          variant='light'
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            fontSize: 36,
+            marginTop: '4px',
+            display: showSidebar ? 'none' : '',
+          }}
+          onClick={() => openSidebar()}
+        >
+          {showSidebarOpenButton ? '☰' : ''}
+        </Button>
+      )}
+      <Map  
+      id='map'  
+      center={mapsInitialCenter} 
+      zoom={16}>
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {/* <Marker position={mapsInitialCenter}>
-          <Popup>
-            A pretty CSS3 popup.
-            <br />
-            Easily customizable.
-          </Popup>
-        </Marker> */}
+        /> 
         {ShowChosenTrams()}
       </Map>
     </div>
