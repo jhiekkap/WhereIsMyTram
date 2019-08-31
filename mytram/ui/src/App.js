@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { setTrams } from './reducers/tramsReducer'
+import { setShowSidebar} from './reducers/showSidebarReducer'
+import { setShowSidebarOpenButton } from './reducers/showSidebarOpenButtonReducer'
 import './App.css'
-import LeafletMap from './components/LeafletMap' 
+import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
 
-const App = () => {
-  const [trams, setTrams] = useState([])
-  const [showTrams, setShowTrams] = useState([])
-  const [showSidebar, setShowSidebar] = useState(false)
-  const [showSidebarCloseButton, setShowSidebarCloseButton] = useState(true)
-  const [showSidebarOpenButton, setShowSidebarOpenButton] = useState(true)
-
+const App = props => {
+  const { setTrams } = props
+  const { setShowSidebar } = props 
+  const { setShowSidebarOpenButton } = props 
 
   const update = () => {
-    
     //fetch('https://agile-gorge-39829.herokuapp.com/trams')
     //fetch('http://localhost:3001/trams')
     fetch('/trams')
@@ -31,38 +31,37 @@ const App = () => {
   useEffect(() => update(), [new Date()])
 
   const openSidebar = () => {
-    setShowSidebar(true) 
-    setShowSidebarOpenButton(false) 
+    setShowSidebar(true)
+    setShowSidebarOpenButton(false)
     console.log('open!')
   }
 
-  const closeSidebar = () =>  {
+  const closeSidebar = () => {
     setShowSidebar(false)
-    setTimeout(function () { setShowSidebarOpenButton(true) }, 300); 
+    setTimeout(() => {
+      setShowSidebarOpenButton(true)
+    }, 300)
     console.log('close!')
   }
 
   return (
-    <div className='App'> 
-        <Sidebar 
-        closeSidebar={closeSidebar}
-        showSidebar={showSidebar}
-        showSidebarCloseButton={showSidebarCloseButton}
-        trams={trams} 
-        showTrams={showTrams}
-        setShowTrams={setShowTrams}
-        />  
+    <div className='App'>
+      <Sidebar 
+      closeSidebar={closeSidebar}  
+      />
       <LeafletMap
-        showTrams={showTrams}
-        setShowTrams={setShowTrams}
-        trams={trams}
         openSidebar={openSidebar}
-        closeSidebar={closeSidebar}
-        showSidebar={showSidebar}
-        showSidebarOpenButton={showSidebarOpenButton}f
-      /> 
+        closeSidebar={closeSidebar}  
+      />
     </div>
   )
 }
 
-export default App
+const mapDispatchToProps = {
+  setTrams,setShowSidebar,setShowSidebarOpenButton,
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App)

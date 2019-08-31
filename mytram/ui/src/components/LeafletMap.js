@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux' 
+import { setShowTrams} from '../reducers/showTramsReducer'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import { Button } from 'react-bootstrap'
 import L from 'leaflet'
@@ -15,7 +17,11 @@ const mapsInitialCenter = { lat: 60.170627, lng: 24.939946 }
 
 const LeafletMap = props => {
 
-  const { trams, showTrams, setShowTrams, openSidebar,
+  const { 
+    trams, 
+    showTrams, 
+    setShowTrams, 
+    openSidebar,
     closeSidebar,
     showSidebar,
     showSidebarOpenButton,
@@ -87,4 +93,18 @@ const LeafletMap = props => {
   )
 }
 
-export default LeafletMap
+const mapStateToProps = (state) => {
+  return {
+    trams: state.trams,
+    showTrams: state.showTrams,
+    showSidebar: state.showSidebar,
+    showSidebarOpenButton: state.showSidebarOpenButton,
+  }
+}
+
+const mapDispatchToProps = {
+  setShowTrams,
+}
+
+export default connect(mapStateToProps,
+  mapDispatchToProps)(LeafletMap)
