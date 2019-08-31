@@ -40,6 +40,10 @@ const LeafletMap = props => {
           closeButton={false} 
           value={tram.VP.veh}>line:{tram.VP.desi}
           <br/>vehicle:{tram.VP.veh}
+          <br/>speed:{(tram.VP.spd * 3.6).toFixed(2)} km/h
+          <br/>stop:{tram.VP.stop}
+          <br/>route:{tram.VP.route}
+          <br/>{tram.VP.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.VP.dl)} seconds
           <br/>{tram.VP.drst === 0 ? 'doors closed' : 'doors open'}
           <br/><span onClick={()=>handleHideTram(tram.VP.veh)}>hide x</span>
           </Popup>
