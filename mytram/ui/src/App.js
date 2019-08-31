@@ -28,7 +28,10 @@ const App = props => {
       })
   }
 
-  useEffect(() => update(), [new Date()])
+  //useEffect(() => update(), [new Date()])
+  setInterval(() =>{
+    update()
+  }, 1000)
 
   const openSidebar = () => {
     setShowSidebar(true)
@@ -58,7 +61,7 @@ const App = props => {
 }
 
 const mapDispatchToProps = {
-  setTrams,setShowSidebar,setShowSidebarOpenButton,
+  setTrams, setShowSidebar, setShowSidebarOpenButton,
 }
 
 export default connect(
