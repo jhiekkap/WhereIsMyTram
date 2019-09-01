@@ -1,6 +1,6 @@
 import React from 'react'
-import { connect } from 'react-redux' 
-import { setShowTrams} from '../reducers/showTramsReducer'
+import { connect } from 'react-redux'
+import { setShowTrams } from '../reducers/showTramsReducer'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import { Button } from 'react-bootstrap'
 import L from 'leaflet'
@@ -13,23 +13,46 @@ L.Icon.Default.mergeOptions({
   iconSize: [40, 40],
 }) 
 
-const mapsInitialCenter = { lat: 60.170627, lng: 24.939946 }
- 
-const LeafletMap = props => {
+const pointerIcon = new L.Icon({
+  iconUrl: require("../img/iconLocation.png"),
+  iconRetinaUrl: require("../img/iconLocation.png"),
+  iconAnchor: [5, 55],
+  popupAnchor: [10, -44],
+  iconSize: [55, 55],
+  //shadowUrl: "../assets/marker-shadow.png",
+  shadowSize: [68, 95],
+  shadowAnchor: [20, 92]
+});
 
-  const { 
-    trams, 
-    showTrams, 
-    setShowTrams, 
-    openSidebar,
-    closeSidebar,
-    showSidebar,
-    showSidebarOpenButton,
-  } = props
+
+const stopIcon = new L.Icon({
+  iconUrl: require("../img/rosaPin.png"),
+  iconRetinaUrl: require("../img/rosaPin.png"),
+  iconAnchor: [5, 55],
+  popupAnchor: [10, -44],
+  iconSize: [55, 55],
+  //shadowUrl: "../assets/marker-shadow.png",
+  shadowSize: [68, 95],
+  shadowAnchor: [20, 92]
+});
+
+const LeafletMap = ({
+  trams,
+  showTrams,
+  setShowTrams,
+  openSidebar,
+  closeSidebar,
+  showSidebar,
+  showSidebarOpenButton,
+  center,
+  zoom,
+  stops,
+}) => {
+
 
   const handleHideTram = (veh) => {
-     console.log('piilota ratikka nro: ',veh)
-     setShowTrams(showTrams.filter(tram => tram.VP.veh !== veh))
+    console.log('piilota ratikka nro: ', veh)
+    setShowTrams(showTrams.filter(tram => tram.VP.veh !== veh))
   }
 
   const ShowChosenTrams = () => {
@@ -42,22 +65,22 @@ const LeafletMap = props => {
             lng: tram.VP.long,
           }}
         >
-          <Popup 
-          closeButton={false} 
-          value={tram.VP.veh}>line:{tram.VP.desi}
-          <br/>vehicle:{tram.VP.veh}
-          <br/>speed:{(tram.VP.spd * 3.6).toFixed(2)} km/h
-          <br/>stop:{tram.VP.stop}
-          <br/>route:{tram.VP.route}
-          <br/>{tram.VP.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.VP.dl)} seconds
-          <br/>{tram.VP.drst === 0 ? 'doors closed' : 'doors open'}
-          <br/><span onClick={()=>handleHideTram(tram.VP.veh)}>hide x</span>
+          <Popup
+            closeButton={false}
+            value={tram.VP.veh}>line:{tram.VP.desi}
+            <br />vehicle:{tram.VP.veh}
+            <br />speed:{(tram.VP.spd * 3.6).toFixed(2)} km/h
+          <br />stop:{tram.VP.stop}
+            <br />route:{tram.VP.route}
+            <br />{tram.VP.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.VP.dl)} seconds
+          <br />{tram.VP.drst === 0 ? 'doors closed' : 'doors open'}
+            <br /><span onClick={() => handleHideTram(tram.VP.veh)}>hide x</span>
           </Popup>
         </Marker>
       ))
     }
   }
-  const style = showSidebar ? { marginLeft: '200px' } : { marginLeft: '0' }
+  const style = showSidebar ? { marginLeft: '250px' } : { marginLeft: '0' }
 
   return (
     <div id='map' style={style} title='Double-click map to set a new center'>
@@ -78,16 +101,27 @@ const LeafletMap = props => {
           {showSidebarOpenButton ? '☰' : ''}
         </Button>
       )}
-      <Map  
-      id='map'  
-      center={mapsInitialCenter} 
-      zoom={16}
-      onclick={()=>closeSidebar()}> 
+      <Map
+        id='map'
+        center={center}
+        zoom={zoom}
+        onclick={() => closeSidebar()}>
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        /> 
+        />
         {ShowChosenTrams()}
+        {  stops && stops.map((stop, i) => <Marker key={i} icon={stopIcon} position={{ lat: stop.node.stop.lat, lng: stop.node.stop.lon }}>
+            <Popup>
+              stop {i}
+              <br /> 
+            </Popup>
+          </Marker>)  }
+        <Marker icon={pointerIcon} position={{ lat: 60.170627, lng: 24.939946 }}>
+            <Popup>
+              We are here! <br /> This is our position!
+            </Popup>
+          </Marker>
       </Map>
     </div>
   )
@@ -99,6 +133,7 @@ const mapStateToProps = (state) => {
     showTrams: state.showTrams,
     showSidebar: state.showSidebar,
     showSidebarOpenButton: state.showSidebarOpenButton,
+    stops: state.stops,
   }
 }
 
