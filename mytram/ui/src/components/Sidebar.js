@@ -5,11 +5,13 @@ import { setMyStop } from '../reducers/myStopReducer'
 import { setCenter } from '../reducers/centerReducer'
 import { setZoom } from '../reducers/zoomReducer'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import distance from '../helpers'
 
 const Sidebar = ({
   closeSidebar,
   showSidebar,
   trams,
+  showTrams,
   setShowTrams,
   setCenter,
   setZoom,
@@ -17,30 +19,35 @@ const Sidebar = ({
   myStop,
   setMyStop,
 }) => {
-
   const style = showSidebar ? { width: '400px' } : { width: '0' }
 
   const handleShowMyTram = e => {
     console.log('TRAM CHOSEN: ', e.target.value)
-    let chosenTram = trams.find(
-      tram => tram.VP.veh.toString() === e.target.value
-    )
-    console.log('chosen Tram:', chosenTram)
-    //setShowTrams(showTrams.concat(chosenTram))
-    setShowTrams([chosenTram])
-    setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
-    setZoom(16)
+    if (e.target.value !== '-') {
+      let chosenTram = trams.find(
+        tram => tram.VP.veh.toString() === e.target.value
+      )
+      console.log('chosen Tram:', chosenTram)
+      //setShowTrams(showTrams.concat(chosenTram))
+      setShowTrams([chosenTram])
+      setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
+      setZoom(16)
+    }
   }
 
   const handleShowLine = e => {
     console.log('LINE CHOSEN: ', e.target.value)
-    setShowTrams(trams.filter(tram => parseInt(tram.VP.desi) == e.target.value))
-    setZoom(13)
+    if (e.target.value !== '-') {
+      setShowTrams(
+        trams.filter(tram => parseInt(tram.VP.desi) == e.target.value)
+      )
+      setZoom(13)
+    }
   }
 
   const handleChooseStop = e => {
     console.log('STOP CHOSEN: ', e.target.value)
-    setMyStop(stops.find(stop => stop.node.stop.gtfsId === e.target.value))
+    setMyStop(stops.find(stop => stop.gtfsId === e.target.value))
   }
 
   /// COMPARE FUNCTION FOR ARRAY SORT()
@@ -48,8 +55,8 @@ const Sidebar = ({
     return parseInt(a.VP.desi) < parseInt(b.VP.desi)
       ? -1
       : parseInt(a.VP.desi) > parseInt(b.VP.desi)
-        ? 1
-        : 0
+      ? 1
+      : 0
   }
   let tramsInOrder = [...trams]
   tramsInOrder.sort(sortByLineNumbers)
@@ -79,7 +86,10 @@ const Sidebar = ({
           <Row>
             <Col sm={6}>
               <Button
-                onClick={() => { setShowTrams(trams); setZoom(13) }}
+                onClick={() => {
+                  setShowTrams(trams)
+                  setZoom(13)
+                }}
                 variant='outline-secondary'
               >
                 show all trams
@@ -99,7 +109,7 @@ const Sidebar = ({
               <Form.Group controlId='exampleForm.ControlSelect2'>
                 <Form.Label>Find my tram</Form.Label>
                 <Form.Control as='select' onChange={handleShowMyTram}>
-                  <option>choose</option>
+                  <option> - </option>
                   {tramsInOrder.map((tram, i) => (
                     <option key={i} value={tram.VP.veh}>
                       line: {tram.VP.desi} veh:{tram.VP.veh}
@@ -108,11 +118,11 @@ const Sidebar = ({
                 </Form.Control>
               </Form.Group>
             </Col>
-            <Col sm={5}>
+            <Col sm={3}>
               <Form.Group controlId='exampleForm.ControlSelect1'>
-                <Form.Label>Show whole line</Form.Label>
+                <Form.Label>Show line</Form.Label>
                 <Form.Control as='select' onChange={handleShowLine}>
-                  <option>choose </option>
+                  <option> - </option>
                   {lineNumbers.map((line, i) => (
                     <option key={i} value={line}>
                       {line}
@@ -125,21 +135,40 @@ const Sidebar = ({
           <Row>
             <Col sm={5}>
               <Form.Group controlId='exampleForm.ControlSelect1'>
-                <Form.Label>My closest stops</Form.Label>
+                <Form.Label>Closest stops</Form.Label>
                 <Form.Control as='select' onChange={handleChooseStop}>
-                  <option>choose </option>
-                   {/* stops.map((stop, i) => (
-                    <option key={i} value={stop.gtfsId}>
+                  {stops.map(stop => (
+                    <option key={stop.id} value={stop.gtfsId}>
                       {stop.name} {stop.gtfsId}
                     </option>
-                  )) */}
+                  ))}
                 </Form.Control>
               </Form.Group>
             </Col>
+            <Col sm={5}>
+              <Form.Group controlId='exampleForm.ControlSelect1'>
+                <Form.Label>
+                  My stop : {myStop && `${myStop.name} ${myStop.gtfsId}`}
+                </Form.Label>
+              </Form.Group>
+            </Col>
           </Row>
-            {/* <Col sm={5}>
-            <Form.Label>My stop : {myStop  && `${myStop.node.stop.name} ${myStop.node.stop.gtfsId}`}</Form.Label>
-          </Col>  */} 
+          <Row>
+            {showTrams[0] && (
+              <Col>
+                distance from myTram to myStop:{' '}
+                {distance(
+                  myStop.lat,
+                  myStop.lon,
+                  trams.find(tram => tram.VP.veh === showTrams[0].VP.veh).VP
+                    .lat,
+                  trams.find(tram => tram.VP.veh === showTrams[0].VP.veh).VP
+                    .long
+                )}
+              </Col>
+            )}
+          </Row>
+
           {/*  <Row>
             <Col sm={5}>
               <Form.Group>
@@ -164,7 +193,6 @@ const Sidebar = ({
               </Form.Group>
             </Col>   
           </Row> */}
-
         </Form>
       </Container>
     </div>
@@ -182,7 +210,10 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  setShowTrams, setMyStop, setCenter, setZoom
+  setShowTrams,
+  setMyStop,
+  setCenter,
+  setZoom,
 }
 
 export default connect(

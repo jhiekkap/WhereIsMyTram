@@ -109,12 +109,12 @@ const LeafletMap = ({
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {ShowChosenTrams()}
-        { /* stops && stops.map((stop, i) => <Marker key={i} icon={stopIcon} position={{ lat: stop.lat, lng: stop.lon }}>
+        {stops && stops.map((stop, i) => <Marker key={stop.id} icon={stopIcon} position={{ lat: stop.lat, lng: stop.lon }}>
             <Popup>
               stop {i}
-              <br /> 
+              <br />  
             </Popup>
-          </Marker>)  */ }
+          </Marker>)}
         <Marker icon={pointerIcon} position={{ lat: 60.170627, lng: 24.939946 }}>
             <Popup>
               We are here! <br /> This is our position!
@@ -125,7 +125,7 @@ const LeafletMap = ({
   )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     trams: state.trams,
     showTrams: state.showTrams,

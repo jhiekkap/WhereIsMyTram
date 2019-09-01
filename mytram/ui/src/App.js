@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setTrams } from './reducers/tramsReducer'
 import { setShowSidebar } from './reducers/showSidebarReducer'
@@ -32,8 +32,7 @@ const query = gql`
       }
       `
 
-
-
+ 
 const App = ({
   setTrams,
   setShowSidebar,
@@ -42,11 +41,7 @@ const App = ({
   setMyStop
 }) => {
 
-  console.log('rendering App!!!!!')
-  //const [center, setCenter] = useState({ lat: 60.170627, lng: 24.939946 })
-  //const [zoom, setZoom] = useState(16)
-  //const [stops, setStops] = useState([])
-  //const [myStop, setMyStop] = useState({})
+  console.log('rendering App!!!!!') 
  
   useEffect(() => {
     
@@ -66,13 +61,7 @@ const App = ({
 
  
   const update = () => {
-    //fetch('http://localhost:3001/trams')
-    //console.log('STOPS: ', stops)
-    //console.log('MY STOP:', myStop)
-     /* if(myStop != {}){
-        setCenter({lat:myStop.node.stop.lat, lng:myStop.node.stop.lon}) 
-     console.log()
-    }  */
+    //fetch('http://localhost:3001/trams')   
     fetch('/trams')
       .then(response => response.json())
       .then(body => {
@@ -105,19 +94,11 @@ const App = ({
   return (
     <div className='App'>
       <Sidebar
-        closeSidebar={closeSidebar}
-        //setCenter={setCenter}
-        //setZoom={setZoom}
-      //stops={stops}
-      //myStop={myStop}
-      //setMyStop={setMyStop}
+        closeSidebar={closeSidebar} 
       />
       <LeafletMap
         openSidebar={openSidebar}
-        closeSidebar={closeSidebar}
-        //center={center}
-        //zoom={zoom}
-      //stops={stops}
+        closeSidebar={closeSidebar} 
       />
     </div>
   )
