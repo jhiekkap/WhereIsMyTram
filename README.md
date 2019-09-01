@@ -4,7 +4,7 @@
 - Ratikkakuskin tauon päättymisen hälytin
 
 - tähänastinen versio pyörii Herokussa:
-https://desolate-thicket-15993.herokuapp.com/
+https://arcane-shore-64535.herokuapp.com/
 
 Herokun backend : https://github.com/jhiekkap/tramServer
 
