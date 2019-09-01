@@ -11,10 +11,10 @@ L.Icon.Default.mergeOptions({
   iconUrl: require('../img/icons8-office-xs-50.png'),
   shadowUrl: require('../../node_modules/leaflet/dist/images/marker-shadow.png'),
   iconSize: [40, 40],
-})
+}) 
 
 const mapsInitialCenter = { lat: 60.170627, lng: 24.939946 }
-
+ 
 const LeafletMap = props => {
 
   const { 

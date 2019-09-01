@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { setTrams } from './reducers/tramsReducer'
 import { setShowSidebar} from './reducers/showSidebarReducer'
@@ -7,29 +7,22 @@ import './App.css'
 import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
 
-const App = props => {
-  const { setTrams } = props
-  const { setShowSidebar } = props 
-  const { setShowSidebarOpenButton } = props 
+const App =({ setTrams, setShowSidebar, setShowSidebarOpenButton }) => { 
 
-  const update = () => {
-    //fetch('https://agile-gorge-39829.herokuapp.com/trams')
+  const update = () => { 
     //fetch('http://localhost:3001/trams')
     fetch('/trams')
       .then(response => response.json())
-      .then(body => {
-        //console.log(body)
-        //console.log(new Date())
-        //setShowTrams(body)
+      .then(body => { 
         setTrams(body)
       })
       .catch(error => {
         console.log(error)
       })
-  }
+  } 
 
   //useEffect(() => update(), [new Date()])
-  setInterval(() =>{
+  setInterval(() => {
     update()
   }, 1000)
 

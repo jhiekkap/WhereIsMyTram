@@ -6,7 +6,7 @@ const client = mqtt.connect('wss://mqtt.hsl.fi:443/')
 const cors = require('cors')
 
 app.use(cors())
-
+ 
 let trams = []
  
 client.on('connect', function () {
@@ -23,12 +23,13 @@ client.on('message', function (topic, message) {
     let VP = JSON.parse(message.toString()).VP
 
     if (!trams.map(tram => tram.VP.veh).includes(VP.veh)) {
-        trams.push({ topic, VP }) 
+        trams.push({ topic, VP, updateTime: new Date()}) 
     } else { 
-        trams = trams.map(tram => tram.VP.veh === VP.veh ? { topic, VP } : tram)
-    }
-    //console.log(topic, VP)
-    //console.log(trams)
+        trams = trams.map(tram => tram.VP.veh === VP.veh ? { topic, VP, updateTime: new Date() } : tram)
+    } 
+ 
+    trams = trams.filter(tram => new Date() - tram.updateTime < 50000)
+    //trams.forEach(tram => console.log(new Date() - tram.updateTime))
     //client.end()
 }) 
    
