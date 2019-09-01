@@ -37,48 +37,42 @@ const query = gql`
 const App = ({
   setTrams,
   setShowSidebar,
-  setShowSidebarOpenButton,
-  stops,
-  setStops,
-  myStop,
+  setShowSidebarOpenButton, 
+  setStops, 
   setMyStop
 }) => {
 
   console.log('rendering App!!!!!')
-  const [center, setCenter] = useState({ lat: 60.170627, lng: 24.939946 })
-  const [zoom, setZoom] = useState(16)
+  //const [center, setCenter] = useState({ lat: 60.170627, lng: 24.939946 })
+  //const [zoom, setZoom] = useState(16)
   //const [stops, setStops] = useState([])
   //const [myStop, setMyStop] = useState({})
-
+ 
   useEffect(() => {
+    
     client.query({ query })
       .then((response) => {
         let edges = response.data.stopsByRadius.edges
-        setStops(edges)
-        setMyStop(edges[0])
+        let stopit = edges.map(edge => edge.node.stop)
+        setStops(stopit)
+        setMyStop(stopit[0])
         console.log('EDGES: ', edges)
-        console.log('EDGES[0]: ', edges[0])
+        console.log('STOPIT: ', stopit) 
         edges.forEach(edge => {
           console.log('HSL: ', edge.node.stop)
         })
       })
-  }, [])
+  })
 
-
-
-
-
+ 
   const update = () => {
     //fetch('http://localhost:3001/trams')
     //console.log('STOPS: ', stops)
     //console.log('MY STOP:', myStop)
-    if (myStop === {}) {
-      console.log('PÖÖ: ')
-     }
-   /*  if(myStop != {}){
+     /* if(myStop != {}){
         setCenter({lat:myStop.node.stop.lat, lng:myStop.node.stop.lon}) 
      console.log()
-    } */
+    }  */
     fetch('/trams')
       .then(response => response.json())
       .then(body => {
@@ -112,8 +106,8 @@ const App = ({
     <div className='App'>
       <Sidebar
         closeSidebar={closeSidebar}
-        setCenter={setCenter}
-        setZoom={setZoom}
+        //setCenter={setCenter}
+        //setZoom={setZoom}
       //stops={stops}
       //myStop={myStop}
       //setMyStop={setMyStop}
@@ -121,27 +115,27 @@ const App = ({
       <LeafletMap
         openSidebar={openSidebar}
         closeSidebar={closeSidebar}
-        center={center}
-        zoom={zoom}
+        //center={center}
+        //zoom={zoom}
       //stops={stops}
       />
     </div>
   )
 }
 
-const mapStateToProps = state => {
+/* const mapStateToProps = state => {
   return {
     stops: state.stops,
     myStop: state.myStop,
   }
-}
+} */
 
 const mapDispatchToProps = {
   setTrams, setShowSidebar, setShowSidebarOpenButton, setStops, setMyStop
 }
 
 export default connect(
-  mapStateToProps,
+ null,
   mapDispatchToProps
 )(App)
 

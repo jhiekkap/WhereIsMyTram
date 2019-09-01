@@ -18,8 +18,7 @@ const pointerIcon = new L.Icon({
   iconRetinaUrl: require("../img/iconLocation.png"),
   iconAnchor: [5, 55],
   popupAnchor: [10, -44],
-  iconSize: [55, 55],
-  //shadowUrl: "../assets/marker-shadow.png",
+  iconSize: [55, 55], 
   shadowSize: [68, 95],
   shadowAnchor: [20, 92]
 });
@@ -30,8 +29,7 @@ const stopIcon = new L.Icon({
   iconRetinaUrl: require("../img/rosaPin.png"),
   iconAnchor: [5, 55],
   popupAnchor: [10, -44],
-  iconSize: [55, 55],
-  //shadowUrl: "../assets/marker-shadow.png",
+  iconSize: [55, 55], 
   shadowSize: [68, 95],
   shadowAnchor: [20, 92]
 });
@@ -111,12 +109,12 @@ const LeafletMap = ({
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {ShowChosenTrams()}
-        {  stops && stops.map((stop, i) => <Marker key={i} icon={stopIcon} position={{ lat: stop.node.stop.lat, lng: stop.node.stop.lon }}>
+        { /* stops && stops.map((stop, i) => <Marker key={i} icon={stopIcon} position={{ lat: stop.lat, lng: stop.lon }}>
             <Popup>
               stop {i}
               <br /> 
             </Popup>
-          </Marker>)  }
+          </Marker>)  */ }
         <Marker icon={pointerIcon} position={{ lat: 60.170627, lng: 24.939946 }}>
             <Popup>
               We are here! <br /> This is our position!
@@ -134,6 +132,8 @@ const mapStateToProps = (state) => {
     showSidebar: state.showSidebar,
     showSidebarOpenButton: state.showSidebarOpenButton,
     stops: state.stops,
+    center: state.center,
+    zoom: state.zoom,
   }
 }
 

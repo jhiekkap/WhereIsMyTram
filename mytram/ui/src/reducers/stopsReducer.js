@@ -3,7 +3,7 @@ const stopsReducer = (state = [], action) => {
     case 'SET_STOPS':
       return action.data
     default:
-      return state
+      return state 
   }
 }
 

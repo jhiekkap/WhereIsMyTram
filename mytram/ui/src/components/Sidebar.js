@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
+import { setCenter } from '../reducers/centerReducer'
+import { setZoom } from '../reducers/zoomReducer'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
 const Sidebar = ({
@@ -126,11 +128,11 @@ const Sidebar = ({
                 <Form.Label>My closest stops</Form.Label>
                 <Form.Control as='select' onChange={handleChooseStop}>
                   <option>choose </option>
-                  {stops.map((stop, i) => (
-                    <option key={i} value={stop.node.stop.gtfsId}>
-                      {stop.node.stop.name} {stop.node.stop.gtfsId}
+                   {/* stops.map((stop, i) => (
+                    <option key={i} value={stop.gtfsId}>
+                      {stop.name} {stop.gtfsId}
                     </option>
-                  ))}
+                  )) */}
                 </Form.Control>
               </Form.Group>
             </Col>
@@ -180,7 +182,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  setShowTrams, setMyStop,
+  setShowTrams, setMyStop, setCenter, setZoom
 }
 
 export default connect(

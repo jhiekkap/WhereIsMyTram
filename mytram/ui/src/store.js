@@ -7,6 +7,8 @@ import showSidebarReducer from './reducers/showSidebarReducer'
 import showSidebarOpenButtonReducer from './reducers/showSidebarOpenButtonReducer'
 import stopsReducer from './reducers/stopsReducer' 
 import myStopReducer from './reducers/myStopReducer' 
+import centerReducer from './reducers/centerReducer';
+import zoomReducer from './reducers/zoomReducer';
 
 const reducer = combineReducers({
   trams: tramsReducer,
@@ -15,6 +17,8 @@ const reducer = combineReducers({
   showSidebarOpenButton: showSidebarOpenButtonReducer,
   stops: stopsReducer,
   myStop: myStopReducer,
+  center: centerReducer,
+  zoom: zoomReducer,
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
