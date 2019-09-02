@@ -9,6 +9,7 @@ import stopsReducer from './reducers/stopsReducer'
 import myStopReducer from './reducers/myStopReducer' 
 import centerReducer from './reducers/centerReducer';
 import zoomReducer from './reducers/zoomReducer';
+import myTramReducer from './reducers/myTramReducer';
 
 const reducer = combineReducers({
   trams: tramsReducer,
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   myStop: myStopReducer,
   center: centerReducer,
   zoom: zoomReducer,
+  myTram: myTramReducer,
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
