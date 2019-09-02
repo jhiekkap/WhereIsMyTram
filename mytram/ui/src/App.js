@@ -25,6 +25,7 @@ const query = gql`
                  name
                 lat
                 lon 
+                vehicleType
               }
             }
           }
@@ -38,7 +39,7 @@ const App = ({
   setShowSidebar,
   setShowSidebarOpenButton, 
   setStops, 
-  setMyStop
+  //setMyStop
 }) => {
 
   console.log('rendering App!!!!!') 
@@ -48,9 +49,9 @@ const App = ({
     client.query({ query })
       .then((response) => {
         let edges = response.data.stopsByRadius.edges
-        let stopit = edges.map(edge => edge.node.stop)
+        let stopit = edges.map(edge => edge.node.stop).filter(stop => stop.vehicleType === 0)
         setStops(stopit)
-        setMyStop(stopit[0])
+        //setMyStop(stopit[0])
         console.log('EDGES: ', edges)
         console.log('STOPIT: ', stopit) 
         edges.forEach(edge => {
@@ -112,7 +113,8 @@ const App = ({
 } */
 
 const mapDispatchToProps = {
-  setTrams, setShowSidebar, setShowSidebarOpenButton, setStops, setMyStop
+  setTrams, setShowSidebar, setShowSidebarOpenButton, setStops,
+  // setMyStop
 }
 
 export default connect(

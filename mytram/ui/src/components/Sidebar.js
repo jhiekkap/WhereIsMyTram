@@ -4,15 +4,15 @@ import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 import { setCenter } from '../reducers/centerReducer'
 import { setZoom } from '../reducers/zoomReducer'
-import { setMyTram} from '../reducers/myTramReducer'
+import { setMyTram } from '../reducers/myTramReducer'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import distance from '../helpers'
 
 const Sidebar = ({
-  //closeSidebar,
+  closeSidebar,
   showSidebar,
   trams,
-  showTrams,
+  //showTrams,
   setShowTrams,
   setCenter,
   setZoom,
@@ -24,18 +24,19 @@ const Sidebar = ({
 }) => {
   const style = showSidebar ? { width: '250px' } : { width: '0' }
 
-  const handleShowMyTram = e => {
+  const handleChooseMyTram = e => {
     console.log('TRAM CHOSEN: ', e.target.value)
-    if (e.target.value !== '-') {
+    if (e.target.value !== 'reset') {
       let chosenTram = trams.find(
         tram => tram.VP.veh.toString() === e.target.value
       )
-      console.log('chosen Tram:', chosenTram)
-      //setShowTrams(showTrams.concat(chosenTram))
+      console.log('chosen Tram:', chosenTram) 
       setMyTram(chosenTram)
       setShowTrams([])
       setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
       setZoom(16)
+    } else {
+      setMyTram('')
     }
   }
 
@@ -53,6 +54,8 @@ const Sidebar = ({
     console.log('STOP CHOSEN: ', e.target.value)
     if (e.target.value !== '-') {
       setMyStop(stops.find(stop => stop.gtfsId === e.target.value))
+    } else {
+      setMyStop('')
     }
   }
 
@@ -61,8 +64,8 @@ const Sidebar = ({
     return parseInt(a.VP.desi) < parseInt(b.VP.desi)
       ? -1
       : parseInt(a.VP.desi) > parseInt(b.VP.desi)
-      ? 1
-      : 0
+        ? 1
+        : 0
   }
   let tramsInOrder = [...trams]
   tramsInOrder.sort(sortByLineNumbers)
@@ -96,35 +99,61 @@ const Sidebar = ({
       </a> */}
       <Container>
         <Form>
+          
+
+          
           <Row>
-            <Col>
-              <Button
-                onClick={() => {
-                  setShowTrams(trams)
-                  setZoom(13)
-                }}
-                variant='outline-secondary'
-              >
-                show all trams
-              </Button>
+            <Col xs="auto">
+              <Form.Group controlId='exampleForm.ControlSelect3'>
+                <Form.Label>My stop</Form.Label>
+                <Form.Control
+                  as='select'
+                  onChange={handleChooseStop}
+                  value={myStop.gtfsId}
+                >
+                  <option> - </option>
+                  {stopsInOrder.map((stop, i) => (
+                    <option key={i} value={stop.gtfsId}>
+                      {stop.name} {stop.gtfsId}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
             </Col>
           </Row>
-          <Row>
-            <Col>
-              <Button
-                onClick={() => setShowTrams([])}
-                variant='outline-secondary'
-              >
-                hide all trams
-              </Button>
+         {/*  {myStop && <Row>
+            <Col xs="auto">
+              <Form.Group controlId='exampleForm.ControlSelect4'>
+                <Form.Label>
+                  My stop :  {myStop.name}  {myStop.gtfsId}
+                </Form.Label>
+              </Form.Group>
             </Col>
+          </Row>} */}
+          <Row>
+            {(myTram.VP && myStop) && (
+              <Col xs="auto">
+                distance from myTram to myStop:{' '}
+                {distance(
+                  myStop.lat,
+                  myStop.lon,
+                  trams.find(tram => tram.VP.veh === myTram.VP.veh).VP
+                    .lat,
+                  trams.find(tram => tram.VP.veh === myTram.VP.veh).VP
+                    .long
+                ).toFixed(2)} km
+              </Col>
+            )}
           </Row>
           <Row>
             <Col >
               <Form.Group controlId='exampleForm.ControlSelect1'>
-                <Form.Label>Find my tram</Form.Label>
-                <Form.Control as='select' onChange={handleShowMyTram}>
-                  <option> - </option>
+                <Form.Label>Choose tram</Form.Label>
+                <Form.Control
+                 as='select' 
+                 onChange={handleChooseMyTram}  
+                 >
+                  {!myTram.VP ? <option> - </option> : <option value="reset">reset</option>} 
                   {tramsInOrder.map((tram, i) => (
                     <option key={i} value={tram.VP.veh}>
                       line: {tram.VP.desi} veh:{tram.VP.veh}
@@ -134,7 +163,34 @@ const Sidebar = ({
               </Form.Group>
             </Col>
           </Row>
-          <Row>
+
+         <Row>
+            <Col>
+              <Button
+                onClick={() => {
+                  setShowTrams(trams)
+                  setZoom(13)
+                  closeSidebar()
+                }}
+                variant='outline-secondary'
+              >
+                show all trams
+              </Button>
+            </Col>
+          </Row>  
+
+            <Row>
+            <Col>
+              <Button
+                onClick={() => setShowTrams([])}
+                variant='outline-secondary'
+              >
+                hide all trams
+              </Button>
+            </Col>
+          </Row> 
+
+            <Row>
             <Col >
               <Form.Group controlId='exampleForm.ControlSelect2'>
                 <Form.Label>Show line</Form.Label>
@@ -148,46 +204,7 @@ const Sidebar = ({
                 </Form.Control>
               </Form.Group>
             </Col>
-          </Row>
-          <Row>
-            <Col xs="auto">
-              <Form.Group controlId='exampleForm.ControlSelect3'>
-                <Form.Label>Choose my stop</Form.Label>
-                <Form.Control as='select' onChange={handleChooseStop}>
-                  <option> - </option>
-                  {stopsInOrder.map((stop, i) => (
-                    <option key={i} value={stop.gtfsId}>
-                      {stop.name} {stop.gtfsId}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs="auto">
-              <Form.Group controlId='exampleForm.ControlSelect4'>
-                <Form.Label>
-                  My stop : {myStop && `${myStop.name} ${myStop.gtfsId}`}
-                </Form.Label>
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            {showTrams[0] && (
-              <Col xs="auto">
-                distance from myTram to myStop:{' '}
-                {distance(
-                  myStop.lat,
-                  myStop.lon,
-                  trams.find(tram => tram.VP.veh === showTrams[0].VP.veh).VP
-                    .lat,
-                  trams.find(tram => tram.VP.veh === showTrams[0].VP.veh).VP
-                    .long
-                )}
-              </Col>
-            )}
-          </Row>
+          </Row>  
 
           {/*  <Row>
             <Col sm={5}>
@@ -222,7 +239,7 @@ const Sidebar = ({
 const mapStateToProps = state => {
   return {
     trams: state.trams,
-    showTrams: state.showTrams,
+    //showTrams: state.showTrams,
     showSidebar: state.showSidebar,
     stops: state.stops,
     myStop: state.myStop,

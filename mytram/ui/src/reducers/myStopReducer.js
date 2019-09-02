@@ -1,4 +1,4 @@
-const myStopReducer = (state = {}, action) => {
+const myStopReducer = (state = '', action) => {
   switch (action.type) {
     case 'SET_MY_STOP':
       return action.data
