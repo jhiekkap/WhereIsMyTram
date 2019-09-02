@@ -33,13 +33,4 @@
   color: black;
   display: block;
   transition: 0.3s;
-}
-
-.sidebar .closebtn {
-  position: absolute;
-  top: 0;
-  /* right: 25px; */
-  right: 42px;
-  font-size: 36px;
-  margin-left: 50px;
-}
+} 

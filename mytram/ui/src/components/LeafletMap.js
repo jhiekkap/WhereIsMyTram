@@ -4,61 +4,11 @@ import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import { setCenter } from '../reducers/centerReducer'
 import { setZoom } from '../reducers/zoomReducer'
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-import { Button } from 'react-bootstrap'
-import L from 'leaflet'
 import { setMyStop } from '../reducers/myStopReducer';
-
-delete L.Icon.Default.prototype._getIconUrl
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('../img/icons8-office-xs-50.png'),
-  iconUrl: require('../img/icons8-office-xs-50.png'),
-  shadowUrl: require('../../node_modules/leaflet/dist/images/marker-shadow.png'),
-  iconSize: [40, 40],
-})
-
-const driverIcon = new L.Icon({
-  iconUrl: require('../img/iconfinder_029_-_Gingerbread_Man_2793032.png'),
-  iconRetinaUrl: require('../img/iconfinder_029_-_Gingerbread_Man_2793032.png'),
-  iconAnchor: [5, 55],
-  popupAnchor: [10, -44],
-  iconSize: [30, 30],
-  shadowSize: [68, 95],
-  shadowAnchor: [20, 92],
-})
-
-const stopIcon = new L.Icon({
-  iconUrl: require('../img/iconfinder_Ball Green_34555.png'),
-  iconRetinaUrl: require('../img/iconfinder_Ball Green_34555.png'),
-  iconAnchor: [5, 55],
-  popupAnchor: [10, -44],
-  iconSize: [25, 25],
-  shadowSize: [68, 95],
-  shadowAnchor: [20, 92],
-})
-
-const myStopIcon = new L.Icon({
-  iconUrl: require('../img/iconfinder_Circle_Red_34214.png'),
-  iconRetinaUrl: require('../img/iconfinder_Circle_Red_34214.png'),
-  iconAnchor: [5, 55],
-  popupAnchor: [10, -44],
-  iconSize: [40, 40],
-  shadowSize: [68, 95],
-  shadowAnchor: [20, 92],
-})
-
-const myTramIcon = new L.Icon({
-  iconUrl: require('../img/icons8-color-50.png'),
-  iconRetinaUrl: require('../img/icons8-color-50.png'),
-  iconAnchor: [5, 55],
-  popupAnchor: [10, -44],
-  iconSize: [55, 55],
-  shadowSize: [68, 95],
-  shadowAnchor: [20, 92],
-})
-
-
-
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Button } from 'react-bootstrap' 
+import driverIcon, { stopIcon, myStopIcon, myTramIcon } from '../utils/icons'
+  
 const LeafletMap = ({
   trams,
   showTrams,
@@ -78,16 +28,16 @@ const LeafletMap = ({
   setMyTram,
 }) => {
 
-  const handleChooseTram = tram => {
-    console.log('valitse nro: ', tram.VP.veh)
-    setMyTram(tram)
+  const handleChooseTram = e => {
+    console.log('valitse nro: ', e.target.value)
+    let chosenTram = trams.find(tram => tram.VP.veh == e.target.value)
+    setMyTram(chosenTram)
     setShowTrams([])
-    setCenter({ lat: tram.VP.lat, lng: tram.VP.long })
+    setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
     setZoom(16)
 
   }
- 
-
+  
   const popUp = tram => {
     return (
       <Popup
@@ -109,7 +59,7 @@ const LeafletMap = ({
         <br />
         {tram.VP.drst === 0 ? 'doors closed' : 'doors open'}
         <br />
-        {(!myTram.VP || (myTram.VP && myTram.VP.veh !== tram.VP.veh)) && <Button onClick={() => handleChooseTram(tram)}>CHOOSE</Button>}
+        {(!myTram.VP || (myTram.VP && myTram.VP.veh !== tram.VP.veh)) && <Button value={tram.VP.veh} onClick={handleChooseTram}>CHOOSE</Button>}
       </Popup>
     )
   }
@@ -152,6 +102,24 @@ const LeafletMap = ({
     }
   }
 
+  const showStops = () => {
+
+    return stops &&
+    stops.map((stop, i) => (
+      <Marker
+        onClick={() => { setMyStop(stop) }}
+        key={i}
+        icon={stop.id === myStop.id ? myStopIcon : stopIcon}
+        position={{ lat: stop.lat, lng: stop.lon }}
+      >
+        <Popup autoPan={false}>
+          <br /> {stop.name}
+          <br /> {stop.gtfsId}
+        </Popup>
+      </Marker>
+    ))
+  }
+
   const style = showSidebar ? { marginLeft: '20px' } : { marginLeft: '0' }
 
   return (
@@ -175,7 +143,8 @@ const LeafletMap = ({
       )}
       <Map
         id='map'
-        center={myTram.VP ? {lat:trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat, lng:trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long} : center}
+        center={center}
+        //center={myTram.VP ? {lat:trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat, lng:trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long} : center}
         zoom={zoom}
         onclick={() => closeSidebar()}
         zoomControl={false}
@@ -185,20 +154,7 @@ const LeafletMap = ({
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {ShowChosenTrams()}
-        {stops &&
-          stops.map((stop, i) => (
-            <Marker
-              onClick={() => { setMyStop(stop) }}
-              key={i}
-              icon={stop.id === myStop.id ? myStopIcon : stopIcon}
-              position={{ lat: stop.lat, lng: stop.lon }}
-            >
-              <Popup autoPan={false}>
-                <br /> {stop.name}
-                <br /> {stop.gtfsId}
-              </Popup>
-            </Marker>
-          ))}
+        {showStops()}
         {showMyTram()}
         <Marker
           icon={driverIcon}

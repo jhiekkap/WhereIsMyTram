@@ -8,7 +8,7 @@ import { setMyStop } from './reducers/myStopReducer'
 import './App.css'
 import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
-import ApolloClient, { gql } from 'apollo-boost'
+import ApolloClient, { gql } from 'apollo-boost' 
 
 const client = new ApolloClient({
   uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
@@ -39,7 +39,7 @@ const App = ({
   setShowSidebar,
   setShowSidebarOpenButton, 
   setStops, 
-  //setMyStop
+  setMyStop
 }) => {
 
   console.log('rendering App!!!!!') 
@@ -51,7 +51,7 @@ const App = ({
         let edges = response.data.stopsByRadius.edges
         let stopit = edges.map(edge => edge.node.stop).filter(stop => stop.vehicleType === 0)
         setStops(stopit)
-        //setMyStop(stopit[0])
+        setMyStop(stopit[0])
         console.log('EDGES: ', edges)
         console.log('STOPIT: ', stopit) 
         edges.forEach(edge => {
@@ -114,7 +114,7 @@ const App = ({
 
 const mapDispatchToProps = {
   setTrams, setShowSidebar, setShowSidebarOpenButton, setStops,
-  // setMyStop
+  setMyStop
 }
 
 export default connect(

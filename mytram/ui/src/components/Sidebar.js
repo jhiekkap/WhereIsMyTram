@@ -6,7 +6,11 @@ import { setCenter } from '../reducers/centerReducer'
 import { setZoom } from '../reducers/zoomReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import distance from '../helpers'
+import distance, {
+  sortByLineNumbers,
+  sortLineNumbers,
+  sortStopNames,
+} from '../utils/helpers'
 
 const Sidebar = ({
   closeSidebar,
@@ -20,7 +24,7 @@ const Sidebar = ({
   myStop,
   setMyStop,
   myTram,
-  setMyTram
+  setMyTram,
 }) => {
   const style = showSidebar ? { width: '250px' } : { width: '0' }
 
@@ -30,7 +34,7 @@ const Sidebar = ({
       let chosenTram = trams.find(
         tram => tram.VP.veh.toString() === e.target.value
       )
-      console.log('chosen Tram:', chosenTram) 
+      console.log('chosen Tram:', chosenTram)
       setMyTram(chosenTram)
       setShowTrams([])
       setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
@@ -59,20 +63,9 @@ const Sidebar = ({
     }
   }
 
-  /// COMPARE FUNCTION FOR ARRAY SORT()
-  const sortByLineNumbers = (a, b) => {
-    return parseInt(a.VP.desi) < parseInt(b.VP.desi)
-      ? -1
-      : parseInt(a.VP.desi) > parseInt(b.VP.desi)
-        ? 1
-        : 0
-  }
   let tramsInOrder = [...trams]
   tramsInOrder.sort(sortByLineNumbers)
 
-  const sortLineNumbers = (a, b) => {
-    return parseInt(a) < parseInt(b) ? -1 : parseInt(a) > parseInt(b) ? 1 : 0
-  }
   const lineNumbers = []
   trams.forEach(tram => {
     if (!lineNumbers.includes(parseInt(tram.VP.desi))) {
@@ -81,29 +74,15 @@ const Sidebar = ({
   })
   lineNumbers.sort(sortLineNumbers)
 
-  const sortStopNames = (a, b) => {
-    return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
-  }
-
   const stopsInOrder = [...stops]
   stopsInOrder.sort(sortStopNames)
 
   return (
     <div style={style} className='sidebar' id='mySidebar'>
-      {/* <a
-        href='javascript:void(0)'
-        className='closebtn'
-        onClick={() => closeSidebar()}
-      >
-        ☰
-      </a> */}
       <Container>
         <Form>
-          
-
-          
           <Row>
-            <Col xs="auto">
+            <Col xs='auto'>
               <Form.Group controlId='exampleForm.ControlSelect3'>
                 <Form.Label>My stop</Form.Label>
                 <Form.Control
@@ -121,39 +100,30 @@ const Sidebar = ({
               </Form.Group>
             </Col>
           </Row>
-         {/*  {myStop && <Row>
-            <Col xs="auto">
-              <Form.Group controlId='exampleForm.ControlSelect4'>
-                <Form.Label>
-                  My stop :  {myStop.name}  {myStop.gtfsId}
-                </Form.Label>
-              </Form.Group>
-            </Col>
-          </Row>} */}
           <Row>
-            {(myTram.VP && myStop) && (
-              <Col xs="auto">
+            {myTram.VP && myStop && (
+              <Col xs='auto'>
                 distance from myTram to myStop:{' '}
                 {distance(
                   myStop.lat,
                   myStop.lon,
-                  trams.find(tram => tram.VP.veh === myTram.VP.veh).VP
-                    .lat,
-                  trams.find(tram => tram.VP.veh === myTram.VP.veh).VP
-                    .long
-                ).toFixed(2)} km
+                  trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat,
+                  trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long
+                ).toFixed(2)}{' '}
+                km
               </Col>
             )}
           </Row>
           <Row>
-            <Col >
+            <Col>
               <Form.Group controlId='exampleForm.ControlSelect1'>
                 <Form.Label>Choose tram</Form.Label>
-                <Form.Control
-                 as='select' 
-                 onChange={handleChooseMyTram}  
-                 >
-                  {!myTram.VP ? <option> - </option> : <option value="reset">reset</option>} 
+                <Form.Control as='select' onChange={handleChooseMyTram}>
+                  {!myTram.VP ? (
+                    <option> - </option>
+                  ) : (
+                    <option value='reset'>reset</option>
+                  )}
                   {tramsInOrder.map((tram, i) => (
                     <option key={i} value={tram.VP.veh}>
                       line: {tram.VP.desi} veh:{tram.VP.veh}
@@ -162,9 +132,8 @@ const Sidebar = ({
                 </Form.Control>
               </Form.Group>
             </Col>
-          </Row>
-
-         <Row>
+          </Row> 
+          <Row>
             <Col>
               <Button
                 onClick={() => {
@@ -177,9 +146,8 @@ const Sidebar = ({
                 show all trams
               </Button>
             </Col>
-          </Row>  
-
-            <Row>
+          </Row> 
+          <Row>
             <Col>
               <Button
                 onClick={() => setShowTrams([])}
@@ -188,10 +156,10 @@ const Sidebar = ({
                 hide all trams
               </Button>
             </Col>
-          </Row> 
+          </Row>
 
-            <Row>
-            <Col >
+          <Row>
+            <Col>
               <Form.Group controlId='exampleForm.ControlSelect2'>
                 <Form.Label>Show line</Form.Label>
                 <Form.Control as='select' onChange={handleShowLine}>
@@ -204,7 +172,7 @@ const Sidebar = ({
                 </Form.Control>
               </Form.Group>
             </Col>
-          </Row>  
+          </Row>
 
           {/*  <Row>
             <Col sm={5}>
