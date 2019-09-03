@@ -12,13 +12,13 @@ const distance = (lat1, lon1, lat2, lon2) => {
   var d = R * c
   /* if (d>1) return d.toFixed(2) +"km";
 	else if (d<=1) return Math.round(d*1000)+"m"; */
-  return d
+  return Math.round(d*1000)
 }
 
-export const sortByLineNumbers = (a, b) => {
-  return parseInt(a.VP.desi) < parseInt(b.VP.desi)
+export const sortByVehicleNumbers = (a, b) => {
+  return parseInt(a.VP.veh) < parseInt(b.VP.veh)
     ? -1
-    : parseInt(a.VP.desi) > parseInt(b.VP.desi)
+    : parseInt(a.VP.veh) > parseInt(b.VP.veh)
     ? 1
     : 0
 }

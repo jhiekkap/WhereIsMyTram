@@ -1,16 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 import { setCenter } from '../reducers/centerReducer'
 import { setZoom } from '../reducers/zoomReducer'
 import { setMyTram } from '../reducers/myTramReducer'
-import { Container, Row, Col, Form, Button, Dropdown } from 'react-bootstrap'
+import { Container, Row, Col, Button, Dropdown } from 'react-bootstrap'
 import distance, {
-  sortByLineNumbers,
+  sortByVehicleNumbers,
   sortLineNumbers,
   sortStopNames,
-} from '../utils/helpers'
+} from '../utils/helpers'  
+import Sound from 'react-sound' 
 
 const Sidebar = ({
   closeSidebar,
@@ -26,7 +27,22 @@ const Sidebar = ({
   myTram,
   setMyTram,
 }) => {
+  const [line, setLine] = useState(0)
+  const [alarm, setAlarm] = useState(false)
+
   const style = showSidebar ? { width: '250px' } : { width: '0' }
+
+  useEffect(() => {
+    if(alarm){
+      let distanceNow = distance(
+        myStop.lat,
+        myStop.lon,
+        trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat,
+        trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long
+      )
+      console.log('DISTANCE NOW: ', distanceNow, new Date()) 
+    }
+  }, [trams])
 
   const handleChooseMyTram = veh => {
     console.log('TRAM CHOSEN: ', veh)
@@ -39,26 +55,39 @@ const Sidebar = ({
       //setZoom(16)
     } else {
       setMyTram('')
+      setLine(0)
     }
   }
 
-  const handleShowLine = e => {
-    console.log('LINE CHOSEN: ', e.target.value)
-    if (e.target.value !== '-') {
-      setShowTrams(
-        trams.filter(tram => parseInt(tram.VP.desi) == e.target.value)
-      )
-      setZoom(13)
-    }
+  const handleShowLine = line => {
+    console.log('LINE CHOSEN: ', line)
+    setShowTrams(trams.filter(tram => parseInt(tram.VP.desi) == line))
+    setZoom(13)
   }
 
   const handleChooseStop = stopsGtfsId => {
     console.log('STOP CHOSEN: ', stopsGtfsId)
     setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
   }
+  /* const getTrams = () => {
+   return [...trams]
+ } */
+
+  /* const handleSetAlarm = () => {
+    console.log('ALARM SET')
+    setInterval(()=> {
+        let upDatedTrams = getTrams()
+        console.log('DISTANCE NOW: ', distance(
+          myStop.lat,
+          myStop.lon,
+          upDatedTrams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat,
+          upDatedTrams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long
+        ), new Date())
+    }, 1000)
+  } */
 
   let tramsInOrder = [...trams]
-  tramsInOrder.sort(sortByLineNumbers)
+  tramsInOrder.sort(sortByVehicleNumbers)
 
   const lineNumbers = []
   trams.forEach(tram => {
@@ -74,78 +103,77 @@ const Sidebar = ({
   return (
     <div style={style} className='sidebar' id='mySidebar'>
       <Container>
+      {/* <Sound
+      url='https://actions.google.com/sounds/v1/alarms/beep_short.ogg'
+      playStatus={Sound.status.PLAYING}
+      playFromPosition={300 /* in milliseconds */}
+      volume={90}
+      //onLoading={this.handleSongLoading}
+      //onPlaying={this.handleSongPlaying}
+      //onFinishedPlaying={this.handleSongFinishedPlaying}
+    /> */}
         <Row>
-          <Dropdown>
-            <Dropdown.Toggle variant='success' id='dropdown-basic'>
-              {!myStop ? 'CHOOSE STOP' : myStop.name + ' ' + myStop.gtfsId}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {stopsInOrder.map((stop, i) => (
-                <Dropdown.Item
-                  key={i}
-                  onClick={() => handleChooseStop(stop.gtfsId)}
-                >
-                  {stop.name} {stop.gtfsId}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </Row>
-        <Row>
-          <Col>
-            <Dropdown /* id='tramDropdown' */>
+          <Col xs={12}>
+            <Dropdown>
               <Dropdown.Toggle variant='success' id='dropdown-basic'>
-                {myTram.VP
-                  ? 'line: ' + myTram.VP.desi + ' vehicle: ' + myTram.VP.veh
-                  : 'Choose tram'}
+                {!myStop ? 'CHOOSE STOP' : myStop.name + ' ' + myStop.gtfsId}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                {!myTram.VP ? (
-                  <Dropdown.Item> - </Dropdown.Item>
-                ) : (
-                  <Dropdown.Item onClick={() => handleChooseMyTram('reset')}>
-                    reset
-                  </Dropdown.Item>
-                )}
-                {tramsInOrder.map((tram, i) => (
+                {stopsInOrder.map((stop, i) => (
                   <Dropdown.Item
                     key={i}
-                    onClick={() => handleChooseMyTram(tram.VP.veh)}
+                    onClick={() => handleChooseStop(stop.gtfsId)}
                   >
-                    line: {tram.VP.desi} veh:{tram.VP.veh}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          </Col>
-          <Col>
-            <Dropdown /* id='tramDropdown' */>
-              <Dropdown.Toggle variant='success' id='dropdown-basic'>
-                {myTram.VP
-                  ? 'line: ' + myTram.VP.desi + ' vehicle: ' + myTram.VP.veh
-                  : 'Choose tram'}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {!myTram.VP ? (
-                  <Dropdown.Item> - </Dropdown.Item>
-                ) : (
-                  <Dropdown.Item onClick={() => handleChooseMyTram('reset')}>
-                    reset
-                  </Dropdown.Item>
-                )}
-                {tramsInOrder.map((tram, i) => (
-                  <Dropdown.Item
-                    key={i}
-                    onClick={() => handleChooseMyTram(tram.VP.veh)}
-                  >
-                    line: {tram.VP.desi} veh:{tram.VP.veh}
+                    {stop.name} {stop.gtfsId}
                   </Dropdown.Item>
                 ))}
               </Dropdown.Menu>
             </Dropdown>
           </Col>
         </Row>
-         
+
+        <Row>
+          <Col xs={6}>
+            <Dropdown /* id='tramDropdown' */>
+              <Dropdown.Toggle variant='success' id='dropdown-basic'>
+                {line > 0 ? 'Line: ' + line : 'Line?'}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {lineNumbers.map((line, i) => (
+                  <Dropdown.Item key={i} onClick={() => setLine(line)}>
+                    {line}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </Col>
+          <Col xs={6}>
+            <Dropdown /* id='tramDropdown' */>
+              <Dropdown.Toggle variant='success' id='dropdown-basic'>
+                {myTram.VP ? 'Vehicle: ' + myTram.VP.veh : 'Vehicle?'}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {myTram.VP ? (
+                  <Dropdown.Item onClick={() => handleChooseMyTram('reset')}>
+                    reset
+                  </Dropdown.Item>
+                ) : (
+                  <Dropdown.Item>choose line</Dropdown.Item>
+                )}
+                {tramsInOrder
+                  .filter(tram => tram.VP.desi == line)
+                  .map((tram, i) => (
+                    <Dropdown.Item
+                      key={i}
+                      onClick={() => handleChooseMyTram(tram.VP.veh)}
+                    >
+                      {tram.VP.veh}
+                    </Dropdown.Item>
+                  ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </Col>
+        </Row>
 
         <Row>
           {myTram.VP && myStop && (
@@ -156,8 +184,8 @@ const Sidebar = ({
                 myStop.lon,
                 trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat,
                 trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long
-              ).toFixed(2)}{' '}
-              km
+              )}{' '}
+              m
             </Col>
           )}
         </Row>
@@ -170,7 +198,7 @@ const Sidebar = ({
                 setZoom(13)
                 closeSidebar()
               }}
-              variant='outline-secondary'
+              variant='success'
             >
               show all trams
             </Button>
@@ -178,10 +206,7 @@ const Sidebar = ({
         </Row>
         <Row>
           <Col>
-            <Button
-              onClick={() => setShowTrams([])}
-              variant='outline-secondary'
-            >
+            <Button onClick={() => setShowTrams([])} variant='success'>
               hide all trams
             </Button>
           </Col>
@@ -189,19 +214,27 @@ const Sidebar = ({
 
         <Row>
           <Col>
-            <Form.Group controlId='exampleForm.ControlSelect2'>
-              <Form.Label>Show line</Form.Label>
-              <Form.Control as='select' onChange={handleShowLine}>
-                <option> - </option>
+            <Dropdown /* id='tramDropdown' */>
+              <Dropdown.Toggle variant='success' id='dropdown-basic'>
+                Show Line
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
                 {lineNumbers.map((line, i) => (
-                  <option key={i} value={line}>
+                  <Dropdown.Item key={i} onClick={() => handleShowLine(line)}>
                     {line}
-                  </option>
+                  </Dropdown.Item>
                 ))}
-              </Form.Control>
-            </Form.Group>
+              </Dropdown.Menu>
+            </Dropdown>
           </Col>
         </Row>
+        {myTram.VP && (
+          <Row>
+            <Button onClick={() => setAlarm(!alarm)}>
+              {!alarm ? 'Set alarm' : 'Alarm off'}
+            </Button>
+          </Row>
+        )}
       </Container>
     </div>
   )
@@ -297,5 +330,20 @@ export default connect(
               </Form.Group>
             </Col>   
           </Row> 
+          <Row>
+          <Col>
+            <Form.Group controlId='exampleForm.ControlSelect2'>
+              <Form.Label>Show line</Form.Label>
+              <Form.Control as='select' onChange={handleShowLine}>
+                <option> - </option>
+                {lineNumbers.map((line, i) => (
+                  <option key={i} value={line}>
+                    {line}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+          </Col>
+        </Row> 
         </Form> */
 }
