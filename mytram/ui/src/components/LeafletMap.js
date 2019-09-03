@@ -8,7 +8,7 @@ import { setMyStop } from '../reducers/myStopReducer';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import { Button } from 'react-bootstrap' 
 import driverIcon, { stopIcon, myStopIcon, myTramIcon } from '../utils/icons'
-  
+   
 const LeafletMap = ({
   trams,
   showTrams,
@@ -120,10 +120,12 @@ const LeafletMap = ({
     ))
   }
 
-  const style = showSidebar ? { marginLeft: '20px' } : { marginLeft: '0' }
+  const style = showSidebar ? { marginLeft: '20px' } : { marginLeft: '0'}
 
   return (
-    <div id='map' style={style} title='Double-click map to set a new center'>
+    <div 
+    id='mapContainer'
+     style={style} >
       {showSidebarOpenButton && (
         <Button
           variant='light'

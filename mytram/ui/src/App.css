@@ -1,18 +1,35 @@
 .App {
-  text-align: center;
+  text-align: center; 
+}
+body {
+  overflow: hidden;
 }
 
 .leaflet-container {
-  z-index: 0
-}
- 
-  
-#map {
-  height: 900px;
-  transition: margin-left .5s;  
+  z-index: 0;  
+  overflow: hidden; 
 }
 
- 
+@media only screen and (max-width: 435px){
+
+  #map { 
+    height:calc(100vh - 80px);
+  }
+} 
+
+#mapContainer {  
+  height: 100%;
+}
+    
+#map {
+  height: 900px; 
+  transition: margin-left .5s;   
+}
+
+ /* #tramDropdown {
+overflow: auto;
+ } */
+
 .sidebar {
   height: 100%;
   width: 0;
@@ -21,16 +38,9 @@
   top: 0;
   left: 0;
   background-color: whitesmoke;
-  overflow-x: hidden;
+   /* overflow-x: hidden; */
   transition: 0.5s;
   padding-top: 60px;
+  overflow: hidden;  
 }
-
-.sidebar a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: black;
-  display: block;
-  transition: 0.3s;
-} 
+ 
