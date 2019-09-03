@@ -103,15 +103,15 @@ const Sidebar = ({
   return (
     <div style={style} className='sidebar' id='mySidebar'>
       <Container>
-      {/* <Sound
+       {/* <Sound
       url='https://actions.google.com/sounds/v1/alarms/beep_short.ogg'
       playStatus={Sound.status.PLAYING}
-      playFromPosition={300 /* in milliseconds */}
+      playFromPosition={300}
       volume={90}
-      //onLoading={this.handleSongLoading}
-      //onPlaying={this.handleSongPlaying}
-      //onFinishedPlaying={this.handleSongFinishedPlaying}
-    /> */}
+      onLoading={this.handleSongLoading}
+      onPlaying={this.handleSongPlaying}
+      onFinishedPlaying={this.handleSongFinishedPlaying}
+    />   */}
         <Row>
           <Col xs={12}>
             <Dropdown>
