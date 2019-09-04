@@ -6,6 +6,7 @@ import { setShowSidebarOpenButton } from './reducers/showSidebarOpenButtonReduce
 import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
 import { setShowTrams } from './reducers/showTramsReducer'
+import { setShowAlert } from './reducers/settingsReducer'
 import './App.css'
 import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
@@ -21,9 +22,10 @@ const App = ({
   setShowSidebarOpenButton,
   setStops,
   setMyStop,
+  settings,
+  setShowAlert
 }) => {
-  
-  const [showAlert,setShowAlert] = useState(false)
+   
 
   useEffect(() => {
     client.query({ query }).then(response => {
@@ -74,7 +76,7 @@ const App = ({
 
   return (
     <div>
-      <Alert id='alert' show={showAlert} variant='danger'>
+      <Alert id='alert' show={settings.showAlert} variant='danger'>
         <br/><br/><br/><br/><br/>      
         <Alert.Heading>How's it going?!</Alert.Heading>
         <p>
@@ -89,20 +91,18 @@ const App = ({
           </Button>
         </div>
       </Alert>
-      <Sidebar 
-      setShowAlert={setShowAlert}
+      <Sidebar  
       closeSidebar={closeSidebar} />
       <LeafletMap openSidebar={openSidebar} closeSidebar={closeSidebar} />
     </div>
   )
 }
 
-/* const mapStateToProps = state => {
+  const mapStateToProps = state => {
   return {
-    stops: state.stops,
-    myStop: state.myStop,
+    settings: state.settings,
   }
-} */
+}  
 
 const mapDispatchToProps = {
   setTrams,
@@ -111,12 +111,19 @@ const mapDispatchToProps = {
   setStops,
   setMyStop,
   setShowTrams,
+  setShowAlert,
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(App)
+
+
+
+
+
+
 
 ////////// GEOLOCATION
 

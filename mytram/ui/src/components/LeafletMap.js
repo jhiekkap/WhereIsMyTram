@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
-import { setCenter } from '../reducers/centerReducer'
-import { setZoom } from '../reducers/zoomReducer'
+import { setCenter } from '../reducers/settingsReducer'
+import { setZoom } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import { Button } from 'react-bootstrap' 
@@ -16,16 +16,15 @@ const LeafletMap = ({
   openSidebar,
   closeSidebar,
   showSidebar,
-  showSidebarOpenButton,
-  center,
-  setCenter,
-  zoom,
+  showSidebarOpenButton, 
+  setCenter, 
   setZoom,
   stops,
   myStop,
   setMyStop,
   myTram,
   setMyTram,
+  settings,
 }) => {
 
   const handleChooseTram = e => {
@@ -145,9 +144,9 @@ const LeafletMap = ({
       )}
       <Map
         id='map'
-        center={center}
+        center={settings.center}
         //center={myTram.VP ? {lat:trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat, lng:trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long} : center}
-        zoom={zoom}
+        zoom={settings.zoom}
         onclick={() => closeSidebar()}
         zoomControl={false}
       >
@@ -178,8 +177,7 @@ const mapStateToProps = state => {
     showSidebar: state.showSidebar,
     showSidebarOpenButton: state.showSidebarOpenButton,
     stops: state.stops,
-    center: state.center,
-    zoom: state.zoom,
+    settings: state.settings, 
     myStop: state.myStop,
     myTram: state.myTram,
   }

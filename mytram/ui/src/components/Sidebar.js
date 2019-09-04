@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
-import { setCenter } from '../reducers/centerReducer'
-import { setZoom } from '../reducers/zoomReducer'
+import { setCenter } from '../reducers/settingsReducer'
+import { setZoom } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
+import { setShowAlert } from '../reducers/settingsReducer'
 import { Container, Row, Col, Button, Dropdown, Alert } from 'react-bootstrap'
 import distance, {
   sortByVehicleNumbers,
@@ -289,6 +290,7 @@ const mapDispatchToProps = {
   setCenter,
   setZoom,
   setMyTram,
+  setShowAlert,
 }
 
 export default connect(
