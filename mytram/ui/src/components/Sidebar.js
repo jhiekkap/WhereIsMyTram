@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
-import { setCenter } from '../reducers/settingsReducer'
-import { setZoom } from '../reducers/settingsReducer'
+import { setCenter, setZoom, setShowAlert, setShowSidebar, closeSidebar, toggleAlertVariant } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
-import { setShowAlert } from '../reducers/settingsReducer'
 import { Container, Row, Col, Button, Dropdown, Alert } from 'react-bootstrap'
 import distance, {
   sortByVehicleNumbers,
@@ -16,9 +14,7 @@ import Sound from 'react-sound'
 
 const Sidebar = ({
   closeSidebar,
-  showSidebar,
   trams,
-  //showTrams,
   setShowTrams,
   setCenter,
   setZoom,
@@ -28,15 +24,17 @@ const Sidebar = ({
   myTram,
   setMyTram,
   setShowAlert,
+  settings, 
+  toggleAlertVariant,
 }) => {
   const [line, setLine] = useState(0)
   const [alarm, setAlarm] = useState(false)
   const [speeds, setSpeeds] = useState([])
 
-  const style = showSidebar ? { width: '250px' } : { width: '0' }
+  const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
 
   useEffect(() => {
-    if (alarm) {
+    if (alarm) { 
       let chosenTram = trams.find(tram => tram.VP.veh === myTram.VP.veh)
       let distanceNow = distance(
         myStop.lat,
@@ -44,12 +42,18 @@ const Sidebar = ({
         chosenTram.VP.lat,
         chosenTram.VP.long
       )
+      let halfWay = {
+        lat: (myStop.lat + chosenTram.VP.lat) / 2,
+        lng: (myStop.lon + chosenTram.VP.long) / 2
+      }
+      setCenter(halfWay)
       setSpeeds(speeds.concat(chosenTram.VP.spd))
       if (speeds.length > 1) {
         let avgSpeed =
           speeds.reduce((previous, current) => (current += previous)) /
           speeds.length
         let duration = distanceNow / avgSpeed
+        console.log(new Date())
         console.log(
           'DISTANCE NOW: ',
           distanceNow,
@@ -67,11 +71,15 @@ const Sidebar = ({
         )
       }
       if (distanceNow < 50) {
-         setShowAlert(true)
-         setAlarm(false)
-         setMyTram('')
-         setLine(0)
-         setSpeeds([])
+        setAlarm(false)
+        setMyTram('')
+        setLine(0)
+        setSpeeds([])
+        closeSidebar() 
+        setShowAlert(true)
+      }
+      if(settings.showAlert){
+        toggleAlertVariant()
       }
     }
   }, [trams])
@@ -101,22 +109,6 @@ const Sidebar = ({
     console.log('STOP CHOSEN: ', stopsGtfsId)
     setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
   }
-  /* const getTrams = () => {
-   return [...trams]
- } */
-
-  /* const handleSetAlarm = () => {
-    console.log('ALARM SET')
-    setInterval(()=> {
-        let upDatedTrams = getTrams()
-        console.log('DISTANCE NOW: ', distance(
-          myStop.lat,
-          myStop.lon,
-          upDatedTrams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat,
-          upDatedTrams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long
-        ), new Date())
-    }, 1000)
-  } */
 
   let tramsInOrder = [...trams]
   tramsInOrder.sort(sortByVehicleNumbers)
@@ -134,7 +126,7 @@ const Sidebar = ({
 
   return (
     <div style={style} className='sidebar' id='mySidebar'>
-     
+
       <Container>
         {/* <Sound
       url='https://actions.google.com/sounds/v1/alarms/beep_short.ogg'
@@ -191,8 +183,8 @@ const Sidebar = ({
                     reset
                   </Dropdown.Item>
                 ) : (
-                  <Dropdown.Item>choose line</Dropdown.Item>
-                )}
+                    <Dropdown.Item>choose line</Dropdown.Item>
+                  )}
                 {tramsInOrder
                   .filter(tram => tram.VP.desi == line)
                   .map((tram, i) => (
@@ -261,13 +253,15 @@ const Sidebar = ({
             </Dropdown>
           </Col>
         </Row>
-        {myTram.VP && (
-          <Row>
-            <Button onClick={() => setAlarm(!alarm)}>
-              {!alarm ? 'Set alarm' : 'Alarm off'}
-            </Button>
-          </Row>
-        )}
+        <Row>
+          {myTram.VP && (
+            <Col>
+              <Button onClick={() => setAlarm(!alarm)}>
+                {!alarm ? 'Set alarm' : 'Alarm off'}
+              </Button>
+            </Col>
+          )}
+        </Row>
       </Container>
     </div>
   )
@@ -276,11 +270,11 @@ const Sidebar = ({
 const mapStateToProps = state => {
   return {
     trams: state.trams,
-    //showTrams: state.showTrams,
     showSidebar: state.showSidebar,
     stops: state.stops,
     myStop: state.myStop,
     myTram: state.myTram,
+    settings: state.settings,
   }
 }
 
@@ -291,6 +285,8 @@ const mapDispatchToProps = {
   setZoom,
   setMyTram,
   setShowAlert,
+  closeSidebar,
+  toggleAlertVariant, 
 }
 
 export default connect(

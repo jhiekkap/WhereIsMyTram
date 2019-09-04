@@ -2,23 +2,17 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import tramsReducer from './reducers/tramsReducer'
-import showTramsReducer from './reducers/showTramsReducer'
-import showSidebarReducer from './reducers/showSidebarReducer'
-import showSidebarOpenButtonReducer from './reducers/showSidebarOpenButtonReducer'
+import showTramsReducer from './reducers/showTramsReducer'  
 import stopsReducer from './reducers/stopsReducer' 
 import myStopReducer from './reducers/myStopReducer'  
-import zoomReducer from './reducers/zoomReducer' 
 import myTramReducer from './reducers/myTramReducer' 
 import settingsReducer from './reducers/settingsReducer'
 
 const reducer = combineReducers({
   trams: tramsReducer,
-  showTrams: showTramsReducer,
-  showSidebar: showSidebarReducer,
-  showSidebarOpenButton: showSidebarOpenButtonReducer,
+  showTrams: showTramsReducer,  
   stops: stopsReducer,
-  myStop: myStopReducer, 
-  zoom: zoomReducer,
+  myStop: myStopReducer,  
   myTram: myTramReducer,
   settings: settingsReducer,
 })
