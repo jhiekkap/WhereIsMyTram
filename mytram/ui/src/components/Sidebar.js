@@ -5,13 +5,13 @@ import { setMyStop } from '../reducers/myStopReducer'
 import { setCenter } from '../reducers/centerReducer'
 import { setZoom } from '../reducers/zoomReducer'
 import { setMyTram } from '../reducers/myTramReducer'
-import { Container, Row, Col, Button, Dropdown } from 'react-bootstrap'
+import { Container, Row, Col, Button, Dropdown, Alert } from 'react-bootstrap'
 import distance, {
   sortByVehicleNumbers,
   sortLineNumbers,
   sortStopNames,
-} from '../utils/helpers'  
-import Sound from 'react-sound' 
+} from '../utils/helpers'
+import Sound from 'react-sound'
 
 const Sidebar = ({
   closeSidebar,
@@ -26,21 +26,52 @@ const Sidebar = ({
   setMyStop,
   myTram,
   setMyTram,
+  setShowAlert,
 }) => {
   const [line, setLine] = useState(0)
   const [alarm, setAlarm] = useState(false)
+  const [speeds, setSpeeds] = useState([])
 
   const style = showSidebar ? { width: '250px' } : { width: '0' }
 
   useEffect(() => {
-    if(alarm){
+    if (alarm) {
+      let chosenTram = trams.find(tram => tram.VP.veh === myTram.VP.veh)
       let distanceNow = distance(
         myStop.lat,
         myStop.lon,
-        trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat,
-        trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long
+        chosenTram.VP.lat,
+        chosenTram.VP.long
       )
-      console.log('DISTANCE NOW: ', distanceNow, new Date()) 
+      setSpeeds(speeds.concat(chosenTram.VP.spd))
+      if (speeds.length > 1) {
+        let avgSpeed =
+          speeds.reduce((previous, current) => (current += previous)) /
+          speeds.length
+        let duration = distanceNow / avgSpeed
+        console.log(
+          'DISTANCE NOW: ',
+          distanceNow,
+          ' m',
+          'AVG SPEED: ',
+          (avgSpeed * 3.6).toFixed(2),
+          ' km/h',
+          chosenTram.VP.spd,
+          ' m/s',
+          'ESTIMATED DURATION: ',
+          Math.floor(duration / 60),
+          ' min',
+          (duration % 60).toFixed(0),
+          ' sec'
+        )
+      }
+      if (distanceNow < 50) {
+         setShowAlert(true)
+         setAlarm(false)
+         setMyTram('')
+         setLine(0)
+         setSpeeds([])
+      }
     }
   }, [trams])
 
@@ -102,8 +133,9 @@ const Sidebar = ({
 
   return (
     <div style={style} className='sidebar' id='mySidebar'>
+     
       <Container>
-       {/* <Sound
+        {/* <Sound
       url='https://actions.google.com/sounds/v1/alarms/beep_short.ogg'
       playStatus={Sound.status.PLAYING}
       playFromPosition={300}
@@ -195,7 +227,7 @@ const Sidebar = ({
             <Button
               onClick={() => {
                 setShowTrams(trams)
-                setZoom(13)
+                //setZoom(13)
                 closeSidebar()
               }}
               variant='success'
