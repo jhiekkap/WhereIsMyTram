@@ -1,12 +1,16 @@
-const settingsReducer = (state = {
-  center: { lat: 60.170627, lng: 24.939946 },
-  showAlert: true,
-  alertVariant: true,
-  zoom: 16,
-  showSidebar: false,
-  showSidebarOpenButton: true,
-  init: true,
-}, action) => {
+const settingsReducer = (
+  state = {
+    center: { lat: 60.170627, lng: 24.939946 },
+    showAlert: false,
+    alertVariant: true,
+    zoom: 16,
+    showSidebar: false,
+    showSidebarOpenButton: true,
+    init: true,
+    avgDuration: 0,
+  },
+  action
+) => {
   switch (action.type) {
     case 'SHOW_ALERT':
       return { ...state, showAlert: action.data }
@@ -22,6 +26,8 @@ const settingsReducer = (state = {
       return { ...state, showSidebarOperButton: action.data }
     case 'SET_INIT':
       return { ...state, init: action.data }
+    case 'SET_AVG_DURATION':
+      return { ...state, avgDuration: action.data }
     default:
       return state
   }
@@ -39,7 +45,7 @@ export const setShowAlert = boolean => {
 export const toggleAlertVariant = () => {
   return dispatch => {
     dispatch({
-      type: 'TOGGLE_ALERT_VARIANT' 
+      type: 'TOGGLE_ALERT_VARIANT',
     })
   }
 }
@@ -114,6 +120,15 @@ export const closeSidebar = () => {
         data: true,
       })
     }, 300)
+  }
+}
+
+export const setAvgDuration = seconds => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_AVG_DURATION',
+      data: seconds,
+    })
   }
 }
 

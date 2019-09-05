@@ -24,6 +24,7 @@ const App = ({
   useEffect(() => {
   
     client.query({ query }).then(response => {
+      console.log('GRAPHQL - QUERY!')
       let edges = response.data.stopsByRadius.edges
       let allStops = edges
         .map(edge => edge.node.stop)
@@ -40,11 +41,11 @@ const App = ({
       .then(body => {
         setTrams(body) 
         
-        if(settings.init){
-          console.log('INIT: ',settings.init)
+        /* if(settings.init){
+          console.log('INIT: ',settings.init, new Date())
           setInit(false)
          // setShowTrams(body)
-        }
+        } */
       })
       .catch(error => {
         console.log(error)

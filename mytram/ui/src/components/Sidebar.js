@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
-import { setCenter, setZoom, setShowAlert, setShowSidebar, closeSidebar, toggleAlertVariant } from '../reducers/settingsReducer'
+import { setCenter, setZoom, setShowAlert, setShowSidebar, closeSidebar, toggleAlertVariant, setAvgDuration } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import { Container, Row, Col, Button, Dropdown, Alert } from 'react-bootstrap'
 import distance, {
@@ -15,6 +15,7 @@ import Sound from 'react-sound'
 const Sidebar = ({
   closeSidebar,
   trams,
+  showTrams,
   setShowTrams,
   setCenter,
   setZoom,
@@ -26,10 +27,12 @@ const Sidebar = ({
   setShowAlert,
   settings, 
   toggleAlertVariant,
+  setAvgDuration,
 }) => {
   const [line, setLine] = useState(0)
   const [alarm, setAlarm] = useState(false)
   const [speeds, setSpeeds] = useState([])
+  const [durations, setDurations] = useState([])
 
   const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
 
@@ -53,7 +56,24 @@ const Sidebar = ({
           speeds.reduce((previous, current) => (current += previous)) /
           speeds.length
         let duration = distanceNow / avgSpeed
-        console.log(new Date())
+        setDurations(durations.concat(duration))
+        console.log(durations)
+        let avgDuration = duration
+        let sum = 0; let counter = 0
+        if(durations.length > 1){
+          for(let i=durations.length -1;i>=0;i--){
+            sum+=durations[i]
+            counter++
+            if(counter > 9){
+              break
+            }
+          }
+          avgDuration = sum/counter
+        }
+        if(durations.length > 4){
+          setAvgDuration(avgDuration)
+        } 
+
         console.log(
           'DISTANCE NOW: ',
           distanceNow,
@@ -64,9 +84,9 @@ const Sidebar = ({
           chosenTram.VP.spd,
           ' m/s',
           'ESTIMATED DURATION: ',
-          Math.floor(duration / 60),
+          Math.floor(avgDuration / 60),
           ' min',
-          (duration % 60).toFixed(0),
+          (avgDuration % 60).toFixed(0),
           ' sec'
         )
       }
@@ -75,6 +95,7 @@ const Sidebar = ({
         setMyTram('')
         setLine(0)
         setSpeeds([])
+        setDurations([])
         closeSidebar() 
         setShowAlert(true)
       }
@@ -158,12 +179,16 @@ const Sidebar = ({
         </Row>
 
         <Row>
-          <Col xs={6}>
+          <Col xs={12}>
             <Dropdown /* id='tramDropdown' */>
               <Dropdown.Toggle variant='success' id='dropdown-basic'>
                 {line > 0 ? 'Line: ' + line : 'Line?'}
               </Dropdown.Toggle>
               <Dropdown.Menu>
+              {myTram.VP && 
+                  <Dropdown.Item onClick={() => handleChooseMyTram('reset')}>
+                    reset
+                  </Dropdown.Item>}
                 {lineNumbers.map((line, i) => (
                   <Dropdown.Item key={i} onClick={() => setLine(line)}>
                     {line}
@@ -172,19 +197,19 @@ const Sidebar = ({
               </Dropdown.Menu>
             </Dropdown>
           </Col>
-          <Col xs={6}>
-            <Dropdown /* id='tramDropdown' */>
+          </Row>
+
+          {line > 0 && <Row>
+          <Col xs={12}>
+            <Dropdown xs={12}/* id='tramDropdown' */>
               <Dropdown.Toggle variant='success' id='dropdown-basic'>
                 {myTram.VP ? 'Vehicle: ' + myTram.VP.veh : 'Vehicle?'}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                {myTram.VP ? (
+                {myTram.VP && 
                   <Dropdown.Item onClick={() => handleChooseMyTram('reset')}>
                     reset
-                  </Dropdown.Item>
-                ) : (
-                    <Dropdown.Item>choose line</Dropdown.Item>
-                  )}
+                  </Dropdown.Item>}
                 {tramsInOrder
                   .filter(tram => tram.VP.desi == line)
                   .map((tram, i) => (
@@ -198,7 +223,7 @@ const Sidebar = ({
               </Dropdown.Menu>
             </Dropdown>
           </Col>
-        </Row>
+        </Row>}
 
         <Row>
           {myTram.VP && myStop && (
@@ -209,33 +234,34 @@ const Sidebar = ({
                 myStop.lon,
                 trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat,
                 trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long
-              )}{' '}
-              m
+              )}{' m'} <br/>
+              Duration: {settings.avgDuration}
             </Col>
           )}
         </Row>
 
-        <Row>
+        {(trams.length !== showTrams.length) && <Row>
           <Col>
             <Button
               onClick={() => {
                 setShowTrams(trams)
                 //setZoom(13)
-                closeSidebar()
+                //closeSidebar()
               }}
               variant='success'
             >
               show all trams
             </Button>
           </Col>
-        </Row>
-        <Row>
+        </Row>}
+
+        {(myTram.VP || showTrams.length > 0) && <Row>
           <Col>
             <Button onClick={() => setShowTrams([])} variant='success'>
               hide all trams
             </Button>
           </Col>
-        </Row>
+        </Row>}
 
         <Row>
           <Col>
@@ -270,6 +296,7 @@ const Sidebar = ({
 const mapStateToProps = state => {
   return {
     trams: state.trams,
+    showTrams: state.showTrams,
     showSidebar: state.showSidebar,
     stops: state.stops,
     myStop: state.myStop,
@@ -278,7 +305,7 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = {
+const mapDispatchToProps = { 
   setShowTrams,
   setMyStop,
   setCenter,
@@ -287,6 +314,7 @@ const mapDispatchToProps = {
   setShowAlert,
   closeSidebar,
   toggleAlertVariant, 
+  setAvgDuration,
 }
 
 export default connect(

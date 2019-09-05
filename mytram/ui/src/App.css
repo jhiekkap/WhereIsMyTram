@@ -1,9 +1,7 @@
 #alert {
   height: 1000px
 }
-body {
-  overflow: hidden;
-}
+ 
 
 .leaflet-container {
   z-index: 0;
@@ -37,8 +35,7 @@ overflow: auto;
   top: 0;
   left: 0;
   background-color: whitesmoke;
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 60px;
-  overflow: hidden;
+  padding-top: 60px; 
 }
