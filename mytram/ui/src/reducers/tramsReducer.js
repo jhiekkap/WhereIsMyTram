@@ -1,7 +1,7 @@
 const tramsReducer = (state = [], action) => {
   switch (action.type) {
     case 'SET_TRAMS':
-      return action.data
+      return action.data 
     default:
       return state
   }
@@ -15,5 +15,6 @@ export const setTrams = trams => {
     })
   }
 }
+ 
 
 export default tramsReducer

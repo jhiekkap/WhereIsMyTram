@@ -10,7 +10,7 @@ import distance, {
   sortLineNumbers,
   sortStopNames,
 } from '../utils/helpers'
-import Sound from 'react-sound'
+import Sound from 'react-sound' 
 
 const Sidebar = ({
   closeSidebar,
@@ -37,6 +37,7 @@ const Sidebar = ({
   const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
 
   useEffect(() => {
+    //console.log('SIDEBAR INIT', settings.init)
     if (alarm) { 
       let chosenTram = trams.find(tram => tram.VP.veh === myTram.VP.veh)
       let distanceNow = distance(
@@ -70,7 +71,7 @@ const Sidebar = ({
           }
           avgDuration = sum/counter
         }
-        if(durations.length > 4){
+        if(durations.length > 4 && chosenTram.VP.spd > 0){
           setAvgDuration(avgDuration)
         } 
 
@@ -90,9 +91,9 @@ const Sidebar = ({
           ' sec'
         )
       }
-      if (distanceNow < 50) {
+      if (distanceNow < 5) {
         setAlarm(false)
-        setMyTram('')
+        setMyTram('') 
         setLine(0)
         setSpeeds([])
         setDurations([])
@@ -203,7 +204,7 @@ const Sidebar = ({
           <Col xs={12}>
             <Dropdown xs={12}/* id='tramDropdown' */>
               <Dropdown.Toggle variant='success' id='dropdown-basic'>
-                {myTram.VP ? 'Vehicle: ' + myTram.VP.veh : 'Vehicle?'}
+                {myTram.VP ? 'Vehicle: ' + trams.myTram.VP.veh : 'Vehicle?'}
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {myTram.VP && 
@@ -235,7 +236,7 @@ const Sidebar = ({
                 trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat,
                 trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long
               )}{' m'} <br/>
-              Duration: {settings.avgDuration}
+              {settings.avgDuration > 0 && 'Duration:' + settings.avgDuration.toFixed(0)+ ' sec'}
             </Col>
           )}
         </Row>

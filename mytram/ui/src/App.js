@@ -1,50 +1,43 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { setTrams } from './reducers/tramsReducer' 
+import { setTrams } from './reducers/tramsReducer'
 import { setInit } from './reducers/settingsReducer'
 import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
-import { setShowTrams } from './reducers/showTramsReducer' 
+import { setShowTrams } from './reducers/showTramsReducer'
 import './App.css'
 import LeafletMap from './components/LeafletMap'
-import Sidebar from './components/Sidebar' 
-import client , { query } from './utils/client'
-
- 
+import Sidebar from './components/Sidebar'
+import client, { query } from './utils/client'
 
 const App = ({
   setTrams,
-  setShowTrams,  
+  setShowTrams,
   setStops,
   setMyStop,
   settings,
-  setInit 
+  setInit,
 }) => {
- 
   useEffect(() => {
-  
     client.query({ query }).then(response => {
-      console.log('GRAPHQL - QUERY!')
-      let edges = response.data.stopsByRadius.edges
-      let allStops = edges
+      console.log('GRAPHQL - QUERY!') 
+      let allStops = response.data.stopsByRadius.edges
         .map(edge => edge.node.stop)
         .filter(stop => stop.vehicleType === 0)
       setStops(allStops)
-      setMyStop(allStops[0]) 
+      setMyStop(allStops[0])
     })
-  },[])
+  }, [])
 
   const update = () => {
-    
     fetch('/trams')
       .then(response => response.json())
       .then(body => {
-        setTrams(body) 
-        
-        /* if(settings.init){
-          console.log('INIT: ',settings.init, new Date())
-          setInit(false)
-         // setShowTrams(body)
+        setTrams(body)
+        /* if (settings.init) {
+          console.log('INIT: ', settings.init, new Date())
+          setInit()
+          setShowTrams(body)
         } */
       })
       .catch(error => {
@@ -52,43 +45,38 @@ const App = ({
       })
   }
 
- useState(() =>{ 
-  const timer = setInterval(() => { 
-    update()
-  }, 1000)}, [])
-  
+  useState(() => {
+    const timer = setInterval(() => {
+      update()
+    }, 1000)
+  }, [])
+
   return (
-    <div> 
+    <div>
       <Sidebar />
       <LeafletMap />
     </div>
   )
 }
 
-  const mapStateToProps = state => {
+const mapStateToProps = state => {
   return {
     settings: state.settings,
   }
-}  
+}
 
 const mapDispatchToProps = {
-  setTrams,  
+  setTrams,
   setStops,
   setMyStop,
-  setShowTrams, 
+  setShowTrams,
   setInit,
 }
 
 export default connect(
-  mapStateToProps, 
+  mapStateToProps,
   mapDispatchToProps
 )(App)
-
-
-
-
-
-
 
 ////////// GEOLOCATION
 

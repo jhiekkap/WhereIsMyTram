@@ -86,11 +86,11 @@ export const setShowSidebarOpenButton = boolean => {
   }
 }
 
-export const setInit = boolean => {
+export const setInit = () => {
   return dispatch => {
     dispatch({
       type: 'SET_INIT',
-      data: boolean,
+      data: false,
     })
   }
 }
