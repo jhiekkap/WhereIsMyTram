@@ -204,7 +204,7 @@ const Sidebar = ({
           <Col xs={12}>
             <Dropdown xs={12}/* id='tramDropdown' */>
               <Dropdown.Toggle variant='success' id='dropdown-basic'>
-                {myTram.VP ? 'Vehicle: ' + trams.myTram.VP.veh : 'Vehicle?'}
+                {myTram.VP ? 'Vehicle: ' + myTram.VP.veh : 'Vehicle?'}
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {myTram.VP && 
@@ -236,7 +236,12 @@ const Sidebar = ({
                 trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat,
                 trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long
               )}{' m'} <br/>
-              {settings.avgDuration > 0 && 'Duration:' + settings.avgDuration.toFixed(0)+ ' sec'}
+              {settings.avgDuration > 0 && 'Duration:' + 
+            Math.floor(settings.avgDuration / 60) + 
+            ' min' + 
+            (settings.avgDuration % 60).toFixed(0) +
+            ' sec'
+            }
             </Col>
           )}
         </Row>

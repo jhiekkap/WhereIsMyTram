@@ -1,4 +1,4 @@
-const myTramReducer = (state = {}, action) => {
+const myTramReducer = (state = '', action) => {
   switch (action.type) {
     case 'SET_MY_TRAM':
       return action.data
