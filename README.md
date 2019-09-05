@@ -5,7 +5,7 @@
 
 - Tram drivers' end of coffee break - alarm
 
-Check out work in progress in Heroku:
+Check out the work in progress in Heroku:
 https://arcane-shore-64535.herokuapp.com/
  
 
