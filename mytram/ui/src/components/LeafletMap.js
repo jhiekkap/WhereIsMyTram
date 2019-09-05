@@ -98,12 +98,11 @@ const LeafletMap = ({
         >
           {popUp(myTramAlive)}
         </Marker>
-        <Marker
+        {/* <Marker
         icon={locationIcon}
         position={halfWay}
-      >
-        
-      </Marker>
+      > 
+      </Marker> */}
       </div>
       )
     }

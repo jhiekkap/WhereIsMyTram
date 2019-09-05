@@ -29,7 +29,7 @@ const Sidebar = ({
   toggleAlertVariant,
   setAvgDuration,
 }) => {
-  const [line, setLine] = useState(0)
+  const [line, setLine] = useState('')
   const [alarm, setAlarm] = useState(false)
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
@@ -200,7 +200,7 @@ const Sidebar = ({
           </Col>
           </Row>
 
-          {line > 0 && <Row>
+          {line  && <Row>
           <Col xs={12}>
             <Dropdown xs={12}/* id='tramDropdown' */>
               <Dropdown.Toggle variant='success' id='dropdown-basic'>
@@ -212,7 +212,7 @@ const Sidebar = ({
                     reset
                   </Dropdown.Item>}
                 {tramsInOrder
-                  .filter(tram => tram.VP.desi == line)
+                  .filter(tram => tram.VP.desi == line || tram.VP.desi == line + 'T' || tram.VP.desi == line + 'H')
                   .map((tram, i) => (
                     <Dropdown.Item
                       key={i}
