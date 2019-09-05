@@ -1,13 +1,14 @@
 # harjoitusTyoFullStack19
 
-- Missä seuraava ratikkani?
-- Ratikkakuskin tauon päättymisen hälytin
+'Where's my tram?'
 
-- tähänastinen versio pyörii Herokussa:
+
+- Tram drivers' end of coffee break - alarm
+
+Check out work in progress in Heroku:
 https://arcane-shore-64535.herokuapp.com/
+ 
 
-Herokun backend : https://github.com/jhiekkap/tramServer
-
-- Tuntikirjanpito:
+- work diary:
  
  https://docs.google.com/spreadsheets/d/1gDqkUVEFQfFy277UFTALlDfFGwRQQwJSnHBpwu5PH9M/edit?usp=sharing
