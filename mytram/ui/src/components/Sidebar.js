@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { setTrams } from '../reducers/tramsReducer'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 import {
@@ -25,7 +24,6 @@ import Sound from 'react-sound'
 const Sidebar = ({
   closeSidebar,
   trams,
-  setTrams,
   showTrams,
   setShowTrams,
   setCenter,
@@ -41,7 +39,6 @@ const Sidebar = ({
   setAvgDuration,
   setLine,
 }) => {
-  //const [line, setLine] = useState('')
   const [alarm, setAlarm] = useState(false)
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
@@ -271,7 +268,7 @@ const Sidebar = ({
             </Row>
           )}
 
-          {myTram.VP && myStop && trams &&
+          {myTram.VP && myStop && trams && (
             <Row>
               <Col xs='12'>
                 <Button variant={buttonVariant}>
@@ -292,7 +289,7 @@ const Sidebar = ({
                 </Button>
               </Col>
             </Row>
-          }
+          )}
 
           <Row>
             {myTram.VP && (
@@ -375,6 +372,17 @@ const Sidebar = ({
               </Button>
             </Col>
           </Row>
+
+          <Row>
+            <Col>
+              <Button
+                variant={buttonVariant}
+                onClick={() => setShow('goodbye')}
+              >
+                Exit
+              </Button>
+            </Col>
+          </Row>
         </Container>
       )}
 
@@ -383,6 +391,16 @@ const Sidebar = ({
           <Row>
             <Col>
               <Button onClick={() => setShow('menu')}>GO BACK TO MENU</Button>
+            </Col>
+          </Row>
+        </Container>
+      )}
+
+      {show === 'goodbye' && (
+        <Container>
+          <Row>
+            <Col onClick={() => setShow('menu')}>
+              goodbye
             </Col>
           </Row>
         </Container>
@@ -414,7 +432,6 @@ const mapDispatchToProps = {
   toggleAlertVariant,
   setAvgDuration,
   setLine,
-  setTrams,
 }
 
 export default connect(
