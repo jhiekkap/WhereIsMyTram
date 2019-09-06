@@ -126,7 +126,7 @@ const Sidebar = ({
     if (veh !== 'reset') {
       let chosenTram = trams.find(tram => tram.VP.veh == veh)
       console.log('chosen Tram:', chosenTram)
-      setTrams([])
+      //setTrams([])
       setMyTram(chosenTram)
       if (!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)) {
         setShowTrams(showTrams.concat(chosenTram))
@@ -162,8 +162,8 @@ const Sidebar = ({
 
   const lineNumbers = []
   trams.forEach(tram => {
-    if (!lineNumbers.includes(parseInt(tram.VP.desi))) {
-      lineNumbers.push(parseInt(tram.VP.desi))
+    if (!lineNumbers.includes(tram.VP.desi)) {
+      lineNumbers.push(tram.VP.desi)
     }
   })
   lineNumbers.sort(sortLineNumbers)
@@ -271,7 +271,7 @@ const Sidebar = ({
             </Row>
           )}
 
-          {myTram.VP && myStop && 
+          {myTram.VP && myStop && trams &&
             <Row>
               <Col xs='12'>
                 <Button variant={buttonVariant}>
@@ -281,7 +281,7 @@ const Sidebar = ({
                     myStop.lon,
                     trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat,
                     trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long
-                  ) }
+                  )}
                   {' m'} <br />
                   {settings.avgDuration > 0 &&
                     'Duration:' +
