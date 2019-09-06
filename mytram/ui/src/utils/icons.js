@@ -8,6 +8,16 @@ L.Icon.Default.mergeOptions({
   iconSize: [40, 40],
 })
 
+export const tramIcon = new L.Icon({
+  iconUrl: require('../img/icons8-office-xs-50.png'),
+  iconRetinaUrl: require('../img/icons8-office-xs-50.png'),
+  iconAnchor: [5, 55],
+  popupAnchor: [10, -44],
+  iconSize: [55, 55],
+  shadowSize: [68, 95],
+  shadowAnchor: [20, 92],
+})
+
 const driverIcon = new L.Icon({
     iconUrl: require('../img/iconfinder_029_-_Gingerbread_Man_2793032.png'),
     iconRetinaUrl: require('../img/iconfinder_029_-_Gingerbread_Man_2793032.png'),

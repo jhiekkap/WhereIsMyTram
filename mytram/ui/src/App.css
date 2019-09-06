@@ -37,10 +37,13 @@ overflow: auto;
   background-color: whitesmoke;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 60px; 
+  padding-top: 30px;  
 }
 
 .btn-secondary {
+  width:100%
+}
+.btn-warning {
   width:100%
 }
 

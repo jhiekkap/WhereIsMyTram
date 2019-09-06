@@ -8,6 +8,7 @@ const settingsReducer = (
     showSidebarOpenButton: true,
     init: true,
     avgDuration: 0,
+    line: '',
   },
   action
 ) => {
@@ -28,6 +29,8 @@ const settingsReducer = (
       return { ...state, init: action.data }
     case 'SET_AVG_DURATION':
       return { ...state, avgDuration: action.data }
+    case 'SET_LINE':
+      return { ...state, line: action.data }
     default:
       return state
   }
@@ -128,6 +131,15 @@ export const setAvgDuration = seconds => {
     dispatch({
       type: 'SET_AVG_DURATION',
       data: seconds,
+    })
+  }
+}
+
+export const setLine = line => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_LINE',
+      data: line,
     })
   }
 }

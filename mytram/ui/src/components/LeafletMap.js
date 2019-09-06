@@ -2,11 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
-import { setCenter, setZoom, setShowAlert, openSidebar, closeSidebar, toggleAlertVariant } from '../reducers/settingsReducer'
+import { setCenter, setZoom, setShowAlert, openSidebar, closeSidebar, toggleAlertVariant, setLine } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import { Button, Alert } from 'react-bootstrap'
-import driverIcon, { stopIcon, myStopIcon, myTramIcon, locationIcon } from '../utils/icons'
+import driverIcon, { stopIcon, myStopIcon, tramIcon, myTramIcon, locationIcon } from '../utils/icons'
 
 const LeafletMap = ({
   trams,
@@ -23,14 +23,19 @@ const LeafletMap = ({
   setMyTram,
   settings,
   setShowAlert,
+  setLine
 }) => {
 
   const handleChooseTram = e => {
     console.log('valitse nro: ', e.target.value)
     let chosenTram = trams.find(tram => tram.VP.veh == e.target.value)
+    //setShowTrams([])
     setMyTram(chosenTram)
-    setShowTrams([])
-    //setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
+    setLine(chosenTram.VP.desi)
+    if(!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)){
+      setShowTrams(showTrams.concat(chosenTram))
+    }
+    setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
     //setZoom(16)
 
   }
@@ -66,14 +71,15 @@ const LeafletMap = ({
     let tramsToShow = [...trams].filter(tram =>
       showTrams.map(tram => tram.VP.veh).includes(tram.VP.veh)
     )
-    if (myTram.VP) {
+   /*  if (myTram.VP) {
       tramsToShow = tramsToShow.filter(tram => tram.VP.veh !== myTram.VP.veh)
-    }
+    } */
 
     if (showTrams) {
       return tramsToShow.map((tram, i) => (
         <Marker
           key={i}
+          icon={myTram.VP && (myTram.VP.veh === tram.VP.veh) ? myTramIcon : tramIcon}
           position={{
             lat: tram.VP.lat,
             lng: tram.VP.long,
@@ -84,7 +90,7 @@ const LeafletMap = ({
       ))
     }
   }
-
+/* 
   const showMyTram = () => {
     if (myTram.VP) {
       let myTramAlive = trams.find(tram => tram.VP.veh === myTram.VP.veh)
@@ -98,15 +104,15 @@ const LeafletMap = ({
         >
           {popUp(myTramAlive)}
         </Marker>
-        {/* <Marker
+        <Marker
         icon={locationIcon}
         position={halfWay}
       > 
-      </Marker> */}
+      </Marker> 
       </div>
       )
     }
-  }
+  } */
 
   const showStops = () => {
 
@@ -162,7 +168,7 @@ const LeafletMap = ({
         />
         {ShowChosenTrams()}
         {showStops()}
-        {showMyTram()}
+        {/* showMyTram() */}
         <Marker
           icon={driverIcon}
           position={{ lat: 60.170627, lng: 24.939946 }}
@@ -203,8 +209,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  setShowTrams,
-  setMyStop, setMyTram, setZoom, setCenter, setShowAlert, openSidebar, closeSidebar,
+  setShowTrams, setMyStop, setMyTram, setZoom, setCenter, 
+  setShowAlert, openSidebar, closeSidebar, setLine, 
 }
 
 export default connect(
