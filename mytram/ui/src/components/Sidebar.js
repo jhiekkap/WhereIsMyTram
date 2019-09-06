@@ -44,11 +44,17 @@ const Sidebar = ({
   const [durations, setDurations] = useState([])
   const [isLogged, setIsLogged] = useState(false)
   const [show, setShow] = useState('menu')
+  const [init, setInit] = useState(true)
 
   const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
 
-  useEffect(() => {
-    //console.log('SIDEBAR INIT', settings.init)
+  useEffect(() => { 
+    console.log('INIT', init)
+    if(trams.length > 0 && init){
+      console.log('hephep')
+      setShowTrams(trams)
+      setInit(false)
+    }
     if (alarm) {
       let chosenTram = trams.find(tram => tram.VP.veh === myTram.VP.veh)
       let distanceNow = distance(
@@ -68,8 +74,7 @@ const Sidebar = ({
           speeds.reduce((previous, current) => (current += previous)) /
           speeds.length
         let duration = distanceNow / avgSpeed
-        setDurations(durations.concat(duration))
-        console.log(durations)
+        setDurations(durations.concat(duration)) 
         let avgDuration = duration
         let sum = 0
         let counter = 0
@@ -103,7 +108,7 @@ const Sidebar = ({
           ' sec'
         )
       }
-      if (distanceNow < 5) {
+      if (distanceNow < 20) {
         setAlarm(false)
         setMyTram('')
         setLine(0)
@@ -112,9 +117,9 @@ const Sidebar = ({
         closeSidebar()
         setShowAlert(true)
       }
-      if (settings.showAlert) {
-        toggleAlertVariant()
-      }
+    }
+    if (settings.showAlert) { 
+      toggleAlertVariant(!settings.alertVariant)
     }
   }, [trams])
 
@@ -145,7 +150,12 @@ const Sidebar = ({
 
   const handleShowLine = line => {
     console.log('LINE CHOSEN: ', line)
-    setShowTrams(trams.filter(tram => parseInt(tram.VP.desi) == line))
+    let tramsToShow = trams.filter(tram => tram.VP.desi == line)
+    if(myTram.VP && myTram.VP.desi !== line){
+      tramsToShow.push(myTram)
+    }
+    setShowTrams(tramsToShow)
+     
     //setZoom(13)
   }
 
@@ -399,9 +409,7 @@ const Sidebar = ({
       {show === 'goodbye' && (
         <Container>
           <Row>
-            <Col onClick={() => setShow('menu')}>
-              goodbye
-            </Col>
+            <Col onClick={() => setShow('menu')}>goodbye</Col>
           </Row>
         </Container>
       )}

@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { setTrams } from './reducers/tramsReducer'
-import { setInit } from './reducers/settingsReducer'
+import { setTrams } from './reducers/tramsReducer' 
 import { setStops } from './reducers/stopsReducer'
-import { setMyStop } from './reducers/myStopReducer'
-import { setShowTrams } from './reducers/showTramsReducer'
+import { setMyStop } from './reducers/myStopReducer' 
 import './App.css'
 import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
 import client, { query } from './utils/client'
+import { setShowTrams } from './reducers/showTramsReducer'
 
 const App = ({
-  setTrams,
-  setShowTrams,
+  setTrams, 
   setStops,
-  setMyStop,
-  settings,
-  setInit,
+  setMyStop, 
+  setShowTrams,
+  showTrams,
 }) => {
-  useEffect(() => {
+  
+  useEffect(() => { 
     client.query({ query }).then(response => {
       console.log('GRAPHQL - QUERY!') 
       let allStops = response.data.stopsByRadius.edges
@@ -33,12 +32,7 @@ const App = ({
     fetch('/trams')
       .then(response => response.json())
       .then(body => {
-        setTrams(body)
-        /* if (settings.init) {
-          console.log('INIT: ', settings.init, new Date())
-          setInit()
-          setShowTrams(body)
-        } */
+        setTrams(body) 
       })
       .catch(error => {
         console.log(error)
@@ -46,8 +40,8 @@ const App = ({
   }
 
   useState(() => {
-    const timer = setInterval(() => {
-      update()
+    setInterval(() => {
+      update()  
     }, 1000)
   }, [])
 
@@ -62,15 +56,15 @@ const App = ({
 const mapStateToProps = state => {
   return {
     settings: state.settings,
+    showTrams: state.showTrams,
   }
 }
 
 const mapDispatchToProps = {
   setTrams,
   setStops,
-  setMyStop,
+  setMyStop, 
   setShowTrams,
-  setInit,
 }
 
 export default connect(

@@ -84,6 +84,7 @@ const LeafletMap = ({
             lat: tram.VP.lat,
             lng: tram.VP.long,
           }}
+          zIndex={2}
         >
           {popUp(tram)}
         </Marker>
@@ -123,6 +124,7 @@ const LeafletMap = ({
           key={i}
           icon={stop.id === myStop.id ? myStopIcon : stopIcon}
           position={{ lat: stop.lat, lng: stop.lon }}
+          zIndex={1}
         >
           <Popup autoPan={false}>
             <br /> {stop.name}
@@ -171,13 +173,14 @@ const LeafletMap = ({
         {/* showMyTram() */}
         <Marker
           icon={driverIcon}
-          position={{ lat: 60.170627, lng: 24.939946 }}
+          position={{ lat: 60.170627, lng: 24.939946 }} 
         >
           <Popup>
             We are here! <br /> This is our position!
           </Popup>
         </Marker>
       </Map>}  
+
       <Alert id='alert' show={settings.showAlert} variant={settings.alertVariant ? 'danger' : 'warning'}>
         <br /><br /><br /><br /><br />
         <Alert.Heading>How's it going?!</Alert.Heading>

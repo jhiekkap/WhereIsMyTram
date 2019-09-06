@@ -16,7 +16,7 @@ const settingsReducer = (
     case 'SHOW_ALERT':
       return { ...state, showAlert: action.data }
     case 'TOGGLE_ALERT_VARIANT':
-      return { ...state, alertVariant: !state.alertVariant }
+      return { ...state, alertVariant: action.data }
     case 'SET_CENTER':
       return { ...state, center: action.data }
     case 'SET_ZOOM':
@@ -45,10 +45,11 @@ export const setShowAlert = boolean => {
   }
 }
 
-export const toggleAlertVariant = () => {
+export const toggleAlertVariant = (boolean) => {
   return dispatch => {
     dispatch({
       type: 'TOGGLE_ALERT_VARIANT',
+      data: boolean,
     })
   }
 }
@@ -89,11 +90,11 @@ export const setShowSidebarOpenButton = boolean => {
   }
 }
 
-export const setInit = () => {
+export const setInit = (boolean) => {
   return dispatch => {
     dispatch({
       type: 'SET_INIT',
-      data: false,
+      data: boolean,
     })
   }
 }
