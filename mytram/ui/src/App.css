@@ -39,3 +39,14 @@ overflow: auto;
   transition: 0.5s;
   padding-top: 60px; 
 }
+
+.btn-secondary {
+  width:100%
+}
+
+ .sideText {
+  background-color: #6c757d;
+  color: #FFFFFF;
+  /* padding-left: 12px;
+  padding-right: 12px; */
+}
