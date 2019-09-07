@@ -9,6 +9,8 @@ const settingsReducer = (
     init: true,
     avgDuration: 0,
     line: '',
+    distance: 0,
+    alarm: false,
   },
   action
 ) => {
@@ -31,6 +33,10 @@ const settingsReducer = (
       return { ...state, avgDuration: action.data }
     case 'SET_LINE':
       return { ...state, line: action.data }
+    case 'SET_DISTANCE':
+      return { ...state, distance: action.data }
+    case 'SET_ALARM':
+      return { ...state, alarm: action.data }
     default:
       return state
   }
@@ -45,7 +51,7 @@ export const setShowAlert = boolean => {
   }
 }
 
-export const toggleAlertVariant = (boolean) => {
+export const toggleAlertVariant = boolean => {
   return dispatch => {
     dispatch({
       type: 'TOGGLE_ALERT_VARIANT',
@@ -90,7 +96,7 @@ export const setShowSidebarOpenButton = boolean => {
   }
 }
 
-export const setInit = (boolean) => {
+export const setInit = boolean => {
   return dispatch => {
     dispatch({
       type: 'SET_INIT',
@@ -136,11 +142,29 @@ export const setAvgDuration = seconds => {
   }
 }
 
-export const setLine = line => {
+export const setLine = linenumber => {
   return dispatch => {
     dispatch({
       type: 'SET_LINE',
-      data: line,
+      data: linenumber,
+    })
+  }
+}
+
+export const setDistance = meters => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_DISTANCE',
+      data: meters,
+    })
+  }
+}
+
+export const setAlarm = boolean => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_ALARM',
+      data: boolean,
     })
   }
 }

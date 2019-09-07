@@ -14,7 +14,7 @@ const App = ({
   setStops,
   setMyStop, 
   setShowTrams,
-  showTrams,
+  showTrams, 
 }) => {
   
   useEffect(() => { 

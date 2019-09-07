@@ -40,6 +40,43 @@ overflow: auto;
   padding-top: 30px;  
 }
 
+#sidebarButton {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  font-size: 36px;  
+  margin-top: '4px'; 
+}
+
+#distanceOnMap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  font-size: 26px;  
+  margin-top: '4px'; 
+}
+#durationOnMap{
+  position: fixed;
+  top: 40px;
+  right: 0;
+  z-index: 1;
+  font-size: 26px;  
+  margin-top: '4px'; 
+}
+#alarmButtonOnMap {
+  position: fixed;
+  top: 80px;
+  right: 0;
+  z-index: 1;   
+  margin-top: '4px'; 
+}
+#alarmButton{
+  height: 60px;
+}
+
+
 .btn-secondary {
   width:100%
 }

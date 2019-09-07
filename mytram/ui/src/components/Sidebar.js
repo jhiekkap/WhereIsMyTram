@@ -11,6 +11,8 @@ import {
   toggleAlertVariant,
   setAvgDuration,
   setLine,
+  setDistance,
+  setAlarm,
 } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import { Container, Row, Col, Button, Dropdown, Alert } from 'react-bootstrap'
@@ -18,6 +20,7 @@ import distance, {
   sortByVehicleNumbers,
   sortLineNumbers,
   sortStopNames,
+  printDuration,
 } from '../utils/helpers'
 import Sound from 'react-sound'
 
@@ -38,8 +41,10 @@ const Sidebar = ({
   toggleAlertVariant,
   setAvgDuration,
   setLine,
+  setDistance,
+  setAlarm,
 }) => {
-  const [alarm, setAlarm] = useState(false)
+  //const [alarm, setAlarm] = useState(false)
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
   const [isLogged, setIsLogged] = useState(false)
@@ -48,14 +53,14 @@ const Sidebar = ({
 
   const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
 
-  useEffect(() => { 
-    console.log('INIT', init)
-    if(trams.length > 0 && init){
+  useEffect(() => {
+    if (trams.length > 0 && init) {
       console.log('hephep')
       setShowTrams(trams)
       setInit(false)
     }
-    if (alarm) {
+
+    if (myTram.VP) {
       let chosenTram = trams.find(tram => tram.VP.veh === myTram.VP.veh)
       let distanceNow = distance(
         myStop.lat,
@@ -63,18 +68,21 @@ const Sidebar = ({
         chosenTram.VP.lat,
         chosenTram.VP.long
       )
+      setDistance(distanceNow)
+
       /* let halfWay = {
         lat: (myStop.lat + chosenTram.VP.lat) / 2,
         lng: (myStop.lon + chosenTram.VP.long) / 2
       }
       setCenter(halfWay) */
-      setSpeeds(speeds.concat(chosenTram.VP.spd))
+      let speed = chosenTram.VP.spd
+      setSpeeds(speeds.concat(speed))
       if (speeds.length > 1) {
         let avgSpeed =
           speeds.reduce((previous, current) => (current += previous)) /
           speeds.length
         let duration = distanceNow / avgSpeed
-        setDurations(durations.concat(duration)) 
+        setDurations(durations.concat(duration))
         let avgDuration = duration
         let sum = 0
         let counter = 0
@@ -88,7 +96,7 @@ const Sidebar = ({
           }
           avgDuration = sum / counter
         }
-        if (durations.length > 4 && chosenTram.VP.spd > 0) {
+        if (durations.length > 4 && speed > 0) {
           setAvgDuration(avgDuration)
         }
 
@@ -99,26 +107,25 @@ const Sidebar = ({
           'AVG SPEED: ',
           (avgSpeed * 3.6).toFixed(2),
           ' km/h',
-          chosenTram.VP.spd,
+          speed,
           ' m/s',
           'ESTIMATED DURATION: ',
-          Math.floor(avgDuration / 60),
-          ' min',
-          (avgDuration % 60).toFixed(0),
-          ' sec'
+          printDuration(settings.avgDuration)
         )
       }
-      if (distanceNow < 20) {
+      if (settings.alarm && settings.distance < 50) {
         setAlarm(false)
         setMyTram('')
         setLine(0)
         setSpeeds([])
         setDurations([])
+        setAvgDuration(0)
+        setDistance(0)
         closeSidebar()
         setShowAlert(true)
       }
     }
-    if (settings.showAlert) { 
+    if (settings.showAlert) {
       toggleAlertVariant(!settings.alertVariant)
     }
   }, [trams])
@@ -148,14 +155,23 @@ const Sidebar = ({
     }
   }
 
+  const showMyTram = () => {
+    let chosenTram = trams.find(tram => tram.VP.veh == myTram.VP.veh)
+    setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
+    console.log('SHOW MY TRAM', chosenTram)
+    if(!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)){
+      setShowTrams(showTrams.concat(chosenTram))
+    }
+  }
+
   const handleShowLine = line => {
     console.log('LINE CHOSEN: ', line)
     let tramsToShow = trams.filter(tram => tram.VP.desi == line)
-    if(myTram.VP && myTram.VP.desi !== line){
+    if (myTram.VP && myTram.VP.desi !== line) {
       tramsToShow.push(myTram)
     }
     setShowTrams(tramsToShow)
-     
+
     //setZoom(13)
   }
 
@@ -282,37 +298,40 @@ const Sidebar = ({
             <Row>
               <Col xs='12'>
                 <Button variant={buttonVariant}>
-                  Distance:{' '}
-                  {distance(
-                    myStop.lat,
-                    myStop.lon,
-                    trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.lat,
-                    trams.find(tram => tram.VP.veh === myTram.VP.veh).VP.long
-                  )}
-                  {' m'} <br />
+                  Distance:
+                  {settings.distance} m <br />
                   {settings.avgDuration > 0 &&
-                    'Duration:' +
-                      Math.floor(settings.avgDuration / 60) +
-                      ' min' +
-                      (settings.avgDuration % 60).toFixed(0) +
-                      ' sec'}
+                    ' Duration: ' + printDuration(settings.avgDuration)}
                 </Button>
               </Col>
             </Row>
           )}
 
-          <Row>
-            {myTram.VP && (
+          {myTram.VP && (
+            <Row>
               <Col>
                 <Button
-                  variant={!alarm ? buttonVariant : 'warning'}
-                  onClick={() => setAlarm(!alarm)}
+                  variant={!settings.alarm ? buttonVariant : 'warning'}
+                  onClick={() => setAlarm(!settings.alarm)}
                 >
-                  {!alarm ? 'Set alarm' : 'Alarm off'}
+                  {!settings.alarm ? 'Set alarm' : 'Alarm off'}
                 </Button>
               </Col>
-            )}
-          </Row>
+            </Row>
+          )}
+
+          {myTram.VP && (
+            <Row>
+              <Col>
+                <Button
+                  variant={buttonVariant}
+                  onClick={() => showMyTram()}
+                >
+                  Show my tram
+                </Button>
+              </Col>
+            </Row>
+          )}
 
           {trams.length !== showTrams.length && (
             <Row>
@@ -440,6 +459,8 @@ const mapDispatchToProps = {
   toggleAlertVariant,
   setAvgDuration,
   setLine,
+  setDistance,
+  setAlarm,
 }
 
 export default connect(

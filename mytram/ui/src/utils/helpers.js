@@ -15,7 +15,7 @@ const distance = (lat1, lon1, lat2, lon2) => {
   return Math.round(d*1000)
 }
 
-export const sortByVehicleNumbers = (a, b) => {
+export const sortByVehicleNumbers = (a, b) => { 
   return parseInt(a.VP.veh) < parseInt(b.VP.veh)
     ? -1
     : parseInt(a.VP.veh) > parseInt(b.VP.veh)
@@ -30,5 +30,9 @@ export const sortLineNumbers = (a, b) => {
 export const sortStopNames = (a, b) => {
     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
   }
-
+export const printDuration = (seconds) => { 
+  return seconds < 10000 && (
+    `${Math.floor(seconds/ 60)} min ${(seconds % 60).toFixed(0)} sec`
+  )
+}
 export default distance
