@@ -1,7 +1,6 @@
 #alert {
-  height: 1000px
+  height: 1000px;
 }
- 
 
 .leaflet-container {
   z-index: 0;
@@ -31,22 +30,22 @@ overflow: auto;
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 1;
+  z-index: 3;
   top: 0;
   left: 0;
   background-color: whitesmoke;
-  overflow-x: hidden;
+  overflow-x: hidden; 
   transition: 0.5s;
-  padding-top: 30px;  
+  padding-top: 30px;
 }
 
 #sidebarButton {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 100px;
+  left: 10px;
   z-index: 1;
-  font-size: 36px;  
-  margin-top: '4px'; 
+  font-size: 26px;
+  /* margin-top: '4px'; */
 }
 
 #distanceOnMap {
@@ -54,39 +53,48 @@ overflow: auto;
   top: 0;
   right: 0;
   z-index: 1;
-  font-size: 26px;  
-  margin-top: '4px'; 
+  font-size: 26px;
+  margin-top: '4px';
 }
-#durationOnMap{
+#durationOnMap {
   position: fixed;
   top: 40px;
   right: 0;
   z-index: 1;
-  font-size: 26px;  
-  margin-top: '4px'; 
+  font-size: 26px;
+  margin-top: '4px';
 }
 #alarmButtonOnMap {
   position: fixed;
   top: 80px;
   right: 0;
-  z-index: 1;   
-  margin-top: '4px'; 
+  z-index: 1;
+  margin-top: '4px';
 }
-#alarmButton{
+#alarmButton {
   height: 60px;
 }
 
-
-.btn-secondary {
-  width:100%
+.btn-outline-secondary {
+  width: 100%;
+}
+.btn-outline-danger {
+  width: 100%;
 }
 .btn-warning {
-  width:100%
+  width: 100%;
 }
 
- .sideText {
+.sideText {
   background-color: #6c757d;
-  color: #FFFFFF;
+  color: #ffffff;
   /* padding-left: 12px;
   padding-right: 12px; */
+}
+
+.trams {
+  z-index: 10;
+}
+.stops {
+  z-index: 5;
 }

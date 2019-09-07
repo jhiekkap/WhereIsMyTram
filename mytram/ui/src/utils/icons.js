@@ -15,7 +15,7 @@ export const tramIcon = new L.Icon({
   popupAnchor: [10, -44],
   iconSize: [55, 55],
   shadowSize: [68, 95],
-  shadowAnchor: [20, 92],
+  shadowAnchor: [20, 92], 
 })
 
 const driverIcon = new L.Icon({
@@ -33,9 +33,9 @@ const driverIcon = new L.Icon({
     iconRetinaUrl: require('../img/iconfinder_Ball Green_34555.png'),
     iconAnchor: [5, 55],
     popupAnchor: [10, -44],
-    iconSize: [25, 25],
+    iconSize: [15, 15],
     shadowSize: [68, 95],
-    shadowAnchor: [20, 92],
+    shadowAnchor: [20, 92], 
   })
 
   export const myStopIcon = new L.Icon({
@@ -43,9 +43,9 @@ const driverIcon = new L.Icon({
     iconRetinaUrl: require('../img/iconfinder_Circle_Red_34214.png'),
     iconAnchor: [5, 55],
     popupAnchor: [10, -44],
-    iconSize: [40, 40],
+    iconSize: [30, 30],
     shadowSize: [68, 95],
-    shadowAnchor: [20, 92],
+    shadowAnchor: [20, 92], 
   })
 
   export const myTramIcon = new L.Icon({
@@ -55,7 +55,7 @@ const driverIcon = new L.Icon({
     popupAnchor: [10, -44],
     iconSize: [55, 55],
     shadowSize: [68, 95],
-    shadowAnchor: [20, 92],
+    shadowAnchor: [20, 92], 
   })
 
   export const locationIcon = new L.Icon({

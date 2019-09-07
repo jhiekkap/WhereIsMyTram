@@ -7,7 +7,7 @@ const client = new ApolloClient({
 
   export const query = gql`
   {
-    stopsByRadius(lat: 60.170627, lon: 24.939946, radius: 300) {
+    stopsByRadius(lat: 60.170627, lon: 24.939946, radius: 4000) {
       edges {
         node {
           stop {

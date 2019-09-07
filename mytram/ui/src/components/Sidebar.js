@@ -43,8 +43,7 @@ const Sidebar = ({
   setLine,
   setDistance,
   setAlarm,
-}) => {
-  //const [alarm, setAlarm] = useState(false)
+}) => { 
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
   const [isLogged, setIsLogged] = useState(false)
@@ -70,7 +69,7 @@ const Sidebar = ({
       )
       setDistance(distanceNow)
 
-      /* let halfWay = {
+      /* let halfWay = {  
         lat: (myStop.lat + chosenTram.VP.lat) / 2,
         lng: (myStop.lon + chosenTram.VP.long) / 2
       }
@@ -159,9 +158,10 @@ const Sidebar = ({
     let chosenTram = trams.find(tram => tram.VP.veh == myTram.VP.veh)
     setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
     console.log('SHOW MY TRAM', chosenTram)
-    if(!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)){
+     /* if(!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)){
       setShowTrams(showTrams.concat(chosenTram))
-    }
+    }  */
+    setShowTrams([chosenTram])
   }
 
   const handleShowLine = line => {
@@ -194,7 +194,7 @@ const Sidebar = ({
   const stopsInOrder = [...stops]
   stopsInOrder.sort(sortStopNames)
 
-  const buttonVariant = 'secondary'
+  const buttonVariant = 'outline-secondary'
 
   return (
     <div style={style} className='sidebar' id='mySidebar'>
@@ -234,7 +234,7 @@ const Sidebar = ({
             <Col xs={12}>
               <Dropdown>
                 <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
-                  {settings.line != '' ? 'Line: ' + settings.line : 'Line?'}
+                  {settings.line != '' ? 'Line: ' + settings.line : 'Choose line'}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {myTram.VP && (
@@ -263,7 +263,7 @@ const Sidebar = ({
               <Col xs={12}>
                 <Dropdown>
                   <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
-                    {myTram.VP ? 'Vehicle: ' + myTram.VP.veh : 'Vehicle?'}
+                    {myTram.VP ? 'Vehicle: ' + myTram.VP.veh : 'Choose vehicle'}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     {myTram.VP && (
@@ -311,7 +311,7 @@ const Sidebar = ({
             <Row>
               <Col>
                 <Button
-                  variant={!settings.alarm ? buttonVariant : 'warning'}
+                  variant={!settings.alarm ? 'outline-danger' : 'warning'}
                   onClick={() => setAlarm(!settings.alarm)}
                 >
                   {!settings.alarm ? 'Set alarm' : 'Alarm off'}

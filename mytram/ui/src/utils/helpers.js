@@ -31,8 +31,12 @@ export const sortStopNames = (a, b) => {
     return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
   }
 export const printDuration = (seconds) => { 
+  let min = ''
+  if(seconds > 59){
+    min = `${Math.floor(seconds/ 60)} min`
+  } 
   return seconds < 10000 && (
-    `${Math.floor(seconds/ 60)} min ${(seconds % 60).toFixed(0)} sec`
+     min + `${(seconds % 60).toFixed(0)} sec`
   )
 }
 export default distance

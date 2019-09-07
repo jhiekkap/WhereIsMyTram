@@ -65,8 +65,7 @@ const LeafletMap = ({
         <br />
         speed:{(tram.VP.spd * 3.6).toFixed(2)} km/h
         <br />
-        stop:{tram.VP.stop}
-        <br />
+        {tram.VP.stop && <span>stop:   {tram.VP.stop}<br/></span>}
         route:{tram.VP.route}
         <br />
         {tram.VP.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.VP.dl)} seconds
@@ -83,13 +82,14 @@ const LeafletMap = ({
   }
 
   const ShowChosenTrams = () => {
-    let tramsToShow = [...trams].filter(tram =>
+    let tramsToShow = trams.filter(tram =>
       showTrams.map(tram => tram.VP.veh).includes(tram.VP.veh)
     )
 
-    if (showTrams) {
+    if (tramsToShow) {
       return tramsToShow.map((tram, i) => (
         <Marker
+          className='trams'
           key={i}
           icon={
             myTram.VP && myTram.VP.veh === tram.VP.veh ? myTramIcon : tramIcon
@@ -97,8 +97,8 @@ const LeafletMap = ({
           position={{
             lat: tram.VP.lat,
             lng: tram.VP.long,
-          }}
-          zIndex={400}
+          }} 
+          zIndexOffset={500}
         >
           {popUp(tram)}
         </Marker>
@@ -111,11 +111,12 @@ const LeafletMap = ({
       stops &&
       stops.map((stop, i) => (
         <Marker
+          className='stops'
           onClick={() => setMyStop(stop)}
           key={i}
           icon={stop.id === myStop.id ? myStopIcon : stopIcon}
-          position={{ lat: stop.lat, lng: stop.lon }}
-          zIndex={200}
+          position={{ lat: stop.lat, lng: stop.lon }} 
+          zIndexOffset={-500}
         >
           <Popup autoPan={false}>
             <br /> {stop.name}
@@ -135,7 +136,7 @@ const LeafletMap = ({
       {settings.showSidebarOpenButton && (
         <Button
           id='sidebarButton'
-          variant='light'
+          variant='outline-dark'
           style={{ display: settings.showSidebar ? 'none' : '' }}
           onClick={() => openSidebar()}
         >
@@ -151,7 +152,7 @@ const LeafletMap = ({
           center={settings.center}
           zoom={settings.zoom}
           onclick={() => closeSidebar()}
-          zoomControl={false}
+          //zoomControl={false}
         >
           <TileLayer
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -161,7 +162,7 @@ const LeafletMap = ({
           {showStops()}
           <Marker
             icon={driverIcon}
-            position={{ lat: 60.170627, lng: 24.939946 }}
+            position={{ lat: 60.170627, lng: 24.939946 }} 
           >
             <Popup>
               We are here! <br /> This is our position!
