@@ -5,7 +5,7 @@ import { setMyStop } from '../reducers/myStopReducer'
 import {
   setCenter,
   setZoom,
-  setShowAlert,
+  setShowAlert, 
   setShowSidebar,
   closeSidebar,
   toggleAlertVariant,
@@ -327,7 +327,7 @@ const Sidebar = ({
                   variant={buttonVariant}
                   onClick={() => showMyTram()}
                 >
-                  Show my tram
+                  Where's my tram?
                 </Button>
               </Col>
             </Row>
@@ -350,11 +350,17 @@ const Sidebar = ({
             </Row>
           )}
 
-          {(myTram.VP || showTrams.length > 0) && (
+          {((!myTram.VP && showTrams.length > 0) || (myTram.VP && showTrams.length > 1))  && (
             <Row>
               <Col>
                 <Button
-                  onClick={() => setShowTrams([])}
+                  onClick={() => {
+                    if(!myTram.VP){
+                      setShowTrams([])
+                    } else {
+                      setShowTrams([trams.find(tram => tram.VP.veh === myTram.VP.veh)])
+                    }                
+                  }}
                   variant={buttonVariant}
                 >
                   Hide all trams

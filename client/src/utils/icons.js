@@ -13,7 +13,17 @@ export const tramIcon = new L.Icon({
   iconRetinaUrl: require('../img/icons8-office-xs-50.png'),
   iconAnchor: [5, 55],
   popupAnchor: [10, -44],
-  iconSize: [55, 55],
+  iconSize: [20, 20],
+  shadowSize: [68, 95],
+  shadowAnchor: [20, 92], 
+}) 
+
+export const myTramIcon = new L.Icon({
+  iconUrl: require('../img/icons8-color-50.png'),
+  iconRetinaUrl: require('../img/icons8-color-50.png'),
+  iconAnchor: [5, 55],
+  popupAnchor: [10, -44],
+  iconSize: [20, 20],
   shadowSize: [68, 95],
   shadowAnchor: [20, 92], 
 })
@@ -33,7 +43,7 @@ const driverIcon = new L.Icon({
     iconRetinaUrl: require('../img/iconfinder_Ball Green_34555.png'),
     iconAnchor: [5, 55],
     popupAnchor: [10, -44],
-    iconSize: [15, 15],
+    iconSize: [20, 20],
     shadowSize: [68, 95],
     shadowAnchor: [20, 92], 
   })
@@ -43,20 +53,12 @@ const driverIcon = new L.Icon({
     iconRetinaUrl: require('../img/iconfinder_Circle_Red_34214.png'),
     iconAnchor: [5, 55],
     popupAnchor: [10, -44],
-    iconSize: [30, 30],
+    iconSize: [25, 25],
     shadowSize: [68, 95],
     shadowAnchor: [20, 92], 
   })
 
-  export const myTramIcon = new L.Icon({
-    iconUrl: require('../img/icons8-color-50.png'),
-    iconRetinaUrl: require('../img/icons8-color-50.png'),
-    iconAnchor: [5, 55],
-    popupAnchor: [10, -44],
-    iconSize: [55, 55],
-    shadowSize: [68, 95],
-    shadowAnchor: [20, 92], 
-  })
+  
 
   export const locationIcon = new L.Icon({
     iconUrl: require('../img/iconLocation.png'),

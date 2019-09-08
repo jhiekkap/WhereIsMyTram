@@ -45,13 +45,13 @@ const LeafletMap = ({
 }) => {
   const handleChooseTram = e => {
     console.log('valitse nro: ', e.target.value)
-    let chosenTram = trams.find(tram => tram.VP.veh == e.target.value)
-    //setShowTrams([])
+    let chosenTram = trams.find(tram => tram.VP.veh == e.target.value) 
     setMyTram(chosenTram)
     setLine(chosenTram.VP.desi)
-    if (!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)) {
+    /* if (!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)) {
       setShowTrams(showTrams.concat(chosenTram))
-    }
+    } */
+    setShowTrams([chosenTram])
     setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
     //setZoom(16)
   }
@@ -65,7 +65,7 @@ const LeafletMap = ({
         <br />
         speed:{(tram.VP.spd * 3.6).toFixed(2)} km/h
         <br />
-        {tram.VP.stop && <span>stop:   {tram.VP.stop}<br/></span>}
+        {tram.VP.stop && <span>stop:   {tram.VP.stop}<br /></span>}
         route:{tram.VP.route}
         <br />
         {tram.VP.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.VP.dl)} seconds
@@ -97,7 +97,7 @@ const LeafletMap = ({
           position={{
             lat: tram.VP.lat,
             lng: tram.VP.long,
-          }} 
+          }}
           zIndexOffset={500}
         >
           {popUp(tram)}
@@ -115,7 +115,7 @@ const LeafletMap = ({
           onClick={() => setMyStop(stop)}
           key={i}
           icon={stop.id === myStop.id ? myStopIcon : stopIcon}
-          position={{ lat: stop.lat, lng: stop.lon }} 
+          position={{ lat: stop.lat, lng: stop.lon }}
           zIndexOffset={-500}
         >
           <Popup autoPan={false}>
@@ -152,7 +152,7 @@ const LeafletMap = ({
           center={settings.center}
           zoom={settings.zoom}
           onclick={() => closeSidebar()}
-          //zoomControl={false}
+        //zoomControl={false}
         >
           <TileLayer
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -162,7 +162,7 @@ const LeafletMap = ({
           {showStops()}
           <Marker
             icon={driverIcon}
-            position={{ lat: 60.170627, lng: 24.939946 }} 
+            position={{ lat: 60.170627, lng: 24.939946 }}
           >
             <Popup>
               We are here! <br /> This is our position!

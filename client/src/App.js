@@ -15,7 +15,7 @@ const App = ({
   setMyStop, 
   setShowTrams,
   showTrams, 
-}) => {
+}) => { 
   
   useEffect(() => { 
     client.query({ query }).then(response => {
