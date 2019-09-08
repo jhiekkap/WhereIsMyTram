@@ -13,7 +13,7 @@ export const tramIcon = new L.Icon({
   iconRetinaUrl: require('../img/icons8-office-xs-50.png'),
   iconAnchor: [5, 55],
   popupAnchor: [10, -44],
-  iconSize: [20, 20],
+  iconSize: [30, 30],
   shadowSize: [68, 95],
   shadowAnchor: [20, 92], 
 }) 
@@ -23,7 +23,7 @@ export const myTramIcon = new L.Icon({
   iconRetinaUrl: require('../img/icons8-color-50.png'),
   iconAnchor: [5, 55],
   popupAnchor: [10, -44],
-  iconSize: [20, 20],
+  iconSize: [30, 30],
   shadowSize: [68, 95],
   shadowAnchor: [20, 92], 
 })

@@ -1,9 +1,9 @@
 const settingsReducer = (
   state = {
-    center: { lat: 60.170627, lng: 24.939946 },
+    center: { lat: 60.169800, lng: 24.939500 },
     showAlert: false,
     alertVariant: true,
-    zoom: 16,
+    zoom: 17  ,
     showSidebar: false,
     showSidebarOpenButton: true,
     init: true,

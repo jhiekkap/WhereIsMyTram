@@ -1,5 +1,6 @@
 #alert {
   height: 1000px;
+  z-index: 500;
 }
 
 .leaflet-container {
@@ -81,7 +82,7 @@ overflow: auto;
 .btn-outline-danger {
   width: 100%;
 }
-.btn-warning {
+.btn-success {
   width: 100%;
 }
 

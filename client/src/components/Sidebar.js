@@ -13,6 +13,7 @@ import {
   setLine,
   setDistance,
   setAlarm,
+  setShowSidebarOpenButton,
 } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import { Container, Row, Col, Button, Dropdown, Alert } from 'react-bootstrap'
@@ -42,7 +43,8 @@ const Sidebar = ({
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm,
+  setAlarm, 
+  setShowSidebarOpenButton,
 }) => { 
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
@@ -112,10 +114,10 @@ const Sidebar = ({
           printDuration(settings.avgDuration)
         )
       }
-      if (settings.alarm && settings.distance < 50) {
-        setAlarm(false)
+      if (settings.alarm && settings.distance < 50) {  
+        setAlarm(false) 
         setMyTram('')
-        setLine(0)
+        setLine('')
         setSpeeds([])
         setDurations([])
         setAvgDuration(0)
@@ -170,8 +172,7 @@ const Sidebar = ({
     if (myTram.VP && myTram.VP.desi !== line) {
       tramsToShow.push(myTram)
     }
-    setShowTrams(tramsToShow)
-
+    setShowTrams(tramsToShow) 
     //setZoom(13)
   }
 
@@ -233,7 +234,7 @@ const Sidebar = ({
           <Row>
             <Col xs={12}>
               <Dropdown>
-                <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
+                <Dropdown.Toggle variant={!settings.line ? 'outline-danger' : buttonVariant} id='dropdown-basic'>
                   {settings.line != '' ? 'Line: ' + settings.line : 'Choose line'}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
@@ -262,7 +263,7 @@ const Sidebar = ({
             <Row>
               <Col xs={12}>
                 <Dropdown>
-                  <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
+                  <Dropdown.Toggle variant={settings.line && !myTram.VP ? 'outline-danger' : buttonVariant} id='dropdown-basic'>
                     {myTram.VP ? 'Vehicle: ' + myTram.VP.veh : 'Choose vehicle'}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
@@ -311,7 +312,7 @@ const Sidebar = ({
             <Row>
               <Col>
                 <Button
-                  variant={!settings.alarm ? 'outline-danger' : 'warning'}
+                  variant={!settings.alarm ? 'outline-danger' : 'success'}
                   onClick={() => setAlarm(!settings.alarm)}
                 >
                   {!settings.alarm ? 'Set alarm' : 'Alarm off'}
@@ -340,7 +341,7 @@ const Sidebar = ({
                   onClick={() => {
                     setShowTrams(trams)
                     //setZoom(13)
-                    //closeSidebar()
+                    //closeSidebar(false)
                   }}
                   variant={buttonVariant}
                 >
@@ -466,7 +467,8 @@ const mapDispatchToProps = {
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm,
+  setAlarm, 
+  setShowSidebarOpenButton,
 }
 
 export default connect(

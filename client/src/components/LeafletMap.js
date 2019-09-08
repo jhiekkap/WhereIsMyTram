@@ -10,6 +10,7 @@ import {
   closeSidebar,
   setLine,
   setAlarm,
+  setShowSidebarOpenButton,
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
@@ -42,6 +43,7 @@ const LeafletMap = ({
   setShowAlert,
   setLine,
   setAlarm,
+  setShowSidebarOpenButton,
 }) => {
   const handleChooseTram = e => {
     console.log('valitse nro: ', e.target.value)
@@ -130,8 +132,10 @@ const LeafletMap = ({
   const style = settings.showSidebar
     ? { marginLeft: '20px' }
     : { marginLeft: '0' }
+ 
 
   return (
+
     <div id='mapContainer' style={style}>
       {settings.showSidebarOpenButton && (
         <Button
@@ -162,7 +166,7 @@ const LeafletMap = ({
           {showStops()}
           <Marker
             icon={driverIcon}
-            position={{ lat: 60.170627, lng: 24.939946 }}
+            position={settings.center}
           >
             <Popup>
               We are here! <br /> This is our position!
@@ -185,7 +189,7 @@ const LeafletMap = ({
         <p>Duis mollis, est non commodo luctus</p>
         <hr />
         <div className='d-flex justify-content-end'>
-          <Button onClick={() => setShowAlert(false)} variant='warning'>
+          <Button onClick={() => {setShowAlert(false);setShowSidebarOpenButton(true)}} variant='warning'>
             Close me ya'll!
           </Button>
         </div>
@@ -218,6 +222,7 @@ const mapDispatchToProps = {
   closeSidebar,
   setLine,
   setAlarm,
+  setShowSidebarOpenButton,
 }
 
 export default connect(
