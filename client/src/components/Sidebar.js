@@ -5,15 +5,14 @@ import { setMyStop } from '../reducers/myStopReducer'
 import {
   setCenter,
   setZoom,
-  setShowAlert, 
+  setShowAlert,
   setShowSidebar,
   closeSidebar,
   toggleAlertVariant,
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm,
-  setShowSidebarOpenButton,
+  setAlarm, 
 } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import { Container, Row, Col, Button, Dropdown, Alert } from 'react-bootstrap'
@@ -22,8 +21,7 @@ import distance, {
   sortLineNumbers,
   sortStopNames,
   printDuration,
-} from '../utils/helpers'
-import Sound from 'react-sound'
+} from '../utils/helpers' 
 
 const Sidebar = ({
   closeSidebar,
@@ -44,8 +42,7 @@ const Sidebar = ({
   setLine,
   setDistance,
   setAlarm, 
-  setShowSidebarOpenButton,
-}) => { 
+}) => {
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
   const [isLogged, setIsLogged] = useState(false)
@@ -56,7 +53,7 @@ const Sidebar = ({
 
   useEffect(() => {
     if (trams.length > 0 && init) {
-      console.log('hephep')
+      console.log('initialized!')
       setShowTrams(trams)
       setInit(false)
     }
@@ -70,12 +67,7 @@ const Sidebar = ({
         chosenTram.VP.long
       )
       setDistance(distanceNow)
-
-      /* let halfWay = {  
-        lat: (myStop.lat + chosenTram.VP.lat) / 2,
-        lng: (myStop.lon + chosenTram.VP.long) / 2
-      }
-      setCenter(halfWay) */
+ 
       let speed = chosenTram.VP.spd
       setSpeeds(speeds.concat(speed))
       if (speeds.length > 1) {
@@ -114,8 +106,8 @@ const Sidebar = ({
           printDuration(settings.avgDuration)
         )
       }
-      if (settings.alarm && settings.distance < 50) {  
-        setAlarm(false) 
+      if (settings.alarm && settings.distance < 50) {
+        setAlarm(false)
         setMyTram('')
         setLine('')
         setSpeeds([])
@@ -135,20 +127,12 @@ const Sidebar = ({
     console.log('TRAM CHOSEN: ', veh)
     if (veh !== 'reset') {
       let chosenTram = trams.find(tram => tram.VP.veh == veh)
-      console.log('chosen Tram:', chosenTram)
-      //setTrams([])
+      console.log('chosen Tram:', chosenTram) 
       setMyTram(chosenTram)
       if (!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)) {
         setShowTrams(showTrams.concat(chosenTram))
-      }
-      //setShowTrams([])
-      /* let halfWay = {
-        lat: (myStop.lat + chosenTram.VP.lat) / 2,
-        lng: (myStop.lon + chosenTram.VP.long) / 2,
-      }
-      setCenter(halfWay) */
-      setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
-      //setZoom(16)
+      } 
+      setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long }) 
     } else {
       setAlarm(false)
       setMyTram('')
@@ -159,10 +143,7 @@ const Sidebar = ({
   const showMyTram = () => {
     let chosenTram = trams.find(tram => tram.VP.veh == myTram.VP.veh)
     setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
-    console.log('SHOW MY TRAM', chosenTram)
-     /* if(!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)){
-      setShowTrams(showTrams.concat(chosenTram))
-    }  */
+    console.log('SHOW MY TRAM', chosenTram)  
     setShowTrams([chosenTram])
   }
 
@@ -173,12 +154,21 @@ const Sidebar = ({
       tramsToShow.push(myTram)
     }
     setShowTrams(tramsToShow) 
-    //setZoom(13)
   }
 
   const handleChooseStop = stopsGtfsId => {
     console.log('STOP CHOSEN: ', stopsGtfsId)
     setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
+  }
+
+  const reStart = () => {
+    setShow('menu')
+    setMyTram('')
+    setShowTrams(trams)
+    closeSidebar()
+    setAlarm(false)
+    setCenter({ lat: 60.169800, lng: 24.939500 })
+    setZoom(16)
   }
 
   let tramsInOrder = [...trams]
@@ -200,17 +190,7 @@ const Sidebar = ({
   return (
     <div style={style} className='sidebar' id='mySidebar'>
       {show === 'menu' && (
-        <Container>
-          {/* <Sound
-      url='https://actions.google.com/sounds/v1/alarms/beep_short.ogg'
-      playStatus={Sound.status.PLAYING}
-      playFromPosition={300}
-      volume={90}
-      onLoading={this.handleSongLoading}
-      onPlaying={this.handleSongPlaying}
-      onFinishedPlaying={this.handleSongFinishedPlaying}
-    />   */}
-
+        <Container> 
           <Row>
             <Col xs={12}>
               <Dropdown>
@@ -351,16 +331,16 @@ const Sidebar = ({
             </Row>
           )}
 
-          {((!myTram.VP && showTrams.length > 0) || (myTram.VP && showTrams.length > 1))  && (
+          {((!myTram.VP && showTrams.length > 0) || (myTram.VP && showTrams.length > 1)) && (
             <Row>
               <Col>
                 <Button
                   onClick={() => {
-                    if(!myTram.VP){
+                    if (!myTram.VP) {
                       setShowTrams([])
                     } else {
                       setShowTrams([trams.find(tram => tram.VP.veh === myTram.VP.veh)])
-                    }                
+                    }
                   }}
                   variant={buttonVariant}
                 >
@@ -426,6 +406,16 @@ const Sidebar = ({
         <Container>
           <Row>
             <Col>
+              Geolocation on / off ?
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              Alarm distance ?
+            </Col>
+          </Row>
+          <Row>
+            <Col>
               <Button onClick={() => setShow('menu')}>GO BACK TO MENU</Button>
             </Col>
           </Row>
@@ -435,7 +425,9 @@ const Sidebar = ({
       {show === 'goodbye' && (
         <Container>
           <Row>
-            <Col onClick={() => setShow('menu')}>goodbye</Col>
+            <Col>
+              <Button onClick={() => reStart()}>RESTART</Button>
+            </Col>
           </Row>
         </Container>
       )}
@@ -468,7 +460,6 @@ const mapDispatchToProps = {
   setLine,
   setDistance,
   setAlarm, 
-  setShowSidebarOpenButton,
 }
 
 export default connect(

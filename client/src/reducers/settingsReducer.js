@@ -3,7 +3,7 @@ const settingsReducer = (
     center: { lat: 60.169800, lng: 24.939500 },
     showAlert: false,
     alertVariant: true,
-    zoom: 17  ,
+    zoom: 16  ,
     showSidebar: false,
     showSidebarOpenButton: true,
     init: true,

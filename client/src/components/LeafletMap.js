@@ -60,7 +60,7 @@ const LeafletMap = ({
 
   const popUp = tram => {
     return (
-      <Popup closeButton={true} value={tram.VP.veh} autoPan={false}>
+      <Popup closeButton={false} value={tram.VP.veh} autoPan={false}>
         line:{tram.VP.desi}
         <br />
         vehicle:{tram.VP.veh}
@@ -120,7 +120,7 @@ const LeafletMap = ({
           position={{ lat: stop.lat, lng: stop.lon }}
           zIndexOffset={-500}
         >
-          <Popup autoPan={false}>
+          <Popup closeButton={false} autoPan={false}>
             <br /> {stop.name}
             <br /> {stop.gtfsId}
           </Popup>
@@ -156,6 +156,8 @@ const LeafletMap = ({
           center={settings.center}
           zoom={settings.zoom}
           onclick={() => closeSidebar()}
+          //onmoveend={({target}) => setCenter(target.getCenter()) }
+          zoomSnap={0.1}
         //zoomControl={false}
         >
           <TileLayer
@@ -166,7 +168,7 @@ const LeafletMap = ({
           {showStops()}
           <Marker
             icon={driverIcon}
-            position={settings.center}
+            position={{ lat: 60.169800, lng: 24.939500 }}
           >
             <Popup>
               We are here! <br /> This is our position!
