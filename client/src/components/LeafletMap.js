@@ -59,7 +59,8 @@ const LeafletMap = ({
   const handleChangeZoom = e => {
     setZoom(e.target._zoom)
     setCenter(e.latlng)
-    console.log('ZOOM',e.target._zoom)
+    console.log('ZOOM',e.target._zoom, 'CENTER', e.target._animateToCenter.lat,e.target._animateToCenter.lng)
+    
   }
 
 

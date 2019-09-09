@@ -15,7 +15,7 @@ import {
   setAlarm,
 } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
-import { Container, Row, Col, Button, Dropdown, Alert } from 'react-bootstrap'
+import { Container, Row, Col, Button, Dropdown } from 'react-bootstrap'
 import distance, {
   printDuration,
   /* sortEverything,
@@ -24,8 +24,9 @@ import distance, {
   sortLineNumbers,
   sortStopNames,
 } from '../utils/helpers'
-import Sound from 'react-sound';
-import alarmSound from '../sounds/old-fashioned-school-bell-daniel_simon.mp3'
+import { SoundEffect } from './SoundEffect' 
+import alarmSound from '../sounds/foghorn-daniel_simon.mp3'  
+
 
 const Sidebar = ({
   closeSidebar,
@@ -119,7 +120,7 @@ const Sidebar = ({
       toggleAlertVariant(!settings.alertVariant)
     }
   }, [trams])
-  
+
   const reset = () => {
     setAlarm(false)
     setShow('menu')
@@ -129,17 +130,15 @@ const Sidebar = ({
     setDistance(0)
     setSpeeds([])
     setLine('')
-    setShowTrams(trams)
-    //closeSidebar()
+    setShowTrams(trams) 
     setCenter({ lat: 60.1698, lng: 24.9395 })
     setZoom(16)
   }
 
   const reStart = () => {
     reset()
-    closeSidebar() 
+    closeSidebar()
   }
- 
 
   const handleChooseMyTram = veh => {
     console.log('TRAM CHOSEN: ', veh)
@@ -244,10 +243,10 @@ const Sidebar = ({
                       key={i}
                       onClick={() => {
                         setLine(line)
-                        if(myTram){ 
-                          setMyTram('') 
-                      }
-                    }}
+                        if (myTram) {
+                          setMyTram('')
+                        }
+                      }}
                     >
                       {line}
                     </Dropdown.Item>
@@ -300,11 +299,15 @@ const Sidebar = ({
             </Row>
           )}
 
-          {myTram.VP && <Row>
-            <Col>
-              <Button variant={buttonVariant} onClick={() => reset()}>Reset</Button>
-            </Col>
-          </Row>}
+          {myTram.VP && (
+            <Row>
+              <Col>
+                <Button variant={buttonVariant} onClick={() => reset()}>
+                  Reset
+                </Button>
+              </Col>
+            </Row>
+          )}
 
           {myTram.VP && myStop && trams && (
             <Row>
@@ -449,18 +452,9 @@ const Sidebar = ({
             </Col>
           </Row>
         </Container>
-      )}
-      {settings.showAlert && <Sound
-      url={alarmSound} 
-      playStatus={Sound.status.PLAYING}
-      autoLoad={true}
-      volume={100}
-      loop={true}
-      //playFromPosition={30 /* in milliseconds */}
-      /* onLoading={this.handleSongLoading}
-      onPlaying={this.handleSongPlaying}
-      onFinishedPlaying={this.handleSongFinishedPlaying} */
-    />}
+      )}  
+      <SoundEffect play={settings.showAlert} audioUrl={alarmSound}>  
+      </SoundEffect>
     </div>
   )
 }
