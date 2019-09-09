@@ -55,7 +55,8 @@ overflow: auto;
   right: 10px;
   z-index: 1;
   font-size: 23px;
-  margin-top: '4px';
+  margin-top: '4px'; 
+  color: black; 
 }
 #durationOnMap {
   position: fixed;
