@@ -461,10 +461,10 @@ const Sidebar = ({
           </Row>
         </Container>
       )}
-      <SoundEffect
+      {/* <SoundEffect
         play={settings.showAlert}
         audioUrl={alarmSound}
-      ></SoundEffect>
+      ></SoundEffect> */}
     </div>
   )
 }

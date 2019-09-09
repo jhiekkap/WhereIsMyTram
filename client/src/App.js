@@ -5,15 +5,16 @@ import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer' 
 import './App.css'
 import LeafletMap from './components/LeafletMap'
-import Sidebar from './components/Sidebar'
+import Sidebar from './components/Sidebar' 
 import client, { query } from './utils/client' 
 
 const App = ({
-  setTrams, 
+  setTrams,  
   setStops,
   setMyStop,   
 }) => { 
-   
+    
+
   useEffect(() => { 
     client.query({ query }).then(response => {
       console.log('GRAPHQL - QUERY!') 

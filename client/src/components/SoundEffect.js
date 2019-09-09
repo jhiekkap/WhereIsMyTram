@@ -1,9 +1,10 @@
 import React from 'react'
 
 export const SoundEffect = props => {
-  var horn = new Audio(props.audioUrl)
+  props.horn.src = props.audioUrl
   if (props.play) {
-    horn.play()
+    props.horn.play()
+    props.init()
   }
   return <div></div>
 }
