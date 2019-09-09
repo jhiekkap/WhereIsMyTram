@@ -5,7 +5,7 @@
 
 .leaflet-container {
   z-index: 0;
-  overflow: hidden;
+ /*  overflow: hidden; */
 }
 
 @media only screen and (max-width: 435px) {
@@ -14,9 +14,9 @@
   }
 }
 
-#mapContainer {
+/* #mapContainer {
   height: 100%;
-}
+} */
 
 #map {
   height: 900px;

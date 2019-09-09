@@ -27,3 +27,31 @@ const client = new ApolloClient({
 
 
 export default client
+
+
+/* {
+  stop(id: "HSL:1140447") {
+    name
+    stoptimesWithoutPatterns(numberOfDepartures:100 ) {
+      scheduledArrival
+      realtimeArrival
+      arrivalDelay
+      scheduledDeparture
+      realtimeDeparture
+      departureDelay
+      realtime
+      realtimeState
+      serviceDay
+      headsign 
+      
+      trip { 
+        route {
+          id
+          longName
+          shortName 
+          
+        }
+      }
+    }
+  }
+} */

@@ -6,17 +6,14 @@ import { setMyStop } from './reducers/myStopReducer'
 import './App.css'
 import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
-import client, { query } from './utils/client'
-import { setShowTrams } from './reducers/showTramsReducer'
+import client, { query } from './utils/client' 
 
 const App = ({
   setTrams, 
   setStops,
-  setMyStop, 
-  setShowTrams,
-  showTrams, 
+  setMyStop,   
 }) => { 
-  
+   
   useEffect(() => { 
     client.query({ query }).then(response => {
       console.log('GRAPHQL - QUERY!') 
@@ -63,8 +60,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   setTrams,
   setStops,
-  setMyStop, 
-  setShowTrams,
+  setMyStop,  
 }
 
 export default connect(

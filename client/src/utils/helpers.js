@@ -34,14 +34,14 @@ export const sortLineNumbers = (a, b) => {
   export const printDuration = (seconds) => { 
   let min = ''
   if(seconds > 59){
-    min = `${Math.floor(seconds/ 60)} min`
+    min = `${Math.floor(seconds/ 60)} min `
   } 
   return seconds < 10000 && (
      min + `${(seconds % 60).toFixed(0)} sec`
   )
 }
 
-export const sortEverything = (trams, stops) => {
+/* export const sortEverything = (trams, stops) => {
   const tramsInOrder = [...trams]
   tramsInOrder.sort(sortByVehicleNumbers)
 
@@ -57,8 +57,8 @@ export const sortEverything = (trams, stops) => {
   stopsInOrder.sort(sortStopNames)
 
   return [tramsInOrder, lineNumbers, stopsInOrder] 
-}
-
+} */
+/* 
 export const countDuration = (duration, durations) => {
   let avgDuration = duration
   let sum = 0
@@ -74,7 +74,7 @@ export const countDuration = (duration, durations) => {
     avgDuration = sum / counter
   }
   return avgDuration
-}
+} */
  
 
 export default distance

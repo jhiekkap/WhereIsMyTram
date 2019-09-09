@@ -18,8 +18,8 @@ import { setMyTram } from '../reducers/myTramReducer'
 import { Container, Row, Col, Button, Dropdown, Alert } from 'react-bootstrap'
 import distance, {
   printDuration,
-  sortEverything,
-  countDuration,
+  /* sortEverything,
+  countDuration, */
   sortByVehicleNumbers,
   sortLineNumbers,
   sortStopNames
