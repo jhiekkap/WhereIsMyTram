@@ -24,6 +24,8 @@ import distance, {
   sortLineNumbers,
   sortStopNames,
 } from '../utils/helpers'
+import Sound from 'react-sound';
+import alarmSound from '../sounds/old-fashioned-school-bell-daniel_simon.mp3'
 
 const Sidebar = ({
   closeSidebar,
@@ -448,6 +450,17 @@ const Sidebar = ({
           </Row>
         </Container>
       )}
+      {settings.showAlert && <Sound
+      url={alarmSound} 
+      playStatus={Sound.status.PLAYING}
+      autoLoad={true}
+      volume={100}
+      loop={true}
+      //playFromPosition={30 /* in milliseconds */}
+      /* onLoading={this.handleSongLoading}
+      onPlaying={this.handleSongPlaying}
+      onFinishedPlaying={this.handleSongFinishedPlaying} */
+    />}
     </div>
   )
 }
