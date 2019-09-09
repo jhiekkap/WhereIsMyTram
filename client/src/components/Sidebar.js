@@ -12,16 +12,18 @@ import {
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm, 
+  setAlarm,
 } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import { Container, Row, Col, Button, Dropdown, Alert } from 'react-bootstrap'
 import distance, {
+  printDuration,
+  sortEverything,
+  countDuration,
   sortByVehicleNumbers,
   sortLineNumbers,
-  sortStopNames,
-  printDuration,
-} from '../utils/helpers' 
+  sortStopNames
+} from '../utils/helpers'
 
 const Sidebar = ({
   closeSidebar,
@@ -41,11 +43,10 @@ const Sidebar = ({
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm, 
+  setAlarm,
 }) => {
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
-  const [isLogged, setIsLogged] = useState(false)
   const [show, setShow] = useState('menu')
   const [init, setInit] = useState(true)
 
@@ -67,7 +68,7 @@ const Sidebar = ({
         chosenTram.VP.long
       )
       setDistance(distanceNow)
- 
+
       let speed = chosenTram.VP.spd
       setSpeeds(speeds.concat(speed))
       if (speeds.length > 1) {
@@ -76,6 +77,7 @@ const Sidebar = ({
           speeds.length
         let duration = distanceNow / avgSpeed
         setDurations(durations.concat(duration))
+        //let avgDuration = countDuration(duration, durations)
         let avgDuration = duration
         let sum = 0
         let counter = 0
@@ -88,51 +90,50 @@ const Sidebar = ({
             }
           }
           avgDuration = sum / counter
-        }
+        }  
         if (durations.length > 4 && speed > 0) {
           setAvgDuration(avgDuration)
         }
 
-        console.log(
-          'DISTANCE NOW: ',
-          distanceNow,
-          ' m',
-          'AVG SPEED: ',
-          (avgSpeed * 3.6).toFixed(2),
-          ' km/h',
-          speed,
-          ' m/s',
-          'ESTIMATED DURATION: ',
+        console.log('DISTANCE NOW: ', distanceNow, ' m', 'AVG SPEED: ', (avgSpeed * 3.6).toFixed(2), ' km/h', speed, ' m/s', 'ESTIMATED DURATION: ',
           printDuration(settings.avgDuration)
         )
       }
       if (settings.alarm && settings.distance < 50) {
-        setAlarm(false)
-        setMyTram('')
-        setLine('')
-        setSpeeds([])
-        setDurations([])
-        setAvgDuration(0)
-        setDistance(0)
-        closeSidebar()
+        reStart()
         setShowAlert(true)
-      }
+      } 
     }
     if (settings.showAlert) {
       toggleAlertVariant(!settings.alertVariant)
     }
   }, [trams])
 
+  const reStart = () => { 
+    setAlarm(false)
+    setShow('menu')
+    setMyTram('')
+    setDurations([])
+    setAvgDuration(0)
+    setDistance(0)
+    setSpeeds([])
+    setLine('')
+    setShowTrams(trams)
+    closeSidebar()
+    setCenter({ lat: 60.169800, lng: 24.939500 })
+    setZoom(16)
+  }
+
   const handleChooseMyTram = veh => {
     console.log('TRAM CHOSEN: ', veh)
     if (veh !== 'reset') {
       let chosenTram = trams.find(tram => tram.VP.veh == veh)
-      console.log('chosen Tram:', chosenTram) 
+      console.log('chosen Tram:', chosenTram)
       setMyTram(chosenTram)
       if (!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)) {
         setShowTrams(showTrams.concat(chosenTram))
-      } 
-      setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long }) 
+      }
+      setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
     } else {
       setAlarm(false)
       setMyTram('')
@@ -143,7 +144,7 @@ const Sidebar = ({
   const showMyTram = () => {
     let chosenTram = trams.find(tram => tram.VP.veh == myTram.VP.veh)
     setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
-    console.log('SHOW MY TRAM', chosenTram)  
+    console.log('SHOW MY TRAM', chosenTram)
     setShowTrams([chosenTram])
   }
 
@@ -153,7 +154,7 @@ const Sidebar = ({
     if (myTram.VP && myTram.VP.desi !== line) {
       tramsToShow.push(myTram)
     }
-    setShowTrams(tramsToShow) 
+    setShowTrams(tramsToShow)
   }
 
   const handleChooseStop = stopsGtfsId => {
@@ -161,17 +162,9 @@ const Sidebar = ({
     setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
   }
 
-  const reStart = () => {
-    setShow('menu')
-    setMyTram('')
-    setShowTrams(trams)
-    closeSidebar()
-    setAlarm(false)
-    setCenter({ lat: 60.169800, lng: 24.939500 })
-    setZoom(16)
-  }
-
-  let tramsInOrder = [...trams]
+  //const [tramsInOrder, lineNumbers, stopsInOrder] = sortEverything(trams, stops) 
+  //console.log(tramsInOrder, lineNumbers, stopsInOrder)
+  const tramsInOrder = [...trams]
   tramsInOrder.sort(sortByVehicleNumbers)
 
   const lineNumbers = []
@@ -190,7 +183,7 @@ const Sidebar = ({
   return (
     <div style={style} className='sidebar' id='mySidebar'>
       {show === 'menu' && (
-        <Container> 
+        <Container>
           <Row>
             <Col xs={12}>
               <Dropdown>
@@ -371,17 +364,6 @@ const Sidebar = ({
             <Col>
               <Button
                 variant={buttonVariant}
-                onClick={() => setIsLogged(!isLogged)}
-              >
-                {isLogged ? 'LOGOUT' : 'LOGIN'}
-              </Button>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col>
-              <Button
-                variant={buttonVariant}
                 onClick={() => setShow('settings')}
               >
                 Settings
@@ -459,7 +441,7 @@ const mapDispatchToProps = {
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm, 
+  setAlarm,
 }
 
 export default connect(

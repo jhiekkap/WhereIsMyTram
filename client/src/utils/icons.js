@@ -60,7 +60,7 @@ const driverIcon = new L.Icon({
 
   
 
-  export const locationIcon = new L.Icon({
+/*   export const locationIcon = new L.Icon({
     iconUrl: require('../img/iconLocation.png'),
     iconRetinaUrl: require('../img/iconLocation.png'),
     iconAnchor: [5, 55],
@@ -68,7 +68,7 @@ const driverIcon = new L.Icon({
     iconSize: [55, 55],
     shadowSize: [68, 95],
     shadowAnchor: [20, 92],
-  })
+  }) */
 
 
   export default driverIcon

@@ -19,12 +19,12 @@ import driverIcon, {
   stopIcon,
   myStopIcon,
   tramIcon,
-  myTramIcon,
-  locationIcon,
+  myTramIcon, 
 } from '../utils/icons'
 import { printDuration } from '../utils/helpers'
 import alarmOnButton from '../img/iconfinder_Circle_Red_34214.png'
 import alarmOffButton from '../img/iconfinder_stop_green_61688.png'
+import centerButton from '../img/icons8-navigation-50.png'
 
 const LeafletMap = ({
   trams,
@@ -45,18 +45,22 @@ const LeafletMap = ({
   setAlarm,
   setShowSidebarOpenButton,
 }) => {
+  
   const handleChooseTram = e => {
     console.log('valitse nro: ', e.target.value)
     let chosenTram = trams.find(tram => tram.VP.veh == e.target.value) 
     setMyTram(chosenTram)
-    setLine(chosenTram.VP.desi)
-    /* if (!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)) {
-      setShowTrams(showTrams.concat(chosenTram))
-    } */
+    setLine(chosenTram.VP.desi) 
     setShowTrams([chosenTram])
-    setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
-    //setZoom(16)
+    setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long }) 
   }
+
+  const handleChangeZoom = e => {
+    setZoom(e.target._zoom)
+    setCenter(e.latlng)
+    console.log('ZOOM',e.target._zoom)
+  }
+
 
   const popUp = tram => {
     return (
@@ -150,15 +154,19 @@ const LeafletMap = ({
       {myTram && <div id='distanceOnMap'>{settings.distance} m</div>}
       {myTram && <div id='durationOnMap'>{settings.avgDuration > 0 && printDuration(settings.avgDuration)}</div>}
       {myTram && <div id='alarmButtonOnMap'><img id='alarmButton' src={settings.alarm ? alarmOffButton : alarmOnButton} onClick={() => setAlarm(!settings.alarm)} /></div>}
+      <div id='centerButtonOnMap'><img id='centerButton' src={centerButton} onClick={() => setCenter({ lat: 60.169800, lng: 24.939500 })} /></div>
       {!settings.showAlert && (
         <Map
           id='map'
           center={settings.center}
           zoom={settings.zoom}
           onclick={() => closeSidebar()}
-          //onmoveend={({target}) => setCenter(target.getCenter()) }
+          onmoveend={({target}) => setCenter(target.getCenter())}
+          onzoomend={handleChangeZoom}
           zoomSnap={0.1}
-        //zoomControl={false}
+          minZoom={12}
+          maxZoom={19} 
+          //zoomControl={true}
         >
           <TileLayer
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'

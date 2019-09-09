@@ -10,7 +10,7 @@
 
 @media only screen and (max-width: 435px) {
   #map {
-    height: calc(100vh - 80px);
+    height: calc(100vh);
   }
 }
 
@@ -67,10 +67,19 @@ overflow: auto;
 }
 #alarmButtonOnMap {
   position: fixed;
-  top: 80px;
-  right: 0;
+  bottom: 10px;
+  right: 5px;
+  z-index: 1;
+  margin-bottom: '4px';
+}
+
+#centerButtonOnMap {
+  position: fixed;
+  top: 250px;
+  right: 5px;
   z-index: 1;
   margin-top: '4px';
+
 }
 #alarmButton {
   height: 60px;

@@ -8,7 +8,7 @@ const settingsReducer = (
     showSidebarOpenButton: true,
     init: true,
     avgDuration: 0,
-    line: '',
+    line: '', 
     distance: 0,
     alarm: false,
   },
