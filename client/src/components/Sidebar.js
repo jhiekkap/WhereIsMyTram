@@ -24,9 +24,8 @@ import distance, {
   sortLineNumbers,
   sortStopNames,
 } from '../utils/helpers'
-import { SoundEffect } from './SoundEffect' 
-import alarmSound from '../sounds/foghorn-daniel_simon.mp3'  
-
+import { SoundEffect } from './SoundEffect'
+import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
 
 const Sidebar = ({
   closeSidebar,
@@ -130,7 +129,7 @@ const Sidebar = ({
     setDistance(0)
     setSpeeds([])
     setLine('')
-    setShowTrams(trams) 
+    setShowTrams(trams)
     setCenter({ lat: 60.1698, lng: 24.9395 })
     setZoom(16)
   }
@@ -302,8 +301,14 @@ const Sidebar = ({
           {myTram.VP && (
             <Row>
               <Col>
-                <Button variant={buttonVariant} onClick={() => reset()}>
-                  Reset
+                <Button
+                  variant={!settings.alarm ? 'outline-danger' : 'success'}
+                  onClick={() => {
+                    setAlarm(!settings.alarm)
+                    closeSidebar()
+                  }}
+                >
+                  {!settings.alarm ? 'Set alarm' : 'Alarm off'}
                 </Button>
               </Col>
             </Row>
@@ -325,11 +330,8 @@ const Sidebar = ({
           {myTram.VP && (
             <Row>
               <Col>
-                <Button
-                  variant={!settings.alarm ? 'outline-danger' : 'success'}
-                  onClick={() => setAlarm(!settings.alarm)}
-                >
-                  {!settings.alarm ? 'Set alarm' : 'Alarm off'}
+                <Button variant={buttonVariant} onClick={() => reset()}>
+                  Reset
                 </Button>
               </Col>
             </Row>
@@ -338,7 +340,13 @@ const Sidebar = ({
           {myTram.VP && (
             <Row>
               <Col>
-                <Button variant={buttonVariant} onClick={() => showMyTram()}>
+                <Button
+                  variant={buttonVariant}
+                  onClick={() => {
+                    showMyTram()
+                    closeSidebar()
+                  }}
+                >
                   Where's my tram?
                 </Button>
               </Col>
@@ -452,9 +460,11 @@ const Sidebar = ({
             </Col>
           </Row>
         </Container>
-      )}  
-      <SoundEffect play={settings.showAlert} audioUrl={alarmSound}>  
-      </SoundEffect>
+      )}
+      <SoundEffect
+        play={settings.showAlert}
+        audioUrl={alarmSound}
+      ></SoundEffect>
     </div>
   )
 }

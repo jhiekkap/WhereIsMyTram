@@ -2,30 +2,31 @@
   height: 1000px;
   z-index: 500;
 }
-
-.leaflet-container {
-  z-index: 0;
- /*  overflow: hidden; */
-}
-
-@media only screen and (max-width: 435px) {
-  #map {
+ 
+/* @media only screen and (max-width: 435px) {
+   #map {
     height: calc(100vh);
-  }
+  }  
 }
-
-/* #mapContainer { 
-  height: 100%;
-} */
-
+  
 #map {
   height: 900px;
-  transition: margin-left 0.5s;
+  transition: width 0.5s;
+} */
+
+.leaflet-container {
+  height:900px;
+  z-index: 0;
 }
 
-/* #tramDropdown {
-overflow: auto;
- } */
+@media only screen and (max-width: 435px){
+
+  .leaflet-container {
+
+    height:calc(100vh);
+  }
+}
+ 
 
 .sidebar {
   height: 100%;

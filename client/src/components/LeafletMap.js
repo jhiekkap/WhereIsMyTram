@@ -156,9 +156,9 @@ const LeafletMap = ({
       {myTram && <div id='distanceOnMap'>{settings.distance} m</div>}
       {myTram && <div id='durationOnMap'>{settings.avgDuration > 0 && printDuration(settings.avgDuration)}</div>}
       {myTram && <div id='alarmButtonOnMap'><img id='alarmButton' src={settings.alarm ? alarmOffButton : alarmOnButton} onClick={() => setAlarm(!settings.alarm)} /></div>}
-      <div id='centerButtonOnMap'><img id='centerButton' src={centerButton} onClick={() => setCenter({ lat: 60.169800, lng: 24.939500 })} /></div>
+      <div id='centerButtonOnMap'><img id='centerButton' src={centerButton} onClick={() => {setCenter({ lat: 60.169800, lng: 24.939500 });closeSidebar()}} /></div>
       {myTram.VP && <div id='tramButtonOnMap'><img id='tramButton' src={tramButton} onClick={() => {let chosenTram = trams.find(tram => tram.VP.veh == myTram.VP.veh)
-    ;setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })}} /></div>}
+    ;setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long });closeSidebar()}} /></div>}
 
       {!settings.showAlert && (
         <Map
