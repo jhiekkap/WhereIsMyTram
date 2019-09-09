@@ -22,7 +22,7 @@ import distance, {
   countDuration, */
   sortByVehicleNumbers,
   sortLineNumbers,
-  sortStopNames
+  sortStopNames,
 } from '../utils/helpers'
 
 const Sidebar = ({
@@ -90,26 +90,35 @@ const Sidebar = ({
             }
           }
           avgDuration = sum / counter
-        }  
+        }
         if (durations.length > 4 && speed > 0) {
           setAvgDuration(avgDuration)
         }
 
-        console.log('DISTANCE NOW: ', distanceNow, ' m', 'AVG SPEED: ', (avgSpeed * 3.6).toFixed(2), ' km/h', speed, ' m/s', 'ESTIMATED DURATION: ',
+        console.log(
+          'DISTANCE NOW: ',
+          distanceNow,
+          ' m',
+          'AVG SPEED: ',
+          (avgSpeed * 3.6).toFixed(2),
+          ' km/h',
+          speed,
+          ' m/s',
+          'ESTIMATED DURATION: ',
           printDuration(settings.avgDuration)
         )
       }
       if (settings.alarm && settings.distance < 50) {
         reStart()
         setShowAlert(true)
-      } 
+      }
     }
     if (settings.showAlert) {
       toggleAlertVariant(!settings.alertVariant)
     }
   }, [trams])
-
-  const reStart = () => { 
+  
+  const reset = () => {
     setAlarm(false)
     setShow('menu')
     setMyTram('')
@@ -119,10 +128,16 @@ const Sidebar = ({
     setSpeeds([])
     setLine('')
     setShowTrams(trams)
-    closeSidebar()
-    setCenter({ lat: 60.169800, lng: 24.939500 })
+    //closeSidebar()
+    setCenter({ lat: 60.1698, lng: 24.9395 })
     setZoom(16)
   }
+
+  const reStart = () => {
+    reset()
+    closeSidebar() 
+  }
+ 
 
   const handleChooseMyTram = veh => {
     console.log('TRAM CHOSEN: ', veh)
@@ -130,9 +145,10 @@ const Sidebar = ({
       let chosenTram = trams.find(tram => tram.VP.veh == veh)
       console.log('chosen Tram:', chosenTram)
       setMyTram(chosenTram)
-      if (!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)) {
+      setShowTrams([chosenTram])
+      /* if (!showTrams.map(tram => tram.VP.veh).includes(chosenTram.VP.veh)) {
         setShowTrams(showTrams.concat(chosenTram))
-      }
+      } */
       setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
     } else {
       setAlarm(false)
@@ -162,7 +178,7 @@ const Sidebar = ({
     setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
   }
 
-  //const [tramsInOrder, lineNumbers, stopsInOrder] = sortEverything(trams, stops) 
+  //const [tramsInOrder, lineNumbers, stopsInOrder] = sortEverything(trams, stops)
   //console.log(tramsInOrder, lineNumbers, stopsInOrder)
   const tramsInOrder = [...trams]
   tramsInOrder.sort(sortByVehicleNumbers)
@@ -207,8 +223,13 @@ const Sidebar = ({
           <Row>
             <Col xs={12}>
               <Dropdown>
-                <Dropdown.Toggle variant={!settings.line ? 'outline-danger' : buttonVariant} id='dropdown-basic'>
-                  {settings.line != '' ? 'Line: ' + settings.line : 'Choose line'}
+                <Dropdown.Toggle
+                  variant={!settings.line ? 'outline-danger' : buttonVariant}
+                  id='dropdown-basic'
+                >
+                  {settings.line != ''
+                    ? 'Line: ' + settings.line
+                    : 'Choose line'}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {myTram.VP && (
@@ -221,8 +242,10 @@ const Sidebar = ({
                       key={i}
                       onClick={() => {
                         setLine(line)
-                        setMyTram('')
-                      }}
+                        if(myTram){ 
+                          setMyTram('') 
+                      }
+                    }}
                     >
                       {line}
                     </Dropdown.Item>
@@ -236,7 +259,14 @@ const Sidebar = ({
             <Row>
               <Col xs={12}>
                 <Dropdown>
-                  <Dropdown.Toggle variant={settings.line && !myTram.VP ? 'outline-danger' : buttonVariant} id='dropdown-basic'>
+                  <Dropdown.Toggle
+                    variant={
+                      settings.line && !myTram.VP
+                        ? 'outline-danger'
+                        : buttonVariant
+                    }
+                    id='dropdown-basic'
+                  >
                     {myTram.VP ? 'Vehicle: ' + myTram.VP.veh : 'Choose vehicle'}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
@@ -268,6 +298,12 @@ const Sidebar = ({
             </Row>
           )}
 
+          {myTram.VP && <Row>
+            <Col>
+              <Button variant={buttonVariant} onClick={() => reset()}>Reset</Button>
+            </Col>
+          </Row>}
+
           {myTram.VP && myStop && trams && (
             <Row>
               <Col xs='12'>
@@ -297,10 +333,7 @@ const Sidebar = ({
           {myTram.VP && (
             <Row>
               <Col>
-                <Button
-                  variant={buttonVariant}
-                  onClick={() => showMyTram()}
-                >
+                <Button variant={buttonVariant} onClick={() => showMyTram()}>
                   Where's my tram?
                 </Button>
               </Col>
@@ -324,7 +357,8 @@ const Sidebar = ({
             </Row>
           )}
 
-          {((!myTram.VP && showTrams.length > 0) || (myTram.VP && showTrams.length > 1)) && (
+          {((!myTram.VP && showTrams.length > 0) ||
+            (myTram.VP && showTrams.length > 1)) && (
             <Row>
               <Col>
                 <Button
@@ -332,7 +366,9 @@ const Sidebar = ({
                     if (!myTram.VP) {
                       setShowTrams([])
                     } else {
-                      setShowTrams([trams.find(tram => tram.VP.veh === myTram.VP.veh)])
+                      setShowTrams([
+                        trams.find(tram => tram.VP.veh === myTram.VP.veh),
+                      ])
                     }
                   }}
                   variant={buttonVariant}
@@ -387,14 +423,10 @@ const Sidebar = ({
       {show === 'settings' && (
         <Container>
           <Row>
-            <Col>
-              Geolocation on / off ?
-            </Col>
+            <Col>Geolocation on / off ?</Col>
           </Row>
           <Row>
-            <Col>
-              Alarm distance ?
-            </Col>
+            <Col>Alarm distance ?</Col>
           </Row>
           <Row>
             <Col>
@@ -409,6 +441,9 @@ const Sidebar = ({
           <Row>
             <Col>
               <Button onClick={() => reStart()}>RESTART</Button>
+            </Col>
+            <Col>
+              <Button onClick={() => setShow('menu')}>Cancel</Button>
             </Col>
           </Row>
         </Container>

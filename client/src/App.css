@@ -14,7 +14,7 @@
   }
 }
 
-/* #mapContainer {
+/* #mapContainer { 
   height: 100%;
 } */
 
@@ -52,17 +52,17 @@ overflow: auto;
 #distanceOnMap {
   position: fixed;
   top: 0;
-  right: 0;
+  right: 10px;
   z-index: 1;
-  font-size: 26px;
+  font-size: 23px;
   margin-top: '4px';
 }
 #durationOnMap {
   position: fixed;
   top: 40px;
-  right: 0;
+  right: 10px;
   z-index: 1;
-  font-size: 26px;
+  font-size: 23px;
   margin-top: '4px';
 }
 #alarmButtonOnMap {
@@ -71,16 +71,25 @@ overflow: auto;
   right: 5px;
   z-index: 1;
   margin-bottom: '4px';
+  size: 13px
 }
 
 #centerButtonOnMap {
   position: fixed;
-  top: 250px;
-  right: 5px;
+  top: 300px;
+  right: 8px;
   z-index: 1;
-  margin-top: '4px';
-
+  margin-top: '4px'; 
 }
+
+#tramButtonOnMap{
+  position: fixed;
+  top: 200px;
+  right: 8px;
+  z-index: 1;
+  margin-top: '4px'; 
+}
+
 #alarmButton {
   height: 60px;
 }
