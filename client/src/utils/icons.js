@@ -1,15 +1,14 @@
 import L from 'leaflet'
 import "leaflet/dist/leaflet.css";
 
-delete L.Icon.Default.prototype._getIconUrl
+delete L.Icon.Default.prototype._getIconUrl 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require('../img/iconfinder_Ball Green_34555.png'),
   iconUrl: require('../img/iconfinder_Ball Green_34555.png'),
   shadowUrl: require('../../node_modules/leaflet/dist/images/marker-shadow.png'),
   iconSize: [40, 40],
 })
-
-console.log('L.icon', L.Icon)
+ 
 
 export const stopIcon = new L.Icon({
   iconUrl: require('../img/iconfinder_Ball Green_34555.png'),
@@ -17,7 +16,7 @@ export const stopIcon = new L.Icon({
   //iconAnchor: [5, 55],
   //popupAnchor: [10, -44],
   //shadowUrl: require('../../node_modules/leaflet/dist/images/marker-shadow.png'),
-  iconSize: [20,20],
+  iconSize: [25,25],
   //shadowSize: [68, 95],
   //shadowAnchor: [20, 92], 
 })

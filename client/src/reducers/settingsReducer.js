@@ -1,16 +1,17 @@
 const settingsReducer = (
   state = {
-    center: { lat: 60.169800, lng: 24.939500 },
+    center: { lat: 60.1698, lng: 24.9395 },
     showAlert: false,
     alertVariant: true,
-    zoom: 16  , 
+    zoom: 16,
     showSidebar: false,
     showSidebarOpenButton: true,
     init: true,
     avgDuration: 0,
-    line: '', 
+    line: '',
     distance: 0,
     alarm: false,
+    intro: false,
   },
   action
 ) => {
@@ -37,6 +38,8 @@ const settingsReducer = (
       return { ...state, distance: action.data }
     case 'SET_ALARM':
       return { ...state, alarm: action.data }
+    case 'SET_INTRO':
+      return { ...state, intro: action.data }
     default:
       return state
   }
@@ -168,5 +171,14 @@ export const setAlarm = boolean => {
     })
   }
 }
+
+export const setIntro = boolean => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_INTRO',
+      data: boolean,
+    })
+  }
+}  
 
 export default settingsReducer

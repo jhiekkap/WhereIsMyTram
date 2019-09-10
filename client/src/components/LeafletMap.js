@@ -11,6 +11,7 @@ import {
   setLine,
   setAlarm,
   setShowSidebarOpenButton,
+  setIntro,
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
@@ -25,12 +26,12 @@ import { printDuration } from '../utils/helpers'
 import alarmOnButton from '../img/iconfinder_Circle_Red_34214.png'
 import alarmOffButton from '../img/iconfinder_stop_green_61688.png'
 import centerButton from '../img/icons8-navigation-50.png'
-import tramButton from '../img/icons8-ios-filled-50.png'
-
-import { SoundEffect } from './SoundEffect'
+import tramButton from '../img/icons8-ios-filled-50.png' 
+//import { SoundEffect } from './SoundEffect'
 import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
+import Intro from '../components/Intro'
 
-let horn = {}
+//let horn = {}  
 
 const LeafletMap = ({
   trams,
@@ -50,14 +51,21 @@ const LeafletMap = ({
   setLine,
   setAlarm,
   setShowSidebarOpenButton,
-}) => {
-  const [intro, setIntro] = useState(true)
+  setIntro,
+}) => { 
 
-  const init = () => {
-    horn = new Audio()
-    setIntro(false)
-    horn.play()
-  }
+  const [playHorn, setPlayHorn] = useState(false)
+  const initHorn = () => {
+    //horn = new Audio() 
+    //console.log('new Audio()', horn)
+    setIntro(false) 
+    setPlayHorn(true)
+    setTimeout(()=>{setPlayHorn(false)},2000)
+    
+    //horn.src={alarmSound} 
+    //horn.play()
+
+  }  
 
   const handleChooseTram = e => {
     console.log('valitse nro: ', e.target.value)
@@ -162,14 +170,13 @@ const LeafletMap = ({
 
   return (
     <div>
-      {intro ? (
-        <Container>
-          <Button onClick={init}>Welcome</Button>
-        </Container>
-      ) : (
+      <div>
+ {(settings.showAlert || playHorn) && <audio  src={alarmSound}  autoPlay/>}
+ </div>
+      {!settings.intro ? (
         <div id='mapContainer' style={style}>
-          <SoundEffect init={init} horn={horn} play={settings.showAlert} audioUrl={alarmSound}> 
-          </SoundEffect>
+          {/* <SoundEffect initHorn={initHorn} horn={horn} play={settings.showAlert} audioUrl={alarmSound}> 
+          </SoundEffect> */}
           {settings.showSidebarOpenButton && (
             <Button
               id='sidebarButton'
@@ -259,7 +266,7 @@ const LeafletMap = ({
             <br />
             <br />
             <br />
-            <br />
+            <br /> 
             <br />
             <Alert.Heading>How's it going?!</Alert.Heading>
             <p>Duis mollis, est non commodo luctus</p>
@@ -277,7 +284,10 @@ const LeafletMap = ({
             </div>
           </Alert>
         </div>
-      )}
+      ) : 
+      <Intro 
+      initHorn={initHorn}
+      />}
     </div>
   )
 }
@@ -307,6 +317,7 @@ const mapDispatchToProps = {
   setLine,
   setAlarm,
   setShowSidebarOpenButton,
+  setIntro,
 }
 
 export default connect(

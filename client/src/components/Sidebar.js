@@ -13,6 +13,7 @@ import {
   setLine,
   setDistance,
   setAlarm,
+  setIntro,
 } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import { Container, Row, Col, Button, Dropdown } from 'react-bootstrap'
@@ -24,8 +25,10 @@ import distance, {
   sortLineNumbers,
   sortStopNames,
 } from '../utils/helpers'
-import { SoundEffect } from './SoundEffect'
+//import { SoundEffect } from './SoundEffect'
 import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
+
+//const horn = {}
 
 const Sidebar = ({
   closeSidebar,
@@ -46,6 +49,8 @@ const Sidebar = ({
   setLine,
   setDistance,
   setAlarm,
+  horn,
+  setIntro,
 }) => {
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
@@ -53,6 +58,13 @@ const Sidebar = ({
   const [init, setInit] = useState(true)
 
   const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
+
+ /*  const init = () => {
+    setIntro(false)
+    console.log('eka tööt')
+    horn.src={alarmSound}
+    horn.play()
+  }  */
 
   useEffect(() => {
     if (trams.length > 0 && init) {
@@ -111,9 +123,11 @@ const Sidebar = ({
         )
       }
       if (settings.alarm && settings.distance < 50) {
+       /*  horn.src={alarmSound}
+        horn.play() */
         reStart()
         setShowAlert(true)
-      }
+      } 
     }
     if (settings.showAlert) {
       toggleAlertVariant(!settings.alertVariant)
@@ -133,7 +147,7 @@ const Sidebar = ({
     setCenter({ lat: 60.1698, lng: 24.9395 })
     setZoom(16)
   }
-
+ 
   const reStart = () => {
     reset()
     closeSidebar()
@@ -494,6 +508,7 @@ const mapDispatchToProps = {
   setLine,
   setDistance,
   setAlarm,
+  setIntro,
 }
 
 export default connect(
