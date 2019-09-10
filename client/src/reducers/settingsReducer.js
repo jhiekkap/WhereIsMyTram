@@ -1,6 +1,7 @@
 const settingsReducer = (
   state = {
     center: { lat: 60.1698, lng: 24.9395 },
+    defaultCenter: { lat: 60.1698, lng: 24.9395 },
     showAlert: false,
     alertVariant: true,
     zoom: 16,
@@ -12,8 +13,9 @@ const settingsReducer = (
     distance: 0,
     alarm: false,
     intro: false,
-    geoLocation: false,
+    geoLocation: true,
     alarmDistance: 50,
+    position: { lat: 60.1698, lng: 24.9395 },
   },
   action
 ) => {
@@ -24,6 +26,8 @@ const settingsReducer = (
       return { ...state, alertVariant: action.data }
     case 'SET_CENTER':
       return { ...state, center: action.data }
+    case 'SET_POSITION':
+      return { ...state, position: action.data }
     case 'SET_ZOOM':
       return { ...state, zoom: action.data }
     case 'SET_SHOW_SIDEBAR':
@@ -73,6 +77,15 @@ export const setCenter = position => {
   return dispatch => {
     dispatch({
       type: 'SET_CENTER',
+      data: position,
+    })
+  }
+}
+
+export const setPosition = position => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_POSITION',
       data: position,
     })
   }

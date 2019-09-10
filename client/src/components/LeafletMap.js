@@ -15,7 +15,7 @@ import {
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-import { Button, Alert, Container } from 'react-bootstrap'
+import { Button, Alert } from 'react-bootstrap'
 import driverIcon, {
   stopIcon,
   myStopIcon,
@@ -26,12 +26,12 @@ import { printDuration } from '../utils/helpers'
 import alarmOnButton from '../img/iconfinder_Circle_Red_34214.png'
 import alarmOffButton from '../img/iconfinder_stop_green_61688.png'
 import centerButton from '../img/icons8-navigation-50.png'
-import tramButton from '../img/icons8-ios-filled-50.png' 
+import tramButton from '../img/icons8-ios-filled-50.png'
 //import { SoundEffect } from './SoundEffect'
 import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
 import Intro from '../components/Intro'
 
-//let horn = {}  
+//let horn = {}
 
 const LeafletMap = ({
   trams,
@@ -52,20 +52,19 @@ const LeafletMap = ({
   setAlarm,
   setShowSidebarOpenButton,
   setIntro,
-}) => { 
-
+}) => {
   const [playHorn, setPlayHorn] = useState(false)
   const initHorn = () => {
-    //horn = new Audio() 
+    //horn = new Audio()
     //console.log('new Audio()', horn)
-    setIntro(false) 
+    setIntro(false)
     setPlayHorn(true)
-    setTimeout(()=>{setPlayHorn(false)},2000)
-    
-    //horn.src={alarmSound} 
+    setTimeout(() => {
+      setPlayHorn(false)
+    }, 2000)
+    //horn.src={alarmSound}
     //horn.play()
-
-  }  
+  }
 
   const handleChooseTram = e => {
     console.log('valitse nro: ', e.target.value)
@@ -78,7 +77,7 @@ const LeafletMap = ({
 
   const handleChangeZoom = e => {
     setZoom(e.target._zoom)
-    setCenter(e.latlng)
+    //setCenter({lat:e.target._animateToCenter.lat, lng:e.target._animateToCenter.lng})
     console.log(
       'ZOOM',
       e.target._zoom,
@@ -86,6 +85,11 @@ const LeafletMap = ({
       e.target._animateToCenter.lat,
       e.target._animateToCenter.lng
     )
+  }
+
+  const handleCenterButton = () => {
+    setCenter(settings.geoLocation ? settings.position : settings.defaultCenter)
+    closeSidebar()
   }
 
   const popUp = tram => {
@@ -129,7 +133,7 @@ const LeafletMap = ({
           className='trams'
           key={i}
           icon={
-            myTram.VP && myTram.VP.veh === tram.VP.veh ? myTramIcon : tramIcon
+            myTram.VP && myTram.VP.veh === tram.VP.veh ? myTramIcon(settings.zoom) : tramIcon(settings.zoom)
           }
           position={{
             lat: tram.VP.lat,
@@ -151,7 +155,7 @@ const LeafletMap = ({
           className='stops'
           onClick={() => setMyStop(stop)}
           key={i}
-          icon={stop.id === myStop.id ? myStopIcon : stopIcon}
+          icon={stop.id === myStop.id ? myStopIcon(settings.zoom) : stopIcon(settings.zoom)}
           position={{ lat: stop.lat, lng: stop.lon }}
           zIndexOffset={-500}
         >
@@ -171,8 +175,10 @@ const LeafletMap = ({
   return (
     <div>
       <div>
- {(settings.showAlert || playHorn) && <audio  src={alarmSound}  autoPlay/>}
- </div>
+        {(settings.showAlert || playHorn) && (
+          <audio src={alarmSound} autoPlay />
+        )}
+      </div>
       {!settings.intro ? (
         <div id='mapContainer' style={style}>
           {/* <SoundEffect initHorn={initHorn} horn={horn} play={settings.showAlert} audioUrl={alarmSound}> 
@@ -206,10 +212,7 @@ const LeafletMap = ({
             <img
               id='centerButton'
               src={centerButton}
-              onClick={() => {
-                setCenter({ lat: 60.1698, lng: 24.9395 })
-                closeSidebar()
-              }}
+              onClick={handleCenterButton}
             />
           </div>
           {myTram.VP && (
@@ -248,8 +251,8 @@ const LeafletMap = ({
               {ShowChosenTrams()}
               {showStops()}
               <Marker
-                icon={driverIcon}
-                position={{ lat: 60.1698, lng: 24.9395 }}
+                icon={driverIcon(settings.zoom)}
+                position={settings.position}
               >
                 <Popup>
                   We are here! <br /> This is our position!
@@ -266,7 +269,7 @@ const LeafletMap = ({
             <br />
             <br />
             <br />
-            <br /> 
+            <br />
             <br />
             <Alert.Heading>How's it going?!</Alert.Heading>
             <p>Duis mollis, est non commodo luctus</p>
@@ -284,10 +287,9 @@ const LeafletMap = ({
             </div>
           </Alert>
         </div>
-      ) : 
-      <Intro 
-      initHorn={initHorn}
-      />}
+      ) : (
+        <Intro initHorn={initHorn} />
+      )}
     </div>
   )
 }

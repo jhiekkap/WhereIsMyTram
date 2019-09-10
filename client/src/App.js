@@ -1,40 +1,82 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
 import { setTrams } from './reducers/tramsReducer'
 import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
+import { setPosition } from './reducers/settingsReducer'
 import './App.css'
-import LeafletMap from './components/LeafletMap' 
+import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
-import client, { query } from './utils/client'
+import ApolloClient, { gql } from 'apollo-boost'
+import { connect } from 'react-redux'
 
-const App = ({ setTrams, setStops, setMyStop }) => {
+const client = new ApolloClient({
+  uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+})
+
+const RADIUS = 500
+
+const App = ({ setTrams, setStops, setMyStop, settings, setPosition }) => {
   useEffect(() => {
-    client.query({ query }).then(response => {
-      console.log('GRAPHQL - QUERY!')
-      let allStops = response.data.stopsByRadius.edges
-        .map(edge => edge.node.stop)
-        .filter(stop => stop.vehicleType === 0)
-      setStops(allStops)
-      setMyStop(allStops[0])
-    })
-  }, [])
-
-
-  const update = () => {
-    fetch('/trams')
-      .then(response => response.json())
-      .then(body => {
-        setTrams(body)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    if ('geolocation' in navigator) {
+      console.log('geolocation is available')
+      navigator.geolocation.getCurrentPosition(position => {
+        let location = settings.geoLocation
+          ? {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            }
+          : settings.defaultCenter
+        console.log(
+          1,
+          settings.geoLocation ? 'GEOLOCATION' : 'DEFAULT LOCATION',
+          location
+        )
+        setPosition(location)
+        const query = gql`
+  {
+    stopsByRadius(lat:${location.lat}, lon:${location.lng}, radius:${RADIUS}) {
+      edges {
+        node {
+          stop {
+            id
+            gtfsId
+            name
+            lat
+            lon
+            vehicleType
+          }
+        } 
+      }
+    }
   }
+`
+        client.query({ query }).then(response => {
+          console.log('GRAPHQL - QUERY!', query)
+          let allStops = response.data.stopsByRadius.edges
+            .map(edge => edge.node.stop)
+            .filter(stop => stop.vehicleType === 0)
+          setStops(allStops)
+          console.log(2, allStops)
+          if (allStops.length > 0) {
+            setMyStop(allStops[0])
+          }
+        })
+      })
+    } else {
+      console.log('geolocation is NOT available')
+    }
+  }, [settings.geoLocation])
 
   useEffect(() => {
     setInterval(() => {
-      update()
+      fetch('/trams')
+        .then(response => response.json())
+        .then(body => {
+          setTrams(body)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }, 1000)
   }, [])
 
@@ -46,57 +88,21 @@ const App = ({ setTrams, setStops, setMyStop }) => {
   )
 }
 
-/* const mapStateToProps = state => {
+const mapStateToProps = state => {
   return {
-    settings: state.settings, 
+    settings: state.settings,
   }
-} */
+}
 
 const mapDispatchToProps = {
   setTrams,
   setStops,
   setMyStop,
+  setPosition,
 }
 
 export default connect(
-  null,
-  //mapStateToProps,
+  //null,
+  mapStateToProps,
   mapDispatchToProps
 )(App)
-
-////////// GEOLOCATION
-
-/*   if ("geolocation" in navigator) {
-      console.log("geolocation is available");
-    } else {
-      console.log("geolocation is NOT available");
-    }
-    navigator.geolocation.getCurrentPosition(position => { 
-  
-      const query = gql`
-        {
-          stopsByRadius(lat: ${position.coords.latitude}, lon: ${position.coords.longitude}, radius: 1000) {
-            edges {
-              node {
-                stop {
-                  id
-                  gtfsId
-                   name
-                  lat
-                  lon 
-                }
-              }
-            }
-          }
-        }
-        ` 
-      client.query({ query })
-        .then((response) => {
-          let edges = response.data.stopsByRadius.edges
-          setStops(edges)
-          edges.forEach(edge => {
-            console.log('HSL: ', edge.node.stop)
-          })
-        })
-      console.log("STARTING LOCATION \nlatitude: " + position.coords.latitude + " longitude: " + position.coords.longitude);
-    }); */

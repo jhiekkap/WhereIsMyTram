@@ -5,8 +5,7 @@ import { setMyStop } from '../reducers/myStopReducer'
 import {
   setCenter,
   setZoom,
-  setShowAlert,
-  setShowSidebar,
+  setShowAlert, 
   closeSidebar,
   toggleAlertVariant,
   setAvgDuration,
@@ -78,8 +77,7 @@ const Sidebar = ({
     horn.play()
   }  */
 
-  useEffect(() => {
-    console.log('geolocation', settings.geoLocation)
+  useEffect(() => { 
     if (trams.length > 0 && init) {
       console.log('initialized!')
       setShowTrams(trams)
