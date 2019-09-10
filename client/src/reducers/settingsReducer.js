@@ -12,6 +12,8 @@ const settingsReducer = (
     distance: 0,
     alarm: false,
     intro: false,
+    geoLocation: false,
+    alarmDistance: 50,
   },
   action
 ) => {
@@ -40,6 +42,10 @@ const settingsReducer = (
       return { ...state, alarm: action.data }
     case 'SET_INTRO':
       return { ...state, intro: action.data }
+    case 'SET_GEOLOCATION':
+      return { ...state, geoLocation: action.data }
+    case 'SET_ALARM_DISTANCE':
+      return { ...state, alarmDistance: action.data }
     default:
       return state
   }
@@ -179,6 +185,24 @@ export const setIntro = boolean => {
       data: boolean,
     })
   }
-}  
+}
+
+export const setGeolocation = boolean => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_GEOLOCATION',
+      data: boolean,
+    })
+  }
+}
+
+export const setAlarmDistance = meters => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_ALARM_DISTANCE',
+      data: meters,
+    })
+  }
+}
 
 export default settingsReducer

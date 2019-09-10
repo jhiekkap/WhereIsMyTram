@@ -14,9 +14,19 @@ import {
   setDistance,
   setAlarm,
   setIntro,
+  setGeolocation,
+  setAlarmDistance,
 } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
-import { Container, Row, Col, Button, Dropdown } from 'react-bootstrap'
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Dropdown,
+  Form,
+  DropdownButton,
+} from 'react-bootstrap'
 import distance, {
   printDuration,
   /* sortEverything,
@@ -51,6 +61,8 @@ const Sidebar = ({
   setAlarm,
   horn,
   setIntro,
+  setGeolocation,
+  setAlarmDistance,
 }) => {
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
@@ -59,7 +71,7 @@ const Sidebar = ({
 
   const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
 
- /*  const init = () => {
+  /*  const init = () => {
     setIntro(false)
     console.log('eka tööt')
     horn.src={alarmSound}
@@ -67,6 +79,7 @@ const Sidebar = ({
   }  */
 
   useEffect(() => {
+    console.log('geolocation', settings.geoLocation)
     if (trams.length > 0 && init) {
       console.log('initialized!')
       setShowTrams(trams)
@@ -122,12 +135,12 @@ const Sidebar = ({
           printDuration(settings.avgDuration)
         )
       }
-      if (settings.alarm && settings.distance < 50) {
-       /*  horn.src={alarmSound}
+      if (settings.alarm && settings.distance < settings.alarmDistance) {
+        /*  horn.src={alarmSound}
         horn.play() */
         reStart()
         setShowAlert(true)
-      } 
+      }
     }
     if (settings.showAlert) {
       toggleAlertVariant(!settings.alertVariant)
@@ -147,7 +160,7 @@ const Sidebar = ({
     setCenter({ lat: 60.1698, lng: 24.9395 })
     setZoom(16)
   }
- 
+
   const reStart = () => {
     reset()
     closeSidebar()
@@ -191,7 +204,7 @@ const Sidebar = ({
     console.log('STOP CHOSEN: ', stopsGtfsId)
     setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
   }
-
+  
   //const [tramsInOrder, lineNumbers, stopsInOrder] = sortEverything(trams, stops)
   //console.log(tramsInOrder, lineNumbers, stopsInOrder)
   const tramsInOrder = [...trams]
@@ -449,12 +462,30 @@ const Sidebar = ({
 
       {show === 'settings' && (
         <Container>
-          <Row>
-            <Col>Geolocation on / off ?</Col>
-          </Row>
-          <Row>
-            <Col>Alarm distance ?</Col>
-          </Row>
+          <Form >
+            <Row>
+              <Col>
+                <Form.Check 
+                  onChange={()=> setGeolocation(!settings.geoLocation)}
+                  checked={settings.geoLocation}
+                  type='checkbox'
+                  id='geolocation'
+                  label='Geolocation'
+                />
+              </Col>
+            </Row>
+            </Form>
+            <Row>
+              <Col>
+                <DropdownButton
+                  id='alarmDistance' 
+                  title={`Alarm distance ${settings.alarmDistance} m`}
+                >
+                  {[50,100,150,200,250].map((meters, i) => <Dropdown.Item key={i} onClick={()=>setAlarmDistance(meters)}>{meters} m</Dropdown.Item>)} 
+                </DropdownButton>
+              </Col>
+            </Row>
+         
           <Row>
             <Col>
               <Button onClick={() => setShow('menu')}>GO BACK TO MENU</Button>
@@ -509,6 +540,8 @@ const mapDispatchToProps = {
   setDistance,
   setAlarm,
   setIntro,
+  setGeolocation,
+  setAlarmDistance,
 }
 
 export default connect(
