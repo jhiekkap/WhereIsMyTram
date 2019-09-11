@@ -16,9 +16,9 @@ const distance = (lat1, lon1, lat2, lon2) => {
 }
 
 export const sortByVehicleNumbers = (a, b) => { 
-  return parseInt(a.VP.veh) < parseInt(b.VP.veh)
+  return parseInt(a.veh) < parseInt(b.veh)
     ? -1
-    : parseInt(a.VP.veh) > parseInt(b.VP.veh)
+    : parseInt(a.veh) > parseInt(b.veh)
     ? 1
     : 0
 }
@@ -47,8 +47,8 @@ export const sortLineNumbers = (a, b) => {
 
   const lineNumbers = []
   trams.forEach(tram => {
-    if (!lineNumbers.includes(tram.VP.desi)) {
-      lineNumbers.push(tram.VP.desi)
+    if (!lineNumbers.includes(tram.desi)) {
+      lineNumbers.push(tram.desi)
     }
   })
   lineNumbers.sort(sortLineNumbers)

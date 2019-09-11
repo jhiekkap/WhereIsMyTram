@@ -70,12 +70,12 @@ const LeafletMap = ({
 
   const handleChooseTram = e => {
     console.log('valitse nro: ', e.target.value, trams)
-    let chosenTram = trams.find(tram => tram.VP.veh == e.target.value)
-    if (settings.possibleRoutes.includes(chosenTram.VP.route)) {
+    let chosenTram = trams.find(tram => tram.veh == e.target.value)
+    if (settings.possibleRoutes.includes(chosenTram.route)) {
       setMyTram(chosenTram)
-      setLine(chosenTram.VP.desi)
+      setLine(chosenTram.desi)
       setShowTrams([chosenTram])
-      setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
+      setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
       setZoom(16)
     } else {
       console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
@@ -102,27 +102,27 @@ const LeafletMap = ({
 
   const popUp = tram => {
     return (
-      <Popup closeButton={false} value={tram.VP.veh} autoPan={false}>
-        line:{tram.VP.desi}
+      <Popup closeButton={false} value={tram.veh} autoPan={false}>
+        line:{tram.desi}
         <br />
-        vehicle:{tram.VP.veh}
+        vehicle:{tram.veh}
         <br />
-        speed:{(tram.VP.spd * 3.6).toFixed(2)} km/h
+        speed:{(tram.spd * 3.6).toFixed(2)} km/h
         <br />
-        {tram.VP.stop && (
+        {tram.stop && (
           <span>
-            stop: {tram.VP.stop}
+            stop: {tram.stop}
             <br />
           </span>
         )}
-        route:{tram.VP.route}
+        route:{tram.route}
         <br />
-        {tram.VP.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.VP.dl)} seconds
+        {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
         <br />
-        {tram.VP.drst === 0 ? 'doors closed' : 'doors open'}
+        {tram.drst === 0 ? 'doors closed' : 'doors open'}
         <br />
-        {((!myTram.VP || (myTram.VP && myTram.VP.veh !== tram.VP.veh)) && settings.possibleRoutes.includes(tram.VP.route)) && (
-          <Button value={tram.VP.veh} onClick={handleChooseTram}>
+        {((!myTram || (myTram && myTram.veh !== tram.veh)) && settings.possibleRoutes.includes(tram.route)) && (
+          <Button value={tram.veh} onClick={handleChooseTram}>
             CHOOSE
           </Button>
         )}
@@ -132,7 +132,7 @@ const LeafletMap = ({
 
   const ShowChosenTrams = () => {
     let tramsToShow = trams.filter(tram =>
-      showTrams.map(tram => tram.VP.veh).includes(tram.VP.veh)
+      showTrams.map(tram => tram.veh).includes(tram.veh)
     )
 
     if (tramsToShow) {
@@ -141,13 +141,13 @@ const LeafletMap = ({
           className='trams'
           key={i}
           icon={
-            myTram.VP && myTram.VP.veh === tram.VP.veh
+            myTram && myTram.veh === tram.veh
               ? myTramIcon(settings.zoom)
               : tramIcon(settings.zoom)
           }
           position={{
-            lat: tram.VP.lat,
-            lng: tram.VP.long,
+            lat: tram.lat,
+            lng: tram.long,
           }}
           zIndexOffset={500}
         >
@@ -231,18 +231,18 @@ const LeafletMap = ({
                 onClick={handleCenterButton}
               />
             </div>
-            {myTram.VP && (
+            {myTram && (
               <div id='tramButtonOnMap'>
                 <img
                   id='tramButton'
                   src={tramButton}
                   onClick={() => {
                     let chosenTram = trams.find(
-                      tram => tram.VP.veh == myTram.VP.veh
+                      tram => tram.veh == myTram.veh
                     )
                     setCenter({
-                      lat: chosenTram.VP.lat,
-                      lng: chosenTram.VP.long,
+                      lat: chosenTram.lat,
+                      lng: chosenTram.long,
                     })
                     closeSidebar()
                   }}

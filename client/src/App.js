@@ -30,6 +30,7 @@ const App = ({
   setCenter,
   setPossibleRoutes,
 }) => {
+
   useEffect(() => {
     if ('geolocation' in navigator) {
       console.log('geolocation is available')
@@ -89,8 +90,8 @@ const App = ({
       fetch('/trams')
         .then(response => response.json())
         .then(body => {
-          setTrams(body)
-          //console.log('TRAMS:', body)
+          setTrams(body.map(tram => tram.VP))
+          //console.log('TRAMS:', body.map(tram => tram.VP)[0])
         })
         .catch(error => {
           console.log(error)
