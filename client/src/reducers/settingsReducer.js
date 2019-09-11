@@ -13,9 +13,10 @@ const settingsReducer = (
     distance: 0,
     alarm: false,
     intro: false,
-    geoLocation: true,
+    geoLocation: false,
     alarmDistance: 50,
     position: { lat: 60.1698, lng: 24.9395 },
+    show: 'menu',
   },
   action
 ) => {
@@ -50,6 +51,8 @@ const settingsReducer = (
       return { ...state, geoLocation: action.data }
     case 'SET_ALARM_DISTANCE':
       return { ...state, alarmDistance: action.data }
+      case 'SET_SHOW':
+          return { ...state, show: action.data }
     default:
       return state
   }
@@ -214,6 +217,15 @@ export const setAlarmDistance = meters => {
     dispatch({
       type: 'SET_ALARM_DISTANCE',
       data: meters,
+    })
+  }
+}
+
+export const setShow = boolean => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_SHOW',
+      data: boolean,
     })
   }
 }

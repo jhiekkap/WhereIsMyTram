@@ -16,7 +16,7 @@ export const stopIcon = zoom => new L.Icon({
   //iconAnchor: [5, 55],
   //popupAnchor: [10, -44],
   //shadowUrl: require('../../node_modules/leaflet/dist/images/marker-shadow.png'),
-  iconSize: [Math.round(50 - (19 - zoom) * 6), Math.round(50 - (19 - zoom) * 6)],
+  iconSize: [Math.round(40 - (19 - zoom) * 6), Math.round(40 - (19 - zoom) * 6)],
   //shadowSize: [68, 95],
   //shadowAnchor: [20, 92], 
 })
@@ -46,7 +46,7 @@ export const myTramIcon = zoom => new L.Icon({
   iconRetinaUrl: require('../img/icons8-color-50.png'),
   /* iconAnchor: [5, 55],
   popupAnchor: [10, -44], */
-  iconSize: [Math.round(90 - (19 - zoom) * 8), Math.round(90 - (19 - zoom) * 8)],
+  iconSize: [Math.round(80 - (19 - zoom) * 8), Math.round(80 - (19 - zoom) * 8)],
   /* shadowSize: [68, 95],
   shadowAnchor: [20, 92], */
   zIndex:5000 

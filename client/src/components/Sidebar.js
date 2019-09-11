@@ -15,6 +15,7 @@ import {
   setIntro,
   setGeolocation,
   setAlarmDistance,
+  setShow,
 } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import {
@@ -62,10 +63,11 @@ const Sidebar = ({
   setIntro,
   setGeolocation,
   setAlarmDistance,
+  setShow,
 }) => {
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
-  const [show, setShow] = useState('menu')
+  //const [show, setShow] = useState('menu')
   const [init, setInit] = useState(true)
 
   const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
@@ -223,7 +225,7 @@ const Sidebar = ({
 
   return (
     <div style={style} className='sidebar' id='mySidebar'>
-      {show === 'menu' && (
+      {settings.show === 'menu' && (
         <Container>
           <Row>
             <Col xs={12}>
@@ -458,7 +460,7 @@ const Sidebar = ({
         </Container>
       )}
 
-      {show === 'settings' && (
+      {settings.show === 'settings' && (
         <Container>
           <Form >
             <Row>
@@ -492,7 +494,7 @@ const Sidebar = ({
         </Container>
       )}
 
-      {show === 'goodbye' && (
+      {settings.show === 'goodbye' && (
         <Container>
           <Row>
             <Col>
@@ -540,6 +542,7 @@ const mapDispatchToProps = {
   setIntro,
   setGeolocation,
   setAlarmDistance,
+  setShow,
 }
 
 export default connect(

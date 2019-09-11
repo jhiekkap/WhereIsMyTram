@@ -12,6 +12,7 @@ import {
   setAlarm,
   setShowSidebarOpenButton,
   setIntro,
+  setShow,
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
@@ -52,6 +53,7 @@ const LeafletMap = ({
   setAlarm,
   setShowSidebarOpenButton,
   setIntro,
+  setShow,
 }) => {
   const [playHorn, setPlayHorn] = useState(false)
   const initHorn = () => {
@@ -236,7 +238,7 @@ const LeafletMap = ({
               id='map'
               center={settings.center}
               zoom={settings.zoom}
-              onclick={() => closeSidebar()}
+              onclick={() => {closeSidebar();setShow('menu')}}
               onmoveend={({ target }) => setCenter(target.getCenter())}
               onzoomend={handleChangeZoom}
               zoomSnap={0.1}
@@ -320,6 +322,7 @@ const mapDispatchToProps = {
   setAlarm,
   setShowSidebarOpenButton,
   setIntro,
+  setShow,
 }
 
 export default connect(
