@@ -109,7 +109,7 @@ const LeafletMap = ({
           <span>
             stop: {tram.VP.stop}
             <br />
-          </span>
+          </span> 
         )}
         route:{tram.VP.route}
         <br />
@@ -188,14 +188,14 @@ const LeafletMap = ({
           {/* <SoundEffect initHorn={initHorn} horn={horn} play={settings.showAlert} audioUrl={alarmSound}> 
           </SoundEffect> */}
           {settings.showSidebarOpenButton && (
-            <Button
+            <div
               id='sidebarButton'
               variant='outline-dark'
-              style={{ display: settings.showSidebar ? 'none' : '' }}
+              //style={{ display: settings.showSidebar ? 'none' : '' }}
               onClick={() => openSidebar()}
             >
               {settings.showSidebarOpenButton ? '☰' : ''}
-            </Button>
+            </div>
           )}
           {myTram && <div id='distanceOnMap'>{settings.distance} m</div>}
           {myTram && (
@@ -248,7 +248,7 @@ const LeafletMap = ({
               maxZoom={19}
               doubleClickZoom={false}
               ondblclick={({target})=>console.log(target.getCenter(),'pöö')}
-              //zoomControl={true}
+              zoomControl={true}
             >
               <TileLayer
                 url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'

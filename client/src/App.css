@@ -44,10 +44,18 @@
 #sidebarButton {
   position: fixed;
   top: 100px;
-  left: 10px;
+  left: 12px;
   z-index: 1;
-  font-size: 26px;
+  font-size: 36px;
+  border-style: solid;
+  border-radius:7px;
+  border-width:1px;
+  padding:7px
   /* margin-top: '4px'; */
+}
+#sidebarButton:hover{
+  color:white;
+  background-color: gray;
 }
 
 #distanceOnMap {
@@ -116,7 +124,7 @@
 .trams {
   z-index: 10;
 }
-.stops {
+.stops { 
   z-index: 5;
 }
 
