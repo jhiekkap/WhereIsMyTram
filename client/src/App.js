@@ -2,7 +2,12 @@ import React, { useEffect } from 'react'
 import { setTrams } from './reducers/tramsReducer'
 import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
-import { setPosition, setCenter } from './reducers/settingsReducer'
+import {
+  setPosition,
+  setCenter,
+  setPossibleRoutes,
+} from './reducers/settingsReducer'
+import checkRoutes from './utils/queryCheck'
 import './App.css'
 import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
@@ -15,7 +20,16 @@ const client = new ApolloClient({
 
 const RADIUS = 500
 
-const App = ({ setTrams, setStops, setMyStop, settings, setPosition, setCenter }) => {
+const App = ({
+  setTrams,
+  setStops,
+  myStop,
+  setMyStop,
+  settings,
+  setPosition,
+  setCenter,
+  setPossibleRoutes,
+}) => {
   useEffect(() => {
     if ('geolocation' in navigator) {
       console.log('geolocation is available')
@@ -32,7 +46,7 @@ const App = ({ setTrams, setStops, setMyStop, settings, setPosition, setCenter }
           location
         )
         setPosition(location)
-        if(settings.geoLocation){
+        if (settings.geoLocation) {
           setCenter(location)
         }
         const query = gql`
@@ -40,7 +54,7 @@ const App = ({ setTrams, setStops, setMyStop, settings, setPosition, setCenter }
     stopsByRadius(lat:${location.lat}, lon:${location.lng}, radius:${RADIUS}) {
       edges {
         node {
-          stop {
+          stop { 
             id
             gtfsId
             name
@@ -76,12 +90,24 @@ const App = ({ setTrams, setStops, setMyStop, settings, setPosition, setCenter }
         .then(response => response.json())
         .then(body => {
           setTrams(body)
+          //console.log('TRAMS:', body)
         })
         .catch(error => {
           console.log(error)
         })
     }, 1000)
   }, [])
+
+  useEffect(() => {
+    console.log('myStop changed:', myStop)
+    if (myStop) {
+      checkRoutes(myStop.gtfsId).then(routes => {
+        let routeNumbers = routes.data.stop.routes.map(route => route.gtfsId.slice(4))
+        console.log('routes going through this stop:', routeNumbers)
+        setPossibleRoutes(routeNumbers)
+      })
+    }
+  }, [myStop])
 
   return (
     <div>
@@ -94,6 +120,7 @@ const App = ({ setTrams, setStops, setMyStop, settings, setPosition, setCenter }
 const mapStateToProps = state => {
   return {
     settings: state.settings,
+    myStop: state.myStop,
   }
 }
 
@@ -103,6 +130,7 @@ const mapDispatchToProps = {
   setMyStop,
   setPosition,
   setCenter,
+  setPossibleRoutes,
 }
 
 export default connect(

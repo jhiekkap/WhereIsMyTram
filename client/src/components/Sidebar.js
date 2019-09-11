@@ -36,7 +36,7 @@ import distance, {
   sortStopNames,
 } from '../utils/helpers'
 //import { SoundEffect } from './SoundEffect'
-import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
+//import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
 
 //const horn = {}
 
@@ -151,7 +151,7 @@ const Sidebar = ({
     setShow('menu')
     setMyTram('')
     setDurations([])
-    setAvgDuration(0)
+    setAvgDuration(0) 
     setDistance(0)
     setSpeeds([])
     setLine('')
@@ -210,16 +210,23 @@ const Sidebar = ({
 
   //const [tramsInOrder, lineNumbers, stopsInOrder] = sortEverything(trams, stops)
   //console.log(tramsInOrder, lineNumbers, stopsInOrder)
-  const tramsInOrder = [...trams]
+  const tramsInOrder = [...trams].filter(tram => settings.possibleRoutes.includes(tram.VP.route))
   tramsInOrder.sort(sortByVehicleNumbers)
 
   const lineNumbers = []
-  trams.forEach(tram => {
+  tramsInOrder.forEach(tram => {
     if (!lineNumbers.includes(tram.VP.desi)) {
       lineNumbers.push(tram.VP.desi)
     }
   })
+  const lineNumbersForTourists = []
+  trams.forEach(tram => {
+    if (!lineNumbersForTourists.includes(tram.VP.desi)) {
+      lineNumbersForTourists.push(tram.VP.desi)
+    }
+  })
   lineNumbers.sort(sortLineNumbers)
+  lineNumbersForTourists.sort(sortLineNumbers)
 
   const stopsInOrder = [...stops]
   stopsInOrder.sort(sortStopNames)
@@ -429,7 +436,7 @@ const Sidebar = ({
                   Show line
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  {lineNumbers.map((line, i) => (
+                  {lineNumbersForTourists.map((line, i) => (
                     <Dropdown.Item key={i} onClick={() => handleShowLine(line)}>
                       {line}
                     </Dropdown.Item>

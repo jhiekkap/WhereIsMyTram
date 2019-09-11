@@ -8,15 +8,16 @@ const settingsReducer = (
     showSidebar: false,
     showSidebarOpenButton: true,
     init: true,
-    avgDuration: 0, 
+    avgDuration: 0,
     line: '',
     distance: 0,
     alarm: false,
     intro: false,
-    geoLocation: false,
+    geoLocation: true,
     alarmDistance: 50,
     position: { lat: 60.1698, lng: 24.9395 },
     show: 'menu',
+    possibleRoutes: [],
   },
   action
 ) => {
@@ -51,8 +52,10 @@ const settingsReducer = (
       return { ...state, geoLocation: action.data }
     case 'SET_ALARM_DISTANCE':
       return { ...state, alarmDistance: action.data }
-      case 'SET_SHOW':
-          return { ...state, show: action.data }
+    case 'SET_SHOW':
+      return { ...state, show: action.data }
+    case 'SET_POSSIBLE_ROUTES':
+      return { ...state, possibleRoutes: action.data }
     default:
       return state
   }
@@ -226,6 +229,15 @@ export const setShow = boolean => {
     dispatch({
       type: 'SET_SHOW',
       data: boolean,
+    })
+  }
+}
+
+export const setPossibleRoutes = routes => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_POSSIBLE_ROUTES',
+      data: routes,
     })
   }
 }
