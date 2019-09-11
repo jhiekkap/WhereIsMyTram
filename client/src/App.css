@@ -119,3 +119,7 @@
 .stops {
   z-index: 5;
 }
+
+.settingsButton {
+  margin: 10px;
+}

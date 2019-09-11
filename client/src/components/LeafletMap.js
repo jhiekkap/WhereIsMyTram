@@ -69,12 +69,13 @@ const LeafletMap = ({
   }
 
   const handleChooseTram = e => {
-    console.log('valitse nro: ', e.target.value)
+    console.log('valitse nro: ', e.target.value, trams)
     let chosenTram = trams.find(tram => tram.VP.veh == e.target.value)
     setMyTram(chosenTram)
     setLine(chosenTram.VP.desi)
     setShowTrams([chosenTram])
     setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
+    setZoom(16) 
   }
 
   const handleChangeZoom = e => {
@@ -91,6 +92,7 @@ const LeafletMap = ({
 
   const handleCenterButton = () => {
     setCenter(settings.geoLocation ? settings.position : settings.defaultCenter)
+    setZoom(16)
     closeSidebar()
   }
 
@@ -161,10 +163,10 @@ const LeafletMap = ({
           position={{ lat: stop.lat, lng: stop.lon }}
           zIndexOffset={-500}
         >
-          <Popup closeButton={false} autoPan={false}>
+          {/* <Popup closeButton={false} autoPan={false}>
             <br /> {stop.name}
             <br /> {stop.gtfsId}
-          </Popup>
+          </Popup> */}
         </Marker>
       ))
     )
@@ -244,6 +246,8 @@ const LeafletMap = ({
               zoomSnap={0.1}
               minZoom={12}
               maxZoom={19}
+              doubleClickZoom={false}
+              ondblclick={({target})=>console.log(target.getCenter(),'pöö')}
               //zoomControl={true}
             >
               <TileLayer

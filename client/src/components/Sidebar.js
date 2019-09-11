@@ -5,7 +5,7 @@ import { setMyStop } from '../reducers/myStopReducer'
 import {
   setCenter,
   setZoom,
-  setShowAlert, 
+  setShowAlert,
   closeSidebar,
   toggleAlertVariant,
   setAvgDuration,
@@ -66,8 +66,7 @@ const Sidebar = ({
   setShow,
 }) => {
   const [speeds, setSpeeds] = useState([])
-  const [durations, setDurations] = useState([])
-  //const [show, setShow] = useState('menu')
+  const [durations, setDurations] = useState([]) 
   const [init, setInit] = useState(true)
 
   const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
@@ -79,7 +78,7 @@ const Sidebar = ({
     horn.play()
   }  */
 
-  useEffect(() => { 
+  useEffect(() => {
     if (trams.length > 0 && init) {
       console.log('initialized!')
       setShowTrams(trams)
@@ -157,7 +156,7 @@ const Sidebar = ({
     setSpeeds([])
     setLine('')
     setShowTrams(trams)
-    setCenter({ lat: 60.1698, lng: 24.9395 })
+    setCenter(settings.geoLocation ? settings.position : settings.defaultCenter)
     setZoom(16)
   }
 
@@ -169,7 +168,7 @@ const Sidebar = ({
   const handleChooseMyTram = veh => {
     console.log('TRAM CHOSEN: ', veh)
     if (veh !== 'reset') {
-      let chosenTram = trams.find(tram => tram.VP.veh == veh)
+      let chosenTram = trams.find(tram => tram.VP.veh === veh)
       console.log('chosen Tram:', chosenTram)
       setMyTram(chosenTram)
       setShowTrams([chosenTram])
@@ -177,6 +176,7 @@ const Sidebar = ({
         setShowTrams(showTrams.concat(chosenTram))
       } */
       setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
+      setZoom(16)
     } else {
       setAlarm(false)
       setMyTram('')
@@ -185,15 +185,18 @@ const Sidebar = ({
   }
 
   const showMyTram = () => {
-    let chosenTram = trams.find(tram => tram.VP.veh == myTram.VP.veh)
+    let chosenTram = trams.find(tram => tram.VP.veh === myTram.VP.veh)
     setCenter({ lat: chosenTram.VP.lat, lng: chosenTram.VP.long })
     console.log('SHOW MY TRAM', chosenTram)
     setShowTrams([chosenTram])
+    setZoom(16)
   }
 
   const handleShowLine = line => {
     console.log('LINE CHOSEN: ', line)
     let tramsToShow = trams.filter(tram => tram.VP.desi == line)
+    setZoom(13)
+    setCenter(settings.defaultCenter)
     if (myTram.VP && myTram.VP.desi !== line) {
       tramsToShow.push(myTram)
     }
@@ -204,7 +207,7 @@ const Sidebar = ({
     console.log('STOP CHOSEN: ', stopsGtfsId)
     setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
   }
-  
+
   //const [tramsInOrder, lineNumbers, stopsInOrder] = sortEverything(trams, stops)
   //console.log(tramsInOrder, lineNumbers, stopsInOrder)
   const tramsInOrder = [...trams]
@@ -254,7 +257,7 @@ const Sidebar = ({
                   variant={!settings.line ? 'outline-danger' : buttonVariant}
                   id='dropdown-basic'
                 >
-                  {settings.line != ''
+                  {settings.line !== ''
                     ? 'Line: ' + settings.line
                     : 'Choose line'}
                 </Dropdown.Toggle>
@@ -282,7 +285,7 @@ const Sidebar = ({
             </Col>
           </Row>
 
-          {settings.line != '' && (
+          {settings.line !== '' && (
             <Row>
               <Col xs={12}>
                 <Dropdown>
@@ -462,11 +465,11 @@ const Sidebar = ({
 
       {settings.show === 'settings' && (
         <Container>
-          <Form >
+          <Form>
             <Row>
               <Col>
-                <Form.Check 
-                  onChange={()=> setGeolocation(!settings.geoLocation)}
+                <Form.Check
+                  onChange={() => setGeolocation(!settings.geoLocation)}
                   checked={settings.geoLocation}
                   type='checkbox'
                   id='geolocation'
@@ -474,21 +477,29 @@ const Sidebar = ({
                 />
               </Col>
             </Row>
-            </Form>
-            <Row>
-              <Col>
-                <DropdownButton
-                  id='alarmDistance' 
-                  title={`Alarm distance ${settings.alarmDistance} m`}
-                >
-                  {[50,100,150,200,250].map((meters, i) => <Dropdown.Item key={i} onClick={()=>setAlarmDistance(meters)}>{meters} m</Dropdown.Item>)} 
-                </DropdownButton>
-              </Col>
-            </Row>
-         
+          </Form>
           <Row>
             <Col>
-              <Button onClick={() => setShow('menu')}>GO BACK TO MENU</Button>
+              <DropdownButton
+                className='settingsButton'
+                id='alarmDistance'
+                title={`Alarm distance ${settings.alarmDistance} m`}
+              >
+                {[50, 100, 150, 200, 250].map((meters, i) => (
+                  <Dropdown.Item
+                    key={i}
+                    onClick={() => setAlarmDistance(meters)}
+                  >
+                    {meters} m
+                  </Dropdown.Item>
+                ))}
+              </DropdownButton>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              <Button className='settingsButton' onClick={() => setShow('menu')}>GO BACK TO MENU</Button>
             </Col>
           </Row>
         </Container>

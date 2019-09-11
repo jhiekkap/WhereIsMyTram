@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { setTrams } from './reducers/tramsReducer'
 import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
-import { setPosition } from './reducers/settingsReducer'
+import { setPosition, setCenter } from './reducers/settingsReducer'
 import './App.css'
 import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
@@ -15,7 +15,7 @@ const client = new ApolloClient({
 
 const RADIUS = 500
 
-const App = ({ setTrams, setStops, setMyStop, settings, setPosition }) => {
+const App = ({ setTrams, setStops, setMyStop, settings, setPosition, setCenter }) => {
   useEffect(() => {
     if ('geolocation' in navigator) {
       console.log('geolocation is available')
@@ -32,6 +32,9 @@ const App = ({ setTrams, setStops, setMyStop, settings, setPosition }) => {
           location
         )
         setPosition(location)
+        if(settings.geoLocation){
+          setCenter(location)
+        }
         const query = gql`
   {
     stopsByRadius(lat:${location.lat}, lon:${location.lng}, radius:${RADIUS}) {
@@ -99,6 +102,7 @@ const mapDispatchToProps = {
   setStops,
   setMyStop,
   setPosition,
+  setCenter,
 }
 
 export default connect(
