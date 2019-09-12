@@ -54,6 +54,7 @@ const LeafletMap = ({
   setShowSidebarOpenButton,
   setIntro,
   setShow,
+  tramRoutesOnMap,
 }) => {
   const [playHorn, setPlayHorn] = useState(false)
   const initHorn = () => {
@@ -86,14 +87,14 @@ const LeafletMap = ({
   const handleChangeZoom = e => {
     setZoom(e.target._zoom)
     //setCenter({lat:e.target._animateToCenter.lat, lng:e.target._animateToCenter.lng})
-   /*  console.log(
+    /*  console.log(
       'ZOOM',
       e.target._zoom,
       'CENTER',
       e.target._animateToCenter.lat,
       e.target._animateToCenter.lng
     )*/
-  } 
+  }
 
   const handleCenterButton = () => {
     setCenter(settings.geoLocation ? settings.position : settings.defaultCenter)
@@ -122,11 +123,12 @@ const LeafletMap = ({
         <br />
         {tram.drst === 0 ? 'doors closed' : 'doors open'}
         <br />
-        {((!myTram || (myTram && myTram.veh !== tram.veh)) && settings.possibleRoutes.includes(tram.route)) && (
-          <Button value={tram.veh} onClick={handleChooseTram}>
-            CHOOSE
-          </Button>
-        )}
+        {(!myTram || (myTram && myTram.veh !== tram.veh)) &&
+          settings.possibleRoutes.includes(tram.route) && (
+            <Button value={tram.veh} onClick={handleChooseTram}>
+              CHOOSE
+            </Button>
+          )}
       </Popup>
     )
   }
@@ -180,6 +182,25 @@ const LeafletMap = ({
           </Popup> */}
         </Marker>
       ))
+    )
+  }
+
+  const showLineOnMap = () => {
+    //console.log('tramRoutesOnMap', tramRoutesOnMap)
+    //console.log('showLine', settings.showLine)
+    const coordinates = tramRoutesOnMap.find(
+      route => route.shortName == settings.showLine
+    ).patterns[0].geometry
+    return (
+      <div>
+        {coordinates.map((point, i) => (
+          <Marker
+            key={i}
+            icon={stopIcon(14)}
+            position={{ lat: point.lat, lng: point.lon }}
+          ></Marker>
+        ))}
+      </div>
     )
   }
 
@@ -238,9 +259,7 @@ const LeafletMap = ({
                   id='tramButton'
                   src={tramButton}
                   onClick={() => {
-                    let chosenTram = trams.find(
-                      tram => tram.veh == myTram.veh
-                    )
+                    let chosenTram = trams.find(tram => tram.veh == myTram.veh)
                     setCenter({
                       lat: chosenTram.lat,
                       lng: chosenTram.long,
@@ -277,6 +296,7 @@ const LeafletMap = ({
                 />
                 {ShowChosenTrams()}
                 {showStops()}
+                {/* settings.showLine && showLineOnMap() */}
                 <Marker
                   icon={driverIcon(settings.zoom)}
                   position={settings.position}
@@ -325,6 +345,7 @@ const LeafletMap = ({
 const mapStateToProps = state => {
   return {
     trams: state.trams.trams,
+    tramRoutesOnMap: state.trams.tramRoutesOnMap,
     showTrams: state.showTrams,
     //showSidebar: state.showSidebar,
     showSidebarOpenButton: state.showSidebarOpenButton,

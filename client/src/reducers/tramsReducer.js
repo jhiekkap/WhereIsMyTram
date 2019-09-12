@@ -18,11 +18,11 @@ export const setTrams = trams => {
   }
 }
 
-export const setTramRoutesOnMap = trams => {
+export const setTramRoutesOnMap = tramRoutes => { 
   return dispatch => {
     dispatch({
       type: 'SET_TRAM_ROUTES_ON_MAP',
-      data: trams,
+      data: tramRoutes,
     })
   }
 }

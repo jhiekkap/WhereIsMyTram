@@ -16,6 +16,7 @@ import {
   setGeolocation,
   setAlarmDistance,
   setShow,
+  setShowLine, 
 } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import {
@@ -64,6 +65,7 @@ const Sidebar = ({
   setGeolocation,
   setAlarmDistance,
   setShow,
+  setShowLine,
 }) => {
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
@@ -200,6 +202,7 @@ const Sidebar = ({
     if (myTram && myTram.desi !== line) {
       tramsToShow.push(myTram)
     }
+    setShowLine(line)
     setShowTrams(tramsToShow)
   }
 
@@ -568,6 +571,7 @@ const mapDispatchToProps = {
   setGeolocation,
   setAlarmDistance,
   setShow,
+  setShowLine,
 }
 
 export default connect(
