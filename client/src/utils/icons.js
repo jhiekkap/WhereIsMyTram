@@ -53,8 +53,8 @@ export const myTramIcon = zoom => new L.Icon({
 })
 
 const driverIcon = zoom => new L.Icon({
-    iconUrl: require('../img/iconfinder_029_-_Gingerbread_Man_2793032.png'),
-    iconRetinaUrl: require('../img/iconfinder_029_-_Gingerbread_Man_2793032.png'),
+    iconUrl: require('../img/icons8-policeman-female-48.png'),
+    iconRetinaUrl: require('../img/icons8-policeman-female-48.png'),
     /* iconAnchor: [5, 55],
     popupAnchor: [10, -44], */
     iconSize: [Math.round(70 - (19 - zoom) * 8), Math.round(70 - (19 - zoom) * 8)],

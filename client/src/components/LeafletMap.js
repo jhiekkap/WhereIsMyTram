@@ -147,7 +147,7 @@ const LeafletMap = ({
             myTram && myTram.veh === tram.veh
               ? myTramIcon(settings.zoom)
               : tramIcon(settings.zoom)
-          }
+          } 
           position={{
             lat: tram.lat,
             lng: tram.long,
@@ -185,7 +185,7 @@ const LeafletMap = ({
     )
   }
 
-  const showLineOnMap = () => {
+  /* const showLineOnMap = () => {
     //console.log('tramRoutesOnMap', tramRoutesOnMap)
     //console.log('showLine', settings.showLine)
     const coordinates = tramRoutesOnMap.find(
@@ -202,7 +202,7 @@ const LeafletMap = ({
         ))}
       </div>
     )
-  }
+  } */
 
   const style = settings.showSidebar
     ? { marginLeft: '20px' }
