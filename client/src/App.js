@@ -55,7 +55,7 @@ const App = ({
       setTramRoutesOnMap(response.data.routes)
     })
   }, [])
-
+ 
   useEffect(() => {
     if ('geolocation' in navigator) {
       console.log('geolocation is available')
