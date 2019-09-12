@@ -71,6 +71,7 @@ const LeafletMap = ({
   const handleChooseTram = e => {
     console.log('valitse nro: ', e.target.value, trams)
     let chosenTram = trams.find(tram => tram.veh == e.target.value)
+    console.log('CHOSEN TRAM:', chosenTram)
     if (settings.possibleRoutes.includes(chosenTram.route)) {
       setMyTram(chosenTram)
       setLine(chosenTram.desi)
@@ -85,14 +86,14 @@ const LeafletMap = ({
   const handleChangeZoom = e => {
     setZoom(e.target._zoom)
     //setCenter({lat:e.target._animateToCenter.lat, lng:e.target._animateToCenter.lng})
-    console.log(
+   /*  console.log(
       'ZOOM',
       e.target._zoom,
       'CENTER',
       e.target._animateToCenter.lat,
       e.target._animateToCenter.lng
-    )
-  }
+    )*/
+  } 
 
   const handleCenterButton = () => {
     setCenter(settings.geoLocation ? settings.position : settings.defaultCenter)
@@ -323,7 +324,7 @@ const LeafletMap = ({
 
 const mapStateToProps = state => {
   return {
-    trams: state.trams,
+    trams: state.trams.trams,
     showTrams: state.showTrams,
     //showSidebar: state.showSidebar,
     showSidebarOpenButton: state.showSidebarOpenButton,

@@ -32,3 +32,21 @@ const query = gql`
   `
 
 //  pysäkin linjat
+
+const tramRoutesQuery = gql`
+
+{
+  routes(transportModes: TRAM) {
+    gtfsId
+    shortName
+    longName
+    mode
+    patterns{
+      geometry {
+        lat
+        lon
+      }
+    }
+  }
+}
+`

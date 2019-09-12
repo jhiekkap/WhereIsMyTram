@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { setTrams } from './reducers/tramsReducer'
+import { setTrams, setTramRoutesOnMap } from './reducers/tramsReducer'
 import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
 import {
@@ -29,7 +29,32 @@ const App = ({
   setPosition,
   setCenter,
   setPossibleRoutes,
+  setTramRoutesOnMap,
 }) => {
+ 
+  useEffect(() => {
+    let query = gql`
+      {
+        routes(transportModes: TRAM) {
+          gtfsId
+          shortName
+          longName
+          mode
+          patterns {
+            geometry {
+              lat
+              lon
+            }
+          }
+        }
+      }
+    `
+    client.query({ query }).then(response => {
+      console.log('GRAPHQL - ALLROUTES - QUERY!')
+      console.log(response.data.routes)
+      setTramRoutesOnMap(response.data.routes)
+    })
+  }, [])
 
   useEffect(() => {
     if ('geolocation' in navigator) {
@@ -50,7 +75,7 @@ const App = ({
         if (settings.geoLocation) {
           setCenter(location)
         }
-        const query = gql`
+        let query = gql`
   {
     stopsByRadius(lat:${location.lat}, lon:${location.lng}, radius:${RADIUS}) {
       edges {
@@ -103,7 +128,9 @@ const App = ({
     console.log('myStop changed:', myStop)
     if (myStop) {
       checkRoutes(myStop.gtfsId).then(routes => {
-        let routeNumbers = routes.data.stop.routes.map(route => route.gtfsId.slice(4))
+        let routeNumbers = routes.data.stop.routes.map(route =>
+          route.gtfsId.slice(4)
+        )
         console.log('routes going through this stop:', routeNumbers)
         setPossibleRoutes(routeNumbers)
       })
@@ -132,6 +159,7 @@ const mapDispatchToProps = {
   setPosition,
   setCenter,
   setPossibleRoutes,
+  setTramRoutesOnMap,
 }
 
 export default connect(

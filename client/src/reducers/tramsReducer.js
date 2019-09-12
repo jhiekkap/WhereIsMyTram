@@ -1,7 +1,9 @@
-const tramsReducer = (state = [], action) => {
+const tramsReducer = (state = { trams: [], tramRoutesOnMap: [] }, action) => {
   switch (action.type) {
     case 'SET_TRAMS':
-      return action.data 
+      return { ...state, trams: action.data }
+    case 'SET_TRAM_ROUTES_ON_MAP':
+      return { ...state, tramRoutesOnMap: action.data }
     default:
       return state
   }
@@ -15,6 +17,14 @@ export const setTrams = trams => {
     })
   }
 }
- 
+
+export const setTramRoutesOnMap = trams => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_TRAM_ROUTES_ON_MAP',
+      data: trams,
+    })
+  }
+}
 
 export default tramsReducer

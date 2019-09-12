@@ -13,7 +13,7 @@ const settingsReducer = (
     distance: 0,
     alarm: false,
     intro: false,
-    geoLocation: true,
+    geoLocation: false,
     alarmDistance: 50,
     position: { lat: 60.1698, lng: 24.9395 },
     show: 'menu',

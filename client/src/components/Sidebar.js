@@ -541,7 +541,7 @@ const Sidebar = ({
 
 const mapStateToProps = state => {
   return {
-    trams: state.trams,
+    trams: state.trams.trams,
     showTrams: state.showTrams,
     showSidebar: state.showSidebar,
     stops: state.stops,
