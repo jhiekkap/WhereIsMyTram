@@ -19,6 +19,7 @@ const settingsReducer = (
     show: 'menu',
     possibleRoutes: [],
     showLine: '',
+    showStopPopup: '',
   },
   action
 ) => {
@@ -59,6 +60,8 @@ const settingsReducer = (
       return { ...state, possibleRoutes: action.data }
     case 'SET_SHOW_LINE':
       return { ...state, showLine: action.data }
+    case 'SET_SHOW_STOP_POPUP':
+      return { ...state, showStopPopup: action.data }
     default:
       return state
   }
@@ -250,6 +253,15 @@ export const setShowLine = line => {
     dispatch({
       type: 'SET_SHOW_LINE',
       data: line,
+    })
+  }
+}
+
+export const setShowStopPopup = stop => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_SHOW_STOP_POPUP',
+      data: stop,
     })
   }
 }

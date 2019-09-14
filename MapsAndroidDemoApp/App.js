@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,32 +16,14 @@ import {
   StatusBar,
 } from 'react-native';
 
-import MapView, {Marker} from 'react-native-maps';
+import Modaali from './Components/Modaali';
+import Map from './Components/Map';
 
 const App = () => {
-
-  const[pin, setPin] = useState({latitude: 37.78825, longitude: -122.4324})
-
   return (
     <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        mapType="standard"
-        zoomControlEnabled={true}>
-        <Marker draggable={true}
-          coordinate={pin}
-          title="pöö"
-          description="asiaa"
-          image={require('./rosaPin.png')}
-          onDragEnd={(e) => setPin({latitude:e.nativeEvent.coordinate.latitude, longitude:e.nativeEvent.coordinate.longitude})}
-        />
-      </MapView>
+      <Modaali />
+      <Map />
     </View>
   );
 };

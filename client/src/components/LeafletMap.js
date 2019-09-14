@@ -13,6 +13,7 @@ import {
   setShowSidebarOpenButton,
   setIntro,
   setShow,
+  setShowStopPopup,
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
@@ -55,6 +56,7 @@ const LeafletMap = ({
   setIntro,
   setShow,
   tramRoutesOnMap,
+  setShowStopPopup,
 }) => {
   const [playHorn, setPlayHorn] = useState(false)
   const initHorn = () => {
@@ -100,6 +102,15 @@ const LeafletMap = ({
     setCenter(settings.geoLocation ? settings.position : settings.defaultCenter)
     setZoom(16)
     closeSidebar()
+  }
+
+  const handleSetMyStop = (stop) => {
+    setMyStop(stop)
+    setShowStopPopup(stop)
+    setTimeout(()=>{
+      setShowStopPopup('')
+    },3000)
+
   }
 
   const popUp = tram => {
@@ -166,7 +177,7 @@ const LeafletMap = ({
       stops.map((stop, i) => (
         <Marker
           className='stops'
-          onClick={() => setMyStop(stop)}
+          onClick={() => handleSetMyStop(stop)}
           key={i}
           icon={
             stop.id === myStop.id
@@ -176,10 +187,10 @@ const LeafletMap = ({
           position={{ lat: stop.lat, lng: stop.lon }}
           zIndexOffset={-500}
         >
-          {/* <Popup closeButton={false} autoPan={false}>
+           {(settings.showStopPopup.gtfsId === stop.gtfsId) && <Popup closeButton={false} autoPan={false}>
             <br /> {stop.name}
             <br /> {stop.gtfsId}
-          </Popup> */}
+          </Popup>} 
         </Marker>
       ))
     )
@@ -370,6 +381,7 @@ const mapDispatchToProps = {
   setShowSidebarOpenButton,
   setIntro,
   setShow,
+  setShowStopPopup,
 }
 
 export default connect(

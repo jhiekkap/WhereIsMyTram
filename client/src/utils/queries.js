@@ -50,3 +50,16 @@ const tramRoutesQuery = gql`
   }
 }
 `
+
+const tramStopsQuery = gql`
+{
+  routes(transportModes: TRAM) {
+    shortName
+    longName
+    stops {
+      lat
+      lon
+    }
+  }
+}
+`

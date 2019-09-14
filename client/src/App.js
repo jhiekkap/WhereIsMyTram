@@ -34,25 +34,21 @@ const App = ({
  
   useEffect(() => {
     let query = gql`
-      {
-        routes(transportModes: TRAM) {
-          gtfsId
-          shortName
-          longName
-          mode
-          patterns {
-            geometry {
-              lat
-              lon
-            }
-          }
+    {
+      routes(transportModes: TRAM) {
+        shortName
+        longName
+        stops {
+          lat
+          lon
         }
       }
+    }
     `
     client.query({ query }).then(response => {
       console.log('GRAPHQL - ALLROUTES - QUERY!')
       console.log(response.data.routes)
-      setTramRoutesOnMap(response.data.routes)
+      //setTramRoutesOnMap(response.data.routes)
     })
   }, [])
  
