@@ -31,12 +31,12 @@ import {
 } from 'react-bootstrap'
 import distance, {
   printDuration,
-  /* sortEverything,
-  countDuration, */
+  //sortEverything,
+  countDuration,
   sortByVehicleNumbers,
   sortLineNumbers,
   sortStopNames,
-} from '../utils/helpers' 
+} from '../utils/helpers'
 //import { SoundEffect } from './SoundEffect'
 //import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
 
@@ -107,24 +107,10 @@ const Sidebar = ({
           speeds.length
         let duration = distanceNow / avgSpeed
         setDurations(durations.concat(duration))
-        //let avgDuration = countDuration(duration, durations)
-        let avgDuration = duration
-        let sum = 0
-        let counter = 0
-        if (durations.length > 1) {
-          for (let i = durations.length - 1; i >= 0; i--) {
-            sum += durations[i]
-            counter++
-            if (counter > 9) {
-              break
-            }
-          }
-          avgDuration = sum / counter
-        }
+        let avgDuration = countDuration(duration, durations)
         if (durations.length > 4 && speed > 0) {
           setAvgDuration(avgDuration)
         }
-
         console.log(
           'DISTANCE NOW: ',
           distanceNow,
@@ -176,9 +162,6 @@ const Sidebar = ({
       console.log('chosen Tram:', chosenTram)
       setMyTram(chosenTram)
       setShowTrams([chosenTram])
-      /* if (!showTrams.map(tram => tram.veh).includes(chosenTram.veh)) {
-        setShowTrams(showTrams.concat(chosenTram))
-      } */
       setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
       setZoom(16)
     } else {
@@ -212,14 +195,11 @@ const Sidebar = ({
   }
 
   const handleChooseStop = stopsGtfsId => {
-  if(!myTram) {
+    if (!myTram) {
       console.log('STOP CHOSEN: ', stopsGtfsId)
-    setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
+      setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
+    }
   }
-  }
-
-  //const [tramsInOrder, lineNumbers, stopsInOrder] = sortEverything(trams, stops)
-  //console.log(tramsInOrder, lineNumbers, stopsInOrder)
   const tramsInOrder = [...trams].filter(tram =>
     settings.possibleRoutes.includes(tram.route)
   )
@@ -251,72 +231,43 @@ const Sidebar = ({
         <Container>
           <Row>
             <Col xs={12}>
-              <Dropdown>
-                <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
-                  {!myStop ? 'Choose stop' : myStop.name + ' ' + myStop.gtfsId}
-                </Dropdown.Toggle>
-                {!myTram && <Dropdown.Menu>
-                  {stopsInOrder.map((stop, i) => (
-                    <Dropdown.Item
-                      key={i}
-                      onClick={() => handleChooseStop(stop.gtfsId)}
-                    >
-                      {stop.name} {stop.gtfsId}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>}
-              </Dropdown>
+              {!myTram && !settings.line ? (
+                <Dropdown>
+                  <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
+                    {!myStop
+                      ? 'Choose stop'
+                      : myStop.name + ' ' + myStop.gtfsId}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {stopsInOrder.map((stop, i) => (
+                      <Dropdown.Item
+                        key={i}
+                        onClick={() => handleChooseStop(stop.gtfsId)}
+                      >
+                        {stop.name} {stop.gtfsId}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              ) : (
+                <Button variant={buttonVariant}>
+                  {myStop.name} {myStop.gtfsId}
+                </Button>
+              )}
             </Col>
           </Row>
 
           <Row>
             <Col xs={12}>
-              <Dropdown>
-                <Dropdown.Toggle
-                  variant={!settings.line ? 'outline-danger' : buttonVariant}
-                  id='dropdown-basic'
-                >
-                  {settings.line !== ''
-                    ? 'Line: ' + settings.line
-                    : 'Choose line'}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {myTram && (
-                    <Dropdown.Item onClick={() => handleChooseMyTram('reset')}>
-                      reset
-                    </Dropdown.Item>
-                  )}
-                  {lineNumbers.map((line, i) => (
-                    <Dropdown.Item
-                      key={i}
-                      onClick={() => {
-                        setLine(line)
-                        if (myTram) {
-                          setMyTram('')
-                        }
-                      }}
-                    >
-                      {line}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-            </Col>
-          </Row>
-
-          {settings.line !== '' && (
-            <Row>
-              <Col xs={12}>
+              {!settings.alarm ? (
                 <Dropdown>
                   <Dropdown.Toggle
-                    variant={
-                      settings.line && !myTram
-                        ? 'outline-danger'
-                        : buttonVariant
-                    }
+                    variant={!settings.line ? 'outline-danger' : buttonVariant}
                     id='dropdown-basic'
                   >
-                    {myTram ? 'Vehicle: ' + myTram.veh : 'Choose vehicle'}
+                    {settings.line !== ''
+                      ? 'Line: ' + settings.line
+                      : 'Choose line'}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     {myTram && (
@@ -326,23 +277,71 @@ const Sidebar = ({
                         reset
                       </Dropdown.Item>
                     )}
-                    {tramsInOrder
-                      .filter(
-                        tram =>
-                          tram.desi == settings.line ||
-                          tram.desi == settings.line + 'T' ||
-                          tram.desi == settings.line + 'H'
-                      )
-                      .map((tram, i) => (
-                        <Dropdown.Item
-                          key={i}
-                          onClick={() => handleChooseMyTram(tram.veh)}
-                        >
-                          {tram.veh}
-                        </Dropdown.Item>
-                      ))}
+                    {lineNumbers.map((line, i) => (
+                      <Dropdown.Item
+                        key={i}
+                        onClick={() => {
+                          setLine(line)
+                          setShowLine('')
+                          if (myTram) {
+                            setMyTram('')
+                          }
+                        }}
+                      >
+                        {line}
+                      </Dropdown.Item>
+                    ))}
                   </Dropdown.Menu>
                 </Dropdown>
+              ) : (
+                <Button variant={buttonVariant}>Line: {settings.line}</Button>
+              )}
+            </Col>
+          </Row>
+
+          {settings.line && (
+            <Row>
+              <Col xs={12}>
+                {!settings.alarm ? (
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      variant={
+                        settings.line && !myTram
+                          ? 'outline-danger'
+                          : buttonVariant
+                      }
+                      id='dropdown-basic'
+                    >
+                      {myTram ? 'Vehicle: ' + myTram.veh : 'Choose vehicle'}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {myTram && (
+                        <Dropdown.Item
+                          onClick={() => handleChooseMyTram('reset')}
+                        >
+                          reset
+                        </Dropdown.Item>
+                      )}
+                      {tramsInOrder
+                        .filter(
+                          tram =>
+                            tram.desi == settings.line ||
+                            tram.desi == settings.line + 'T' ||
+                            tram.desi == settings.line + 'H'
+                        )
+                        .map((tram, i) => (
+                          <Dropdown.Item
+                            key={i}
+                            onClick={() => handleChooseMyTram(tram.veh)}
+                          >
+                            {tram.veh}
+                          </Dropdown.Item>
+                        ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                ) : (
+                  <Button variant={buttonVariant}>Vehicle: {myTram.veh}</Button>
+                )}
               </Col>
             </Row>
           )}
@@ -354,11 +353,33 @@ const Sidebar = ({
                   variant={!settings.alarm ? 'outline-danger' : 'success'}
                   onClick={() => {
                     setAlarm(!settings.alarm)
-                    closeSidebar()
+                    //closeSidebar()
+                    setShowLine('')
                   }}
                 >
                   {!settings.alarm ? 'Set alarm' : 'Alarm off'}
                 </Button>
+              </Col>
+            </Row>
+          )}
+
+          {settings.alarm && (
+            <Row>
+              <Col>
+                <DropdownButton
+                  variant={buttonVariant}
+                  id='alarmDistance'
+                  title={`Alarm distance ${settings.alarmDistance} m`}
+                >
+                  {[50, 100, 150, 200, 250].map((meters, i) => (
+                    <Dropdown.Item
+                      key={i}
+                      onClick={() => setAlarmDistance(meters)}
+                    >
+                      {meters} m
+                    </Dropdown.Item>
+                  ))}
+                </DropdownButton>
               </Col>
             </Row>
           )}
@@ -379,7 +400,13 @@ const Sidebar = ({
           {myTram && (
             <Row>
               <Col>
-                <Button variant={buttonVariant} onClick={() => reset()}>
+                <Button
+                  variant={buttonVariant}
+                  onClick={() => {
+                    reset()
+                    setShowLine('')
+                  }}
+                >
                   Reset
                 </Button>
               </Col>
@@ -394,6 +421,7 @@ const Sidebar = ({
                   onClick={() => {
                     showMyTram()
                     closeSidebar()
+                    setShowLine('')
                   }}
                 >
                   Where's my tram?
@@ -408,6 +436,7 @@ const Sidebar = ({
                 <Button
                   onClick={() => {
                     setShowTrams(trams)
+                    setShowLine('')
                     //setZoom(13)
                     //closeSidebar(false)
                   }}
@@ -421,25 +450,25 @@ const Sidebar = ({
 
           {((!myTram && showTrams.length > 0) ||
             (myTram && showTrams.length > 1)) && (
-              <Row>
-                <Col>
-                  <Button
-                    onClick={() => {
-                      if (!myTram) {
-                        setShowTrams([])
-                      } else {
-                        setShowTrams([
-                          trams.find(tram => tram.veh === myTram.veh),
-                        ])
-                      }
-                    }}
-                    variant={buttonVariant}
-                  >
-                    Hide all trams
+            <Row>
+              <Col>
+                <Button
+                  onClick={() => {
+                    if (!myTram) {
+                      setShowTrams([])
+                    } else {
+                      setShowTrams([
+                        trams.find(tram => tram.veh === myTram.veh),
+                      ])
+                    }
+                  }}
+                  variant={buttonVariant}
+                >
+                  Hide all trams
                 </Button>
-                </Col>
-              </Row>
-            )}
+              </Col>
+            </Row>
+          )}
 
           <Row>
             <Col>
@@ -448,6 +477,11 @@ const Sidebar = ({
                   Show line
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
+                  {settings.showLine && (
+                    <Dropdown.Item onClick={() => handleShowLine('')}>
+                      clear
+                    </Dropdown.Item>
+                  )}
                   {lineNumbersForTourists.map((line, i) => (
                     <Dropdown.Item key={i} onClick={() => handleShowLine(line)}>
                       {line}
@@ -457,25 +491,6 @@ const Sidebar = ({
               </Dropdown>
             </Col>
           </Row>
-
-          {settings.alarm && <Row>
-            <Col>
-              <DropdownButton
-                variant={buttonVariant} 
-                id='alarmDistance'
-                title={`Alarm distance ${settings.alarmDistance} m`}
-              >
-                {[50, 100, 150, 200, 250].map((meters, i) => (
-                  <Dropdown.Item
-                    key={i}
-                    onClick={() => setAlarmDistance(meters)}
-                  >
-                    {meters} m
-                  </Dropdown.Item>
-                ))}
-              </DropdownButton>
-            </Col>
-          </Row>}
 
           <Row>
             <Col>
@@ -492,7 +507,7 @@ const Sidebar = ({
               </Button>
             </Col>
           </Row>
- 
+
           <Row>
             <Col>
               <Button
@@ -505,7 +520,7 @@ const Sidebar = ({
           </Row>
         </Container>
       )}
- 
+
       {settings.show === 'goodbye' && (
         <Container>
           <Row>

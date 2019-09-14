@@ -6,16 +6,16 @@ const distance = (lat1, lon1, lat2, lon2) => {
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos((lat1 * Math.PI) / 180) *
       Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) * 
+      Math.sin(dLon / 2) *
       Math.sin(dLon / 2)
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
   var d = R * c
   /* if (d>1) return d.toFixed(2) +"km";
 	else if (d<=1) return Math.round(d*1000)+"m"; */
-  return Math.round(d*1000)
+  return Math.round(d * 1000)
 }
 
-export const sortByVehicleNumbers = (a, b) => { 
+export const sortByVehicleNumbers = (a, b) => {
   return parseInt(a.veh) < parseInt(b.veh)
     ? -1
     : parseInt(a.veh) > parseInt(b.veh)
@@ -24,41 +24,21 @@ export const sortByVehicleNumbers = (a, b) => {
 }
 
 export const sortLineNumbers = (a, b) => {
-    return parseInt(a) < parseInt(b) ? -1 : parseInt(a) > parseInt(b) ? 1 : 0
-  }
-
-  export const sortStopNames = (a, b) => {
-    return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
-  }
-
-  export const printDuration = (seconds) => { 
-  let min = ''
-  if(seconds > 59){
-    min = `${Math.floor(seconds/ 60)} min `
-  } 
-  return seconds < 10000 && (
-     min + `${(seconds % 60).toFixed(0)} sec`
-  )
+  return parseInt(a) < parseInt(b) ? -1 : parseInt(a) > parseInt(b) ? 1 : 0
 }
 
-/* export const sortEverything = (trams, stops) => {
-  const tramsInOrder = [...trams]
-  tramsInOrder.sort(sortByVehicleNumbers)
+export const sortStopNames = (a, b) => {
+  return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+}
 
-  const lineNumbers = []
-  trams.forEach(tram => {
-    if (!lineNumbers.includes(tram.desi)) {
-      lineNumbers.push(tram.desi)
-    }
-  })
-  lineNumbers.sort(sortLineNumbers)
+export const printDuration = seconds => {
+  let min = ''
+  if (seconds > 59) {
+    min = `${Math.floor(seconds / 60)} min `
+  }
+  return seconds < 10000 && min + `${(seconds % 60).toFixed(0)} sec`
+}
 
-  const stopsInOrder = [...stops]
-  stopsInOrder.sort(sortStopNames)
-
-  return [tramsInOrder, lineNumbers, stopsInOrder] 
-} */
-/* 
 export const countDuration = (duration, durations) => {
   let avgDuration = duration
   let sum = 0
@@ -74,7 +54,6 @@ export const countDuration = (duration, durations) => {
     avgDuration = sum / counter
   }
   return avgDuration
-} */
- 
+}
 
 export default distance

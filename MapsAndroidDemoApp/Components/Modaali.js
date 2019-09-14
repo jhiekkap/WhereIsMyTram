@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Modal,
   Text,
@@ -7,11 +7,15 @@ import {
   StyleSheet,
   Image,
   Button,
+  Picker,
+  Alert,
+  Separator, 
 } from 'react-native';
 import picture from '../img/icon_size_41px.png';
 
 const Modaali = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [language, setLanguage] = useState('js');
 
   return (
     <View style={styles.container}>
@@ -27,7 +31,23 @@ const Modaali = () => {
           <TouchableHighlight onPress={() => setModalVisible(!modalVisible)}>
             <Text style={styles.text}>Close Modal</Text>
           </TouchableHighlight>
+
+          <Picker
+            selectedValue={language}
+            style={{height: 50, width: 150}}
+            onValueChange={(itemValue, itemIndex) => setLanguage(itemValue)}>
+            <Picker.Item label="Java" value="java" />
+            <Picker.Item label="JavaScript" value="js" />
+          </Picker>
+
+          <Button
+            title="Press me"
+            onPress={() => Alert.alert('Simple Button pressed')}
+          />
+
+          
         </View>
+ 
       </Modal>
 
       <Button

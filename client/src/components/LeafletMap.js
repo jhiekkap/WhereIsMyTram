@@ -14,6 +14,7 @@ import {
   setShowSidebarOpenButton,
   setIntro,
   setShow,
+  setShowLine,
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
@@ -58,6 +59,7 @@ const LeafletMap = ({
   setIntro,
   setShow,
   tramRoutesOnMap,
+  setShowLine,
 
 }) => {
   const [playHorn, setPlayHorn] = useState(false)
@@ -83,6 +85,7 @@ const LeafletMap = ({
       setShowTrams([chosenTram])
       setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
       setZoom(16)
+      setShowLine('')
     } else {
       console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
     }
@@ -119,6 +122,7 @@ const LeafletMap = ({
   const handleSetMyStop = (stop) => {
     if(!myTram){ 
       setMyStop(stop)
+      setLine('')
     }
   }
 
@@ -211,12 +215,12 @@ const LeafletMap = ({
   }
 
   const showLineOnMap = () => {
-    console.log('tramRoutesOnMap', tramRoutesOnMap)
+    //console.log('tramRoutesOnMap', tramRoutesOnMap)
     console.log('showLine', settings.showLine)
       const coordinates = tramRoutesOnMap.find(
       route => route.shortName == settings.showLine
     ).stops
-    return (
+    return ( 
       <div>
         {coordinates.map((point, i) => (
           <Marker
@@ -249,7 +253,7 @@ const LeafletMap = ({
               <div
                 id='sidebarButton'
                 variant='outline-dark'
-                //style={{ display: settings.showSidebar ? 'none' : '' }}
+                style={{ display: settings.showSidebar ? 'none' : '' }}
                 onClick={() => openSidebar()}
               >
                 {settings.showSidebarOpenButton ? '☰' : ''}
@@ -321,7 +325,7 @@ const LeafletMap = ({
                 />
                 {ShowChosenTrams()}
                 {showStops()}
-                {settings.showLine && showLineOnMap() } 
+                {settings.showLine && showLineOnMap()} 
                 <Marker
                   icon={driverIcon(settings.zoom)}
                   position={settings.position}
@@ -372,7 +376,7 @@ const mapStateToProps = state => {
     trams: state.trams.trams,
     tramRoutesOnMap: state.trams.tramRoutesOnMap,
     showTrams: state.showTrams,
-    //showSidebar: state.showSidebar,
+    showSidebar: state.showSidebar,
     showSidebarOpenButton: state.showSidebarOpenButton,
     stops: state.stops,
     settings: state.settings,
@@ -396,6 +400,7 @@ const mapDispatchToProps = {
   setIntro,
   setShow,
   setTrams,
+  setShowLine,
 }
 
 export default connect(

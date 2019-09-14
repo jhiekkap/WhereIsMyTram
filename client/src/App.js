@@ -10,15 +10,10 @@ import {
 import checkRoutes from './utils/queryCheck'
 import './App.css'
 import LeafletMap from './components/LeafletMap'
-import Sidebar from './components/Sidebar'
-import ApolloClient, { gql } from 'apollo-boost'
+import Sidebar from './components/Sidebar' 
 import { connect } from 'react-redux'
-
-const client = new ApolloClient({
-  uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
-})
-
-const RADIUS = 500
+import client, { tramStopsQuery, stopsByRadiusQuery } from './utils/queries'
+ const RADIUS = 500
 
 const App = ({
   setTrams,
@@ -32,20 +27,8 @@ const App = ({
   setTramRoutesOnMap,
 }) => {
  
-  useEffect(() => {
-    let query = gql`
-    {
-      routes(transportModes: TRAM) {
-        shortName
-        longName
-        stops {
-          lat
-          lon
-        }
-      }
-    }
-    `
-    client.query({ query }).then(response => {
+  useEffect(() => { 
+    client.query({ query:tramStopsQuery }).then(response => {
       console.log('GRAPHQL - ALLROUTES - QUERY!')
       console.log(response.data.routes)
       setTramRoutesOnMap(response.data.routes)
@@ -71,30 +54,13 @@ const App = ({
         if (settings.geoLocation) {
           setCenter(location)
         }
-        let query = gql`
-  {
-    stopsByRadius(lat:${location.lat}, lon:${location.lng}, radius:${RADIUS}) {
-      edges {
-        node {
-          stop { 
-            id
-            gtfsId
-            name
-            lat
-            lon
-            vehicleType
-          }
-        } 
-      }
-    }
-  }
-`
-        client.query({ query }).then(response => { 
+ 
+        client.query({ query:stopsByRadiusQuery(location, RADIUS) }).then(response => { 
           let allStops = response.data.stopsByRadius.edges
             .map(edge => edge.node.stop)
             .filter(stop => stop.vehicleType === 0)
           setStops(allStops)
-          console.log('GRAPHQL - QUERY:', query)
+          console.log('GRAPHQL - QUERY:')
           console.log(2, allStops)
           if (allStops.length > 0) {
             setMyStop(allStops[0])
@@ -111,8 +77,7 @@ const App = ({
       fetch('/trams')
         .then(response => response.json())
         .then(body => {
-          setTrams(body.map(tram => tram.VP))
-          //console.log('TRAMS:', body.map(tram => tram.VP)[0])
+          setTrams(body.map(tram => tram.VP)) 
         })
         .catch(error => {
           console.log(error)
@@ -158,8 +123,7 @@ const mapDispatchToProps = {
   setTramRoutesOnMap,
 }
 
-export default connect(
-  //null,
+export default connect( 
   mapStateToProps,
   mapDispatchToProps
 )(App)

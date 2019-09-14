@@ -1,4 +1,7 @@
-const query = gql`
+import ApolloClient, { gql } from 'apollo-boost' 
+
+
+const query1 = gql`
   {
     routes(name: "2", transportModes: TRAM) {
       gtfsId
@@ -14,7 +17,7 @@ const query = gql`
 
 // linjan pysäkit
 
-const query = gql`
+const query2 = gql`
 
 {
     stop(id: "HSL:1112432") {
@@ -33,7 +36,7 @@ const query = gql`
 
 //  pysäkin linjat
 
-const tramRoutesQuery = gql`
+export const tramRoutesQuery = gql`
 
 {
   routes(transportModes: TRAM) {
@@ -51,7 +54,7 @@ const tramRoutesQuery = gql`
 }
 `
 
-const tramStopsQuery = gql`
+export const tramStopsQuery = gql`
 {
   routes(transportModes: TRAM) {
     shortName
@@ -63,3 +66,28 @@ const tramStopsQuery = gql`
   }
 }
 `
+
+export const stopsByRadiusQuery = (location, RADIUS) => gql`
+{
+  stopsByRadius(lat:${location.lat}, lon:${location.lng}, radius:${RADIUS}) {
+    edges {
+      node {
+        stop { 
+          id
+          gtfsId
+          name
+          lat
+          lon
+          vehicleType
+        }
+      } 
+    }
+  }
+}
+`
+ const client = new ApolloClient({
+  uri: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+})
+
+
+export default client
