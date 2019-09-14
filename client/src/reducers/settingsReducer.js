@@ -13,13 +13,12 @@ const settingsReducer = (
     distance: 0,
     alarm: false,
     intro: false,
-    geoLocation: true,
+    geoLocation: false,
     alarmDistance: 50,
     position: { lat: 60.1698, lng: 24.9395 },
     show: 'menu',
     possibleRoutes: [],
-    showLine: '',
-    showStopPopup: '',
+    showLine: '', 
   },
   action
 ) => {
@@ -59,9 +58,7 @@ const settingsReducer = (
     case 'SET_POSSIBLE_ROUTES':
       return { ...state, possibleRoutes: action.data }
     case 'SET_SHOW_LINE':
-      return { ...state, showLine: action.data }
-    case 'SET_SHOW_STOP_POPUP':
-      return { ...state, showStopPopup: action.data }
+      return { ...state, showLine: action.data } 
     default:
       return state
   }
@@ -256,14 +253,6 @@ export const setShowLine = line => {
     })
   }
 }
-
-export const setShowStopPopup = stop => {
-  return dispatch => {
-    dispatch({
-      type: 'SET_SHOW_STOP_POPUP',
-      data: stop,
-    })
-  }
-}
+ 
 
 export default settingsReducer

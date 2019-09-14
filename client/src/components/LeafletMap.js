@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
+import { setTrams } from '../reducers/tramsReducer'
 import {
   setCenter,
   setZoom,
@@ -13,7 +14,6 @@ import {
   setShowSidebarOpenButton,
   setIntro,
   setShow,
-  setShowStopPopup,
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
@@ -21,6 +21,7 @@ import { Button, Alert } from 'react-bootstrap'
 import driverIcon, {
   stopIcon,
   myStopIcon,
+  lineStopIcon,
   tramIcon,
   myTramIcon,
 } from '../utils/icons'
@@ -37,6 +38,7 @@ import Intro from '../components/Intro'
 
 const LeafletMap = ({
   trams,
+  setTrams,
   showTrams,
   setShowTrams,
   openSidebar,
@@ -56,7 +58,7 @@ const LeafletMap = ({
   setIntro,
   setShow,
   tramRoutesOnMap,
-  setShowStopPopup,
+
 }) => {
   const [playHorn, setPlayHorn] = useState(false)
   const initHorn = () => {
@@ -86,16 +88,26 @@ const LeafletMap = ({
     }
   }
 
+  const handleCancelTram = e => {
+    console.log('TRAM CANCELED', e.target.value) 
+    setAlarm(false)
+    setMyTram('')
+    setTrams([])
+    setShowTrams(trams)
+    setLine('')
+    setZoom(16)
+  }
+
   const handleChangeZoom = e => {
     setZoom(e.target._zoom)
     //setCenter({lat:e.target._animateToCenter.lat, lng:e.target._animateToCenter.lng})
-    /*  console.log(
+      console.log(
       'ZOOM',
       e.target._zoom,
       'CENTER',
       e.target._animateToCenter.lat,
       e.target._animateToCenter.lng
-    )*/
+      )
   }
 
   const handleCenterButton = () => {
@@ -105,12 +117,9 @@ const LeafletMap = ({
   }
 
   const handleSetMyStop = (stop) => {
-    setMyStop(stop)
-    setShowStopPopup(stop)
-    setTimeout(()=>{
-      setShowStopPopup('')
-    },3000)
-
+    if(!myTram){ 
+      setMyStop(stop)
+    }
   }
 
   const popUp = tram => {
@@ -140,6 +149,11 @@ const LeafletMap = ({
               CHOOSE
             </Button>
           )}
+        {(myTram && myTram.veh === tram.veh) && (
+          <Button value={tram.veh} onClick={handleCancelTram}>
+            CANCEL
+            </Button>
+        )}
       </Popup>
     )
   }
@@ -158,7 +172,7 @@ const LeafletMap = ({
             myTram && myTram.veh === tram.veh
               ? myTramIcon(settings.zoom)
               : tramIcon(settings.zoom)
-          } 
+          }
           position={{
             lat: tram.lat,
             lng: tram.long,
@@ -187,33 +201,33 @@ const LeafletMap = ({
           position={{ lat: stop.lat, lng: stop.lon }}
           zIndexOffset={-500}
         >
-           {(settings.showStopPopup.gtfsId === stop.gtfsId) && <Popup closeButton={false} autoPan={false}>
+          <Popup closeButton={false} autoPan={false}>
             <br /> {stop.name}
             <br /> {stop.gtfsId}
-          </Popup>} 
+          </Popup>
         </Marker>
       ))
     )
   }
 
-  /* const showLineOnMap = () => {
-    //console.log('tramRoutesOnMap', tramRoutesOnMap)
-    //console.log('showLine', settings.showLine)
-    const coordinates = tramRoutesOnMap.find(
+  const showLineOnMap = () => {
+    console.log('tramRoutesOnMap', tramRoutesOnMap)
+    console.log('showLine', settings.showLine)
+      const coordinates = tramRoutesOnMap.find(
       route => route.shortName == settings.showLine
-    ).patterns[0].geometry
+    ).stops
     return (
       <div>
         {coordinates.map((point, i) => (
           <Marker
             key={i}
-            icon={stopIcon(14)}
+            icon={lineStopIcon(13.5)}
             position={{ lat: point.lat, lng: point.lon }}
           ></Marker>
         ))}
       </div>
-    )
-  } */
+    )  
+  }
 
   const style = settings.showSidebar
     ? { marginLeft: '20px' }
@@ -294,10 +308,10 @@ const LeafletMap = ({
                 onzoomend={handleChangeZoom}
                 zoomSnap={0.1}
                 minZoom={12}
-                maxZoom={19}
+                maxZoom={18}
                 doubleClickZoom={false}
                 ondblclick={({ target }) =>
-                  console.log(target.getCenter(), 'pöö')
+                  console.log('CENTER: ', target.getCenter())
                 }
                 zoomControl={true}
               >
@@ -307,7 +321,7 @@ const LeafletMap = ({
                 />
                 {ShowChosenTrams()}
                 {showStops()}
-                {/* settings.showLine && showLineOnMap() */}
+                {settings.showLine && showLineOnMap() } 
                 <Marker
                   icon={driverIcon(settings.zoom)}
                   position={settings.position}
@@ -346,8 +360,8 @@ const LeafletMap = ({
             </Alert>
           </div>
         ) : (
-          <Intro initHorn={initHorn} />
-        )}
+            <Intro initHorn={initHorn} />
+          )}
       </div>
     )
   )
@@ -381,7 +395,7 @@ const mapDispatchToProps = {
   setShowSidebarOpenButton,
   setIntro,
   setShow,
-  setShowStopPopup,
+  setTrams,
 }
 
 export default connect(

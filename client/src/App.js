@@ -48,7 +48,7 @@ const App = ({
     client.query({ query }).then(response => {
       console.log('GRAPHQL - ALLROUTES - QUERY!')
       console.log(response.data.routes)
-      //setTramRoutesOnMap(response.data.routes)
+      setTramRoutesOnMap(response.data.routes)
     })
   }, [])
  
@@ -89,12 +89,12 @@ const App = ({
     }
   }
 `
-        client.query({ query }).then(response => {
-          console.log('GRAPHQL - QUERY!', query)
+        client.query({ query }).then(response => { 
           let allStops = response.data.stopsByRadius.edges
             .map(edge => edge.node.stop)
             .filter(stop => stop.vehicleType === 0)
           setStops(allStops)
+          console.log('GRAPHQL - QUERY:', query)
           console.log(2, allStops)
           if (allStops.length > 0) {
             setMyStop(allStops[0])

@@ -31,12 +31,22 @@ export const myStopIcon = zoom => new L.Icon({
   shadowAnchor: [20, 92],  */
 })
 
+export const lineStopIcon = zoom => new L.Icon({
+  iconUrl: require('../img/iconfinder_Ball Green_34555.png'),
+  iconRetinaUrl: require('../img/iconfinder_Ball Green_34555.png'),
+  /* iconAnchor: [5, 55],
+  popupAnchor: [10, -44], */
+  iconSize: [Math.round(50 - (19 - zoom) * 6), Math.round(50 - (19 - zoom) * 6)],
+  /* shadowSize: [68, 95],
+  shadowAnchor: [20, 92],  */
+})
+
 export const tramIcon = zoom => new L.Icon({
   iconUrl: require('../img/icons8-office-xs-50.png'),
   iconRetinaUrl: require('../img/icons8-office-xs-50.png'),
  /*  iconAnchor: [5, 55],
   popupAnchor: [10, -44], */
-  iconSize: [Math.round(70 - (19 - zoom) * 8), Math.round(70 - (19 - zoom) * 8)],
+  iconSize: [Math.round(60 - (19 - zoom) * 7), Math.round(60 - (19 - zoom) * 7)],
   /* shadowSize: [68, 95],
   shadowAnchor: [20, 92],  */
 }) 
@@ -46,11 +56,13 @@ export const myTramIcon = zoom => new L.Icon({
   iconRetinaUrl: require('../img/icons8-color-50.png'),
   /* iconAnchor: [5, 55],
   popupAnchor: [10, -44], */
-  iconSize: [Math.round(80 - (19 - zoom) * 8), Math.round(80 - (19 - zoom) * 8)],
+  iconSize: [Math.round(80 - (19 - zoom) * 7), Math.round(80 - (19 - zoom) * 7)],
   /* shadowSize: [68, 95],
   shadowAnchor: [20, 92], */
   zIndex:5000 
 })
+
+
 
 const driverIcon = zoom => new L.Icon({
     iconUrl: require('../img/icons8-policeman-female-48.png'),

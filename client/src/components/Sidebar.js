@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
+import { setTrams } from '../reducers/tramsReducer'
 import {
   setCenter,
   setZoom,
@@ -16,7 +17,7 @@ import {
   setGeolocation,
   setAlarmDistance,
   setShow,
-  setShowLine, 
+  setShowLine,
 } from '../reducers/settingsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import {
@@ -35,7 +36,7 @@ import distance, {
   sortByVehicleNumbers,
   sortLineNumbers,
   sortStopNames,
-} from '../utils/helpers'
+} from '../utils/helpers' 
 //import { SoundEffect } from './SoundEffect'
 //import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
 
@@ -44,6 +45,7 @@ import distance, {
 const Sidebar = ({
   closeSidebar,
   trams,
+  setTrams,
   showTrams,
   setShowTrams,
   setCenter,
@@ -182,7 +184,10 @@ const Sidebar = ({
     } else {
       setAlarm(false)
       setMyTram('')
+      setTrams([])
+      setShowTrams(trams)
       setLine('')
+      setZoom(16)
     }
   }
 
@@ -207,8 +212,10 @@ const Sidebar = ({
   }
 
   const handleChooseStop = stopsGtfsId => {
-    console.log('STOP CHOSEN: ', stopsGtfsId)
+  if(!myTram) {
+      console.log('STOP CHOSEN: ', stopsGtfsId)
     setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
+  }
   }
 
   //const [tramsInOrder, lineNumbers, stopsInOrder] = sortEverything(trams, stops)
@@ -248,7 +255,7 @@ const Sidebar = ({
                 <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
                   {!myStop ? 'Choose stop' : myStop.name + ' ' + myStop.gtfsId}
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
+                {!myTram && <Dropdown.Menu>
                   {stopsInOrder.map((stop, i) => (
                     <Dropdown.Item
                       key={i}
@@ -257,7 +264,7 @@ const Sidebar = ({
                       {stop.name} {stop.gtfsId}
                     </Dropdown.Item>
                   ))}
-                </Dropdown.Menu>
+                </Dropdown.Menu>}
               </Dropdown>
             </Col>
           </Row>
@@ -414,25 +421,25 @@ const Sidebar = ({
 
           {((!myTram && showTrams.length > 0) ||
             (myTram && showTrams.length > 1)) && (
-            <Row>
-              <Col>
-                <Button
-                  onClick={() => {
-                    if (!myTram) {
-                      setShowTrams([])
-                    } else {
-                      setShowTrams([
-                        trams.find(tram => tram.veh === myTram.veh),
-                      ])
-                    }
-                  }}
-                  variant={buttonVariant}
-                >
-                  Hide all trams
+              <Row>
+                <Col>
+                  <Button
+                    onClick={() => {
+                      if (!myTram) {
+                        setShowTrams([])
+                      } else {
+                        setShowTrams([
+                          trams.find(tram => tram.veh === myTram.veh),
+                        ])
+                      }
+                    }}
+                    variant={buttonVariant}
+                  >
+                    Hide all trams
                 </Button>
-              </Col>
-            </Row>
-          )}
+                </Col>
+              </Row>
+            )}
 
           <Row>
             <Col>
@@ -451,49 +458,10 @@ const Sidebar = ({
             </Col>
           </Row>
 
-          <Row>
-            <Col>
-              <Button
-                variant={buttonVariant}
-                onClick={() => setShow('settings')}
-              >
-                Settings
-              </Button>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col>
-              <Button
-                variant={buttonVariant}
-                onClick={() => setShow('goodbye')}
-              >
-                Exit
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-      )}
-
-      {settings.show === 'settings' && (
-        <Container>
-          <Form>
-            <Row>
-              <Col>
-                <Form.Check
-                  onChange={() => setGeolocation(!settings.geoLocation)}
-                  checked={settings.geoLocation}
-                  type='checkbox'
-                  id='geolocation'
-                  label='Geolocation'
-                />
-              </Col>
-            </Row>
-          </Form>
-          <Row>
+          {settings.alarm && <Row>
             <Col>
               <DropdownButton
-                className='settingsButton'
+                variant={buttonVariant} 
                 id='alarmDistance'
                 title={`Alarm distance ${settings.alarmDistance} m`}
               >
@@ -507,21 +475,37 @@ const Sidebar = ({
                 ))}
               </DropdownButton>
             </Col>
-          </Row>
+          </Row>}
 
           <Row>
             <Col>
+              <Button variant={buttonVariant}>
+                <Form>
+                  <Form.Check
+                    onChange={() => setGeolocation(!settings.geoLocation)}
+                    checked={settings.geoLocation}
+                    type='checkbox'
+                    id='geolocation'
+                    label='Geolocation'
+                  />
+                </Form>
+              </Button>
+            </Col>
+          </Row>
+ 
+          <Row>
+            <Col>
               <Button
-                className='settingsButton'
-                onClick={() => setShow('menu')}
+                variant={buttonVariant}
+                onClick={() => setShow('goodbye')}
               >
-                GO BACK TO MENU
+                Exit
               </Button>
             </Col>
           </Row>
         </Container>
       )}
-
+ 
       {settings.show === 'goodbye' && (
         <Container>
           <Row>
@@ -572,6 +556,7 @@ const mapDispatchToProps = {
   setAlarmDistance,
   setShow,
   setShowLine,
+  setTrams,
 }
 
 export default connect(
