@@ -1,7 +1,7 @@
 const settingsReducer = (
   state = {
     center: { lat: 60.1698, lng: 24.9395 },
-    defaultCenter: { lat: 60.1698, lng: 24.9395 },
+    defaultCenter: {lat: 60.169748893653164, lng: 24.940102100372314}, 
     showAlert: false,
     alertVariant: true,
     zoom: 16,
@@ -15,10 +15,11 @@ const settingsReducer = (
     intro: false,
     geoLocation: true,
     alarmDistance: 50,
-    position: { lat: 60.1698, lng: 24.9395 },
+    position: {lat: 60.169748893653164, lng: 24.940102100372314},
     show: 'menu',
     possibleRoutes: [],
-    showLine: '', 
+    showLine: '',
+    radius: 700,
   },
   action
 ) => {
@@ -58,7 +59,9 @@ const settingsReducer = (
     case 'SET_POSSIBLE_ROUTES':
       return { ...state, possibleRoutes: action.data }
     case 'SET_SHOW_LINE':
-      return { ...state, showLine: action.data } 
+      return { ...state, showLine: action.data }
+    case 'SET_RADIUS':
+      return { ...state, radius: action.data }
     default:
       return state
   }
@@ -250,6 +253,15 @@ export const setShowLine = line => {
     dispatch({
       type: 'SET_SHOW_LINE',
       data: line,
+    })
+  }
+}
+
+export const setRadius = meters => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_RADIUS',
+      data: meters,
     })
   }
 }

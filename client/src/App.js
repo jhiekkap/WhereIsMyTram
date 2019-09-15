@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react'
 import { setTrams, setTramRoutesOnMap } from './reducers/tramsReducer'
-import { setStops, showStopsPopup } from './reducers/stopsReducer'
+import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
 import {
   setPosition,
   setCenter,
   setPossibleRoutes,
 } from './reducers/settingsReducer'
-import checkRoutes from './utils/queryCheck'
+//import checkRoutes from './utils/queryCheck'
 import './App.css'
 import LeafletMap from './components/LeafletMap'
-import Sidebar from './components/Sidebar' 
+import Sidebar from './components/Sidebar'
 import { connect } from 'react-redux'
-import client, { tramStopsQuery, stopsByRadiusQuery } from './utils/queries'
- const RADIUS = 500
+import client, { tramStopsQuery, stopsByRadiusQuery, checkRoutes } from './utils/queries'
+
 
 const App = ({
   setTrams,
@@ -26,24 +26,42 @@ const App = ({
   setPossibleRoutes,
   setTramRoutesOnMap,
 }) => {
- 
-  useEffect(() => { 
-    client.query({ query:tramStopsQuery }).then(response => {
-      console.log('GRAPHQL - ALLROUTES - QUERY!')
-      console.log(response.data.routes)
+
+  useEffect(() => {
+    client.query({ query: tramStopsQuery }).then(response => {
+      console.log('GRAPHQL - ALLROUTES - QUERY:', response.data.routes) 
       setTramRoutesOnMap(response.data.routes)
     })
   }, [])
-  
+
+  const stopsQuery = location => {
+    client.query({ query: stopsByRadiusQuery(location, settings.radius) }).then(response => {
+      let allStops = response.data.stopsByRadius.edges
+        .map(edge => edge.node.stop)
+        .filter(stop => stop.vehicleType === 0)
+      setStops(allStops)
+      console.log('GRAPHQL - stopsByRadiusQuery:',  allStops) 
+      if (allStops.length > 0) {
+        setMyStop(allStops[0])
+      } else {
+        setMyStop('')
+      }
+    })
+  }
+
   useEffect(() => {
     if ('geolocation' in navigator) {
       console.log('geolocation is available')
+    } else {
+      console.log('geolocation is NOT available')
+    } 
+    if (settings.geoLocation && 'geolocation' in navigator) { 
       navigator.geolocation.getCurrentPosition(position => {
         let location = settings.geoLocation
           ? {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            }
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          }
           : settings.defaultCenter
         console.log(
           1,
@@ -51,24 +69,13 @@ const App = ({
           location
         )
         setPosition(location)
-        if (settings.geoLocation) {
-          setCenter(location)
-        }
- 
-        client.query({ query:stopsByRadiusQuery(location, RADIUS) }).then(response => { 
-          let allStops = response.data.stopsByRadius.edges
-            .map(edge => edge.node.stop)
-            .filter(stop => stop.vehicleType === 0)
-          setStops(allStops)
-          console.log('GRAPHQL - QUERY:')
-          console.log(2, allStops)
-          if (allStops.length > 0) {
-            setMyStop(allStops[0])
-          }
-        })
+        setCenter(location)
+        stopsQuery(location)
       })
-    } else {
-      console.log('geolocation is NOT available')
+    } else { 
+      stopsQuery(settings.defaultCenter)
+      setCenter(settings.defaultCenter)
+      setPosition(settings.defaultCenter) // ?????????????????????? 
     }
   }, [settings.geoLocation])
 
@@ -77,7 +84,7 @@ const App = ({
       fetch('/trams')
         .then(response => response.json())
         .then(body => {
-          setTrams(body.map(tram => tram.VP)) 
+          setTrams(body.map(tram => tram.VP))
         })
         .catch(error => {
           console.log(error)
@@ -101,7 +108,7 @@ const App = ({
   return (
     <div>
       <Sidebar />
-      <LeafletMap />
+      <LeafletMap stopsQuery={stopsQuery} />
     </div>
   )
 }
@@ -123,7 +130,7 @@ const mapDispatchToProps = {
   setTramRoutesOnMap,
 }
 
-export default connect( 
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(App)

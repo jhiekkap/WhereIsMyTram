@@ -196,6 +196,14 @@ const Sidebar = ({
     setShowTrams(tramsToShow)
   }
 
+  const handleChooseLine = (line) => {
+    setLine(line)
+    setShowLine('')
+    if (myTram) {
+      setMyTram('')
+    }
+  }
+
   const handleChooseStop = stopsGtfsId => {
     if (!myTram) {
       console.log('STOP CHOSEN: ', stopsGtfsId)
@@ -242,14 +250,13 @@ const Sidebar = ({
 
           <Row>
             <Col xs={12}>
-              {!myTram && !settings.line ? (
+
+              {myStop ? !myTram && !settings.line ? (
                 <Dropdown>
                   <Dropdown.Toggle variant={buttonVariant}>
-                    {!myStop
-                      ? 'Choose stop'
-                      : myStop.name + ' ' + myStop.gtfsId}
+                    {myStop.name}  {myStop.gtfsId}
                   </Dropdown.Toggle>
-                  <Dropdown.Menu>
+                  {myStop && <Dropdown.Menu>
                     {stopsInOrder.map((stop, i) => (
                       <Dropdown.Item
                         id='dropdown-chooseStop'
@@ -259,17 +266,19 @@ const Sidebar = ({
                         {stop.name} {stop.gtfsId}
                       </Dropdown.Item>
                     ))}
-                  </Dropdown.Menu>
+                  </Dropdown.Menu>}
                 </Dropdown>
               ) : (
-                <Button variant={buttonVariant}>
-                  {myStop.name} {myStop.gtfsId}
-                </Button>
-              )}
+                  <Button variant={buttonVariant}>
+                    {myStop.name} {myStop.gtfsId}
+                  </Button>
+                ) : <Button variant={buttonVariant}>
+                  No tram stops available. Go to Helsinki.
+              </Button>}
             </Col>
           </Row>
 
-          <Row>
+          {myStop && <Row>
             <Col xs={12}>
               {!settings.alarm ? (
                 <Dropdown>
@@ -292,13 +301,7 @@ const Sidebar = ({
                     {lineNumbers.map((line, i) => (
                       <Dropdown.Item
                         key={i}
-                        onClick={() => {
-                          setLine(line)
-                          setShowLine('')
-                          if (myTram) {
-                            setMyTram('')
-                          }
-                        }}
+                        onClick={() => handleChooseLine(line)}
                       >
                         {line}
                       </Dropdown.Item>
@@ -306,10 +309,10 @@ const Sidebar = ({
                   </Dropdown.Menu>
                 </Dropdown>
               ) : (
-                <Button variant={buttonVariant}>Line: {settings.line}</Button>
-              )}
+                  <Button variant={buttonVariant}>Line: {settings.line}</Button>
+                )}
             </Col>
-          </Row>
+          </Row>}
 
           {settings.line && (
             <Row>
@@ -352,8 +355,8 @@ const Sidebar = ({
                     </Dropdown.Menu>
                   </Dropdown>
                 ) : (
-                  <Button variant={buttonVariant}>Vehicle: {myTram.veh}</Button>
-                )}
+                    <Button variant={buttonVariant}>Vehicle: {myTram.veh}</Button>
+                  )}
               </Col>
             </Row>
           )}
@@ -364,10 +367,7 @@ const Sidebar = ({
                 <Button
                   variant={!settings.alarm ? 'outline-danger' : 'success'}
                   onClick={() => {
-                    setAlarm(!settings.alarm)
-                    //closeSidebar()
-                    setShowLine('')
-                  }}
+                    setAlarm(!settings.alarm);setShowLine('')}}
                 >
                   {!settings.alarm ? 'Set alarm' : 'Alarm off'}
                 </Button>
@@ -416,10 +416,7 @@ const Sidebar = ({
                   variant={
                     settings.alarm || myTram ? 'outline-danger' : buttonVariant
                   }
-                  onClick={() => {
-                    reset()
-                    setShowLine('')
-                  }}
+                  onClick={() => { reset(); setShowLine('') }}
                 >
                   Reset
                 </Button>
@@ -444,6 +441,22 @@ const Sidebar = ({
             </Row>
           )}
 
+          {myTram && (
+            <Row>
+              <Col>
+                <Button
+                  variant={buttonVariant}
+                  onClick={() => {
+                    closeSidebar()
+                    setCenter(settings.position)
+                  }}
+                >
+                  Where am I?
+                </Button>
+              </Col>
+            </Row>
+          )}
+
           {trams.length !== showTrams.length && (
             <Row>
               <Col>
@@ -451,8 +464,8 @@ const Sidebar = ({
                   onClick={() => {
                     setShowTrams(trams)
                     setShowLine('')
-                    //setZoom(13)
-                    //closeSidebar(false)
+                    setZoom(15)
+                    closeSidebar(false)
                   }}
                   variant={buttonVariant}
                 >
@@ -462,29 +475,29 @@ const Sidebar = ({
             </Row>
           )}
 
-          {((!myTram && showTrams.length > 0) ||
-            (myTram && showTrams.length > 1)) && (
-            <Row>
-              <Col>
-                <Button
-                  onClick={() => {
-                    if (!myTram) {
-                      setShowTrams([])
-                    } else {
-                      setShowTrams([
-                        trams.find(tram => tram.veh === myTram.veh),
-                      ])
-                    }
-                  }}
-                  variant={buttonVariant}
-                >
-                  Hide all trams
+          {(((!myTram && showTrams.length > 0) ||
+            (myTram && showTrams.length > 1))  && myStop) && (
+              <Row>
+                <Col>
+                  <Button
+                    onClick={() => {
+                      if (!myTram) {
+                        setShowTrams([])
+                      } else {
+                        setShowTrams([
+                          trams.find(tram => tram.veh === myTram.veh),
+                        ])
+                      }
+                    }}
+                    variant={buttonVariant}
+                  >
+                    Hide all trams
                 </Button>
-              </Col>
-            </Row>
-          )}
+                </Col>
+              </Row>
+            )}
 
-          <Row>
+          {myStop && <Row>
             <Col>
               <Dropdown>
                 <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
@@ -504,7 +517,7 @@ const Sidebar = ({
                 </Dropdown.Menu>
               </Dropdown>
             </Col>
-          </Row>
+          </Row>}
 
           <Row>
             <Col>

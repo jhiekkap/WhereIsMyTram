@@ -15,6 +15,7 @@ import {
   setIntro,
   setShow,
   setShowLine,
+  setPosition,
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
@@ -34,6 +35,7 @@ import tramButton from '../img/icons8-ice-cream-50.png'
 //import { SoundEffect } from './SoundEffect'
 import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
 import Intro from '../components/Intro'
+import client, { stopsByRadiusQuery } from '../utils/queries'
 
 //let horn = {}
 
@@ -60,6 +62,8 @@ const LeafletMap = ({
   setShow,
   tramRoutesOnMap,
   setShowLine,
+  stopsQuery,
+  setPosition,
 
 }) => {
   const [playHorn, setPlayHorn] = useState(false)
@@ -114,7 +118,7 @@ const LeafletMap = ({
   }
 
   const handleCenterButton = () => {
-    setCenter(settings.geoLocation ? settings.position : settings.defaultCenter)
+    setCenter(settings.position)
     setZoom(16)
     closeSidebar()
   }
@@ -127,10 +131,12 @@ const LeafletMap = ({
   }
 
   const handleChangeCenter = e => {
-    setZoom(e.target._zoom);
-    console.log("CHANGED CENTER \n GET ZOOM: ", e.target._zoom);
-    console.log("NEW CENTER:\n", e.latlng);
-    setCenter(e.latlng);
+    setZoom(e.target._zoom) 
+    console.log("CHANGED CENTER \n GET ZOOM: ", e.target._zoom) 
+    console.log("NEW CENTER:\n", e.latlng) 
+    setCenter(e.latlng) 
+    setPosition(e.latlng)
+    stopsQuery(e.latlng)
   }
 
   const popUp = tram => {
@@ -246,7 +252,7 @@ const LeafletMap = ({
 
   return (
     settings.possibleRoutes && (
-      <div>
+      <div title="Double-click map to set a new center">
         <div>
           {(settings.showAlert || playHorn) && (
             <audio src={alarmSound} autoPlay />
@@ -310,7 +316,7 @@ const LeafletMap = ({
             )}
 
             {!settings.showAlert && (
-              <Map
+              <Map 
                 id='map'
                 center={settings.center}
                 zoom={settings.zoom}
@@ -336,7 +342,7 @@ const LeafletMap = ({
                 {settings.showLine && showLineOnMap()}
                 <Marker
                   icon={driverIcon(settings.zoom)}
-                  position={settings.position}
+                  position={settings.position} 
                 >
                   <Popup>
                     We are here! <br /> This is our position!
@@ -409,6 +415,7 @@ const mapDispatchToProps = {
   setShow,
   setTrams,
   setShowLine,
+  setPosition,
 }
 
 export default connect(
