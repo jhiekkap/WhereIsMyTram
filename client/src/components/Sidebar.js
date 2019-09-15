@@ -26,7 +26,7 @@ import {
   Col,
   Button,
   Dropdown,
-  Form, 
+  Form,
   DropdownButton,
 } from 'react-bootstrap'
 import distance, {
@@ -99,6 +99,7 @@ const Sidebar = ({
         chosenTram.long
       )
       setDistance(distanceNow)
+      //setCenter({lat: chosenTram.lat,lng:chosenTram.long})
 
       let speed = chosenTram.spd
       setSpeeds(speeds.concat(speed))
@@ -231,16 +232,19 @@ const Sidebar = ({
       {settings.show === 'menu' && (
         <Container>
           <Row>
-          <img  src={closeX} alt='trash'
-           style={{position:'absolute', right:12, top:8}} 
-           onClick={() => closeSidebar()}/>  
+            <img
+              src={closeX}
+              alt='trash'
+              style={{ position: 'absolute', right: 12, top: 8 }}
+              onClick={() => closeSidebar()}
+            />
           </Row>
-          
+
           <Row>
             <Col xs={12}>
               {!myTram && !settings.line ? (
                 <Dropdown>
-                  <Dropdown.Toggle variant={buttonVariant} >
+                  <Dropdown.Toggle variant={buttonVariant}>
                     {!myStop
                       ? 'Choose stop'
                       : myStop.name + ' ' + myStop.gtfsId}
@@ -375,7 +379,7 @@ const Sidebar = ({
             <Row>
               <Col>
                 <DropdownButton
-                   variant={settings.alarm ? 'outline-danger' : buttonVariant}
+                  variant={settings.alarm ? 'outline-danger' : buttonVariant}
                   id='alarmDistance'
                   title={`Alarm distance ${settings.alarmDistance} m`}
                 >
@@ -409,7 +413,9 @@ const Sidebar = ({
             <Row>
               <Col>
                 <Button
-                   variant={(settings.alarm || myTram) ? 'outline-danger' : buttonVariant}
+                  variant={
+                    settings.alarm || myTram ? 'outline-danger' : buttonVariant
+                  }
                   onClick={() => {
                     reset()
                     setShowLine('')
@@ -482,7 +488,7 @@ const Sidebar = ({
             <Col>
               <Dropdown>
                 <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
-                  Show line{settings.showLine && ': ' + settings.showLine   }
+                  Show line{settings.showLine && ': ' + settings.showLine}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {settings.showLine && (

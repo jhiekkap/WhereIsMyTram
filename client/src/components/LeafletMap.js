@@ -126,6 +126,13 @@ const LeafletMap = ({
     }
   }
 
+  const handleChangeCenter = e => {
+    setZoom(e.target._zoom);
+    console.log("CHANGED CENTER \n GET ZOOM: ", e.target._zoom);
+    console.log("NEW CENTER:\n", e.latlng);
+    setCenter(e.latlng);
+  }
+
   const popUp = tram => {
     return (
       <Popup closeButton={false} value={tram.veh} autoPan={false}>
@@ -317,9 +324,7 @@ const LeafletMap = ({
                 minZoom={12}
                 maxZoom={18}
                 doubleClickZoom={false}
-                ondblclick={({ target }) =>
-                  console.log('CENTER: ', target.getCenter())
-                }
+                ondblclick={handleChangeCenter}
                 zoomControl={true}
               >
                 <TileLayer
