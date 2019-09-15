@@ -253,6 +253,6 @@ export const setShowLine = line => {
     })
   }
 }
- 
+
 
 export default settingsReducer

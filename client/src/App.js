@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { setTrams, setTramRoutesOnMap } from './reducers/tramsReducer'
-import { setStops } from './reducers/stopsReducer'
+import { setStops, showStopsPopup } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
 import {
   setPosition,
@@ -34,7 +34,7 @@ const App = ({
       setTramRoutesOnMap(response.data.routes)
     })
   }, [])
- 
+  
   useEffect(() => {
     if ('geolocation' in navigator) {
       console.log('geolocation is available')

@@ -1,5 +1,5 @@
 import ApolloClient, { gql } from 'apollo-boost' 
-
+/* 
 
 const query1 = gql`
   {
@@ -32,11 +32,11 @@ const query2 = gql`
       }
     }
   }
-  `
+  ` */
 
 //  pysäkin linjat
 
-export const tramRoutesQuery = gql`
+/* export const tramRoutesQuery = gql`
 
 {
   routes(transportModes: TRAM) {
@@ -52,7 +52,7 @@ export const tramRoutesQuery = gql`
     }
   }
 }
-`
+` */
 
 export const tramStopsQuery = gql`
 {

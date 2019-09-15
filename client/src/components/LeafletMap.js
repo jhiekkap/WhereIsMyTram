@@ -30,7 +30,7 @@ import { printDuration } from '../utils/helpers'
 import alarmOnButton from '../img/iconfinder_Circle_Red_34214.png'
 import alarmOffButton from '../img/iconfinder_stop_green_61688.png'
 import centerButton from '../img/icons8-navigation-50.png'
-import tramButton from '../img/icons8-ios-filled-50.png'
+import tramButton from '../img/icons8-ice-cream-50.png'
 //import { SoundEffect } from './SoundEffect'
 import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
 import Intro from '../components/Intro'
@@ -92,25 +92,25 @@ const LeafletMap = ({
   }
 
   const handleCancelTram = e => {
-    console.log('TRAM CANCELED', e.target.value) 
+    console.log('TRAM CANCELED', e.target.value)
     setAlarm(false)
     setMyTram('')
     setTrams([])
     setShowTrams(trams)
     setLine('')
-    setZoom(16)
+    //setZoom(16)
   }
 
   const handleChangeZoom = e => {
     setZoom(e.target._zoom)
     //setCenter({lat:e.target._animateToCenter.lat, lng:e.target._animateToCenter.lng})
-      console.log(
+    console.log(
       'ZOOM',
       e.target._zoom,
       'CENTER',
       e.target._animateToCenter.lat,
       e.target._animateToCenter.lng
-      )
+    )
   }
 
   const handleCenterButton = () => {
@@ -120,7 +120,7 @@ const LeafletMap = ({
   }
 
   const handleSetMyStop = (stop) => {
-    if(!myTram){ 
+    if (!myTram) {
       setMyStop(stop)
       setLine('')
     }
@@ -174,8 +174,8 @@ const LeafletMap = ({
           key={i}
           icon={
             myTram && myTram.veh === tram.veh
-              ? myTramIcon(settings.zoom)
-              : tramIcon(settings.zoom)
+              ? myTramIcon(settings.zoom, tram.desi)
+              : tramIcon(settings.zoom, tram.desi)
           }
           position={{
             lat: tram.lat,
@@ -217,10 +217,10 @@ const LeafletMap = ({
   const showLineOnMap = () => {
     //console.log('tramRoutesOnMap', tramRoutesOnMap)
     console.log('showLine', settings.showLine)
-      const coordinates = tramRoutesOnMap.find(
+    const coordinates = tramRoutesOnMap.find(
       route => route.shortName == settings.showLine
     ).stops
-    return ( 
+    return (
       <div>
         {coordinates.map((point, i) => (
           <Marker
@@ -230,7 +230,7 @@ const LeafletMap = ({
           ></Marker>
         ))}
       </div>
-    )  
+    )
   }
 
   const style = settings.showSidebar
@@ -269,6 +269,7 @@ const LeafletMap = ({
             {myTram && (
               <div id='alarmButtonOnMap'>
                 <img
+                  alt='alarmButton'
                   id='alarmButton'
                   src={settings.alarm ? alarmOffButton : alarmOnButton}
                   onClick={() => setAlarm(!settings.alarm)}
@@ -277,6 +278,7 @@ const LeafletMap = ({
             )}
             <div id='centerButtonOnMap'>
               <img
+                alt='centerButton'
                 id='centerButton'
                 src={centerButton}
                 onClick={handleCenterButton}
@@ -285,6 +287,7 @@ const LeafletMap = ({
             {myTram && (
               <div id='tramButtonOnMap'>
                 <img
+                  alt='tramButton'
                   id='tramButton'
                   src={tramButton}
                   onClick={() => {
@@ -325,7 +328,7 @@ const LeafletMap = ({
                 />
                 {ShowChosenTrams()}
                 {showStops()}
-                {settings.showLine && showLineOnMap()} 
+                {settings.showLine && showLineOnMap()}
                 <Marker
                   icon={driverIcon(settings.zoom)}
                   position={settings.position}
