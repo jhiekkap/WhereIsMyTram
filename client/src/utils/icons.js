@@ -31,14 +31,14 @@ export const lineStopIcon = zoom => new L.Icon({
 export const tramIcon = (zoom, line) => new L.Icon({
   iconUrl: require(`../img/trams/${line}tram.png`),
   iconRetinaUrl: require(`../img/trams/${line}tram.png`),
-  iconSize: [Math.round(60 - (19 - zoom) * 4), Math.round(60 - (19 - zoom) * 4)],
+  iconSize: [Math.round(60 - (19 - zoom) * 4), Math.round(50 - (19 - zoom) * 4)],
 })
 
 
 export const myTramIcon = (zoom, line) => new L.Icon({
   iconUrl: require(`../img/trams/${line}tram.png`),
   iconRetinaUrl: require(`../img/trams/${line}tram.png`),
-  iconSize: [Math.round(100 - (19 - zoom) * 4), Math.round(100 - (19 - zoom) * 4)],
+  iconSize: [Math.round(80 - (19 - zoom) * 4), Math.round(70 - (19 - zoom) * 4)],
 })
 
  

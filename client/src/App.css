@@ -101,7 +101,7 @@
 }
 
 #alarmButton {
-  height: 60px;
+  height: 55px;
 }
 
 .btn-outline-secondary {
@@ -110,7 +110,7 @@
 .btn-outline-danger {
   width: 100%;
 }
-.btn-success {
+.btn-outline-success {
   width: 100%;
 }
 

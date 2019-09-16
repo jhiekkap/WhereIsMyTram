@@ -28,14 +28,13 @@ import driverIcon, {
   myTramIcon,
 } from '../utils/icons'
 import { printDuration } from '../utils/helpers'
-import alarmOnButton from '../img/iconfinder_Circle_Red_34214.png'
+import alarmOnButton from '../img/icon-alarm.png'
 import alarmOffButton from '../img/iconfinder_stop_green_61688.png'
 import centerButton from '../img/icons8-navigation-50.png'
 import tramButton from '../img/icons8-ice-cream-50.png'
 //import { SoundEffect } from './SoundEffect'
 import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
-import Intro from '../components/Intro'
-import client, { stopsByRadiusQuery } from '../utils/queries'
+import Intro from '../components/Intro' 
 
 //let horn = {}
 
@@ -64,7 +63,6 @@ const LeafletMap = ({
   setShowLine,
   stopsQuery,
   setPosition,
-
 }) => {
   const [playHorn, setPlayHorn] = useState(false)
   const initHorn = () => {
@@ -86,7 +84,7 @@ const LeafletMap = ({
     if (settings.possibleRoutes.includes(chosenTram.route)) {
       setMyTram(chosenTram)
       setLine(chosenTram.desi)
-      setShowTrams([chosenTram])
+      //setShowTrams([chosenTram])
       setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
       setZoom(16)
       setShowLine('')
@@ -123,7 +121,7 @@ const LeafletMap = ({
     closeSidebar()
   }
 
-  const handleSetMyStop = (stop) => {
+  const handleSetMyStop = stop => {
     if (!myTram) {
       setMyStop(stop)
       setLine('')
@@ -131,10 +129,10 @@ const LeafletMap = ({
   }
 
   const handleChangeCenter = e => {
-    setZoom(e.target._zoom) 
-    console.log("CHANGED CENTER \n GET ZOOM: ", e.target._zoom) 
-    console.log("NEW CENTER:\n", e.latlng) 
-    setCenter(e.latlng) 
+    setZoom(e.target._zoom)
+    console.log('CHANGED CENTER \n GET ZOOM: ', e.target._zoom)
+    console.log('NEW CENTER:\n', e.latlng)
+    setCenter(e.latlng)
     setPosition(e.latlng)
     stopsQuery(e.latlng)
   }
@@ -161,15 +159,16 @@ const LeafletMap = ({
         {tram.drst === 0 ? 'doors closed' : 'doors open'}
         <br />
         {(!myTram || (myTram && myTram.veh !== tram.veh)) &&
-          settings.possibleRoutes.includes(tram.route) && (
+          settings.possibleRoutes.includes(tram.route) &&
+          !settings.alarm && (
             <Button value={tram.veh} onClick={handleChooseTram}>
               CHOOSE
             </Button>
           )}
-        {(myTram && myTram.veh === tram.veh) && (
+        {myTram && myTram.veh === tram.veh && (
           <Button value={tram.veh} onClick={handleCancelTram}>
             CANCEL
-            </Button>
+          </Button>
         )}
       </Popup>
     )
@@ -252,7 +251,7 @@ const LeafletMap = ({
 
   return (
     settings.possibleRoutes && (
-      <div title="Double-click map to set a new center">
+      <div title='Double-click map to set a new center'>
         <div>
           {(settings.showAlert || playHorn) && (
             <audio src={alarmSound} autoPlay />
@@ -316,7 +315,7 @@ const LeafletMap = ({
             )}
 
             {!settings.showAlert && (
-              <Map 
+              <Map
                 id='map'
                 center={settings.center}
                 zoom={settings.zoom}
@@ -342,7 +341,7 @@ const LeafletMap = ({
                 {settings.showLine && showLineOnMap()}
                 <Marker
                   icon={driverIcon(settings.zoom)}
-                  position={settings.position} 
+                  position={settings.position}
                 >
                   <Popup>
                     We are here! <br /> This is our position!
@@ -378,8 +377,8 @@ const LeafletMap = ({
             </Alert>
           </div>
         ) : (
-            <Intro initHorn={initHorn} />
-          )}
+          <Intro initHorn={initHorn} />
+        )}
       </div>
     )
   )

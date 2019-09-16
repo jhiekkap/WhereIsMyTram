@@ -163,7 +163,7 @@ const Sidebar = ({
       let chosenTram = trams.find(tram => tram.veh === veh)
       console.log('chosen Tram:', chosenTram)
       setMyTram(chosenTram)
-      setShowTrams([chosenTram])
+      //setShowTrams([chosenTram])
       setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
       setZoom(16)
     } else {
@@ -180,7 +180,7 @@ const Sidebar = ({
     let chosenTram = trams.find(tram => tram.veh === myTram.veh)
     setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
     console.log('SHOW MY TRAM', chosenTram)
-    setShowTrams([chosenTram])
+    //setShowTrams([chosenTram])
     setZoom(16)
   }
 
@@ -254,6 +254,7 @@ const Sidebar = ({
               {myStop ? !myTram && !settings.line ? (
                 <Dropdown>
                   <Dropdown.Toggle variant={buttonVariant}>
+                    My stop: <br/>
                     {myStop.name}  {myStop.gtfsId}
                   </Dropdown.Toggle>
                   {myStop && <Dropdown.Menu>
@@ -365,7 +366,7 @@ const Sidebar = ({
             <Row>
               <Col>
                 <Button
-                  variant={!settings.alarm ? 'outline-danger' : 'success'}
+                  variant={!settings.alarm ? 'outline-danger' : 'outline-success'}
                   onClick={() => {
                     setAlarm(!settings.alarm);setShowLine('')}}
                 >
