@@ -1,6 +1,4 @@
- 
-
-import React, {useState} from 'react';
+import React, { useState } from 'react'
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,60 +7,66 @@ import {
   Text,
   StatusBar,
   DrawerLayoutAndroid,
-} from 'react-native';
+  Button,
+} from 'react-native'
 
-import MapView, {Marker, Callout, UrlTile} from 'react-native-maps'; 
+import MapView, { Marker, Callout, UrlTile } from 'react-native-maps'
 //import RosaPin from '../img/rosaPin.png'
 
-const Map = () => { 
+const Map = () => {
+  const [pin, setPin] = useState({
+    latitude: 60.169748893653164,
+    longitude: 24.940102100372314,
+  })
+  const [text, setText] = useState(false)
 
-  const [pin, setPin] = useState({latitude: 37.78825, longitude: -122.4324});
-  const [text, setText] = useState ('pöö')
- 
   return (
-    <View style={styles.container}>  
+    <View style={styles.container}>
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: 60.169748893653164,
+          longitude: 24.940102100372314,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        mapType="standard"
-        zoomControlEnabled={true}>
+        mapType='standard'
+        //zoomControlEnabled={true}
+        //showsMyLocationButton={true}
+      >
         <UrlTile
-          urlTemplate="http://a.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png"
+          urlTemplate='http://a.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
           maximumZ={19}
         />
         <Marker
           draggable={true}
           coordinate={pin}
-          title="pöö"
-          description="asiaa asiaa \r asiaa"
+          title='pöö'
+          description='asiaa asiaa \r asiaa'
           icon={require('../img/rosaPin.png')}
           onDragEnd={e =>
             setPin({
               latitude: e.nativeEvent.coordinate.latitude,
               longitude: e.nativeEvent.coordinate.longitude,
             })
-          }   
+          }
         >
           <Callout>
             <Text>hellooooasdasdasdoo</Text>
-            <Text>{text}</Text>
+            <Text>{text ? 'pöö': 'öö'}</Text>
+            <Button title='Press me' onPress={() => setText(!text)}/>
             <Text>hello</Text>
             <Text>hellooooasdasdasdoo</Text>
             <Text>hellooooasdasdasdoo</Text>
             <Text>hellooooasdasdasdoo</Text>
             <Text>hellooooasdasdasdoo</Text>
             <Text>hellooooasdasdasdoo</Text>
-            </Callout>  
+          </Callout>
         </Marker>
-      </MapView> 
+      </MapView>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -71,6 +75,6 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
   },
-});
+})
 
-export default Map;
+export default Map
