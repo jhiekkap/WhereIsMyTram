@@ -36,7 +36,7 @@ const Modaali = () => {
               console.log('Modal has been closed.')
             }}
           >
-             
+              
              
             <Separator />
             <View>

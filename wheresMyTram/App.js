@@ -1,4 +1,6 @@
-import React from 'react'
+// https://www.npmjs.com/package/navigationbar-react-native
+
+import React, { useState, useEffect } from 'react'
 import {
   AppRegistry,
   StyleSheet,
@@ -10,60 +12,38 @@ import {
 } from 'react-native'
 import { NavigationBar } from 'navigationbar-react-native'
 import Map from './components/Map'
-
-const ComponentLeft = () => {
-  return (
-    <View style={{ flex: 1, alignItems: 'flex-start' }}>
-      <TouchableOpacity
-        style={{ justifyContent: 'center', flexDirection: 'row' }}
-      >
-        <Image
-          source={require('./img/icon_size_41px.png')}
-          style={{
-            resizeMode: 'contain',
-            width: 20,
-            height: 20,
-            alignSelf: 'center',
-          }}
-        />
-        <Text style={{ color: 'white' }}>Back Home</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
-
-const ComponentCenter = () => {
-  return (
-    <View style={{ flex: 1 }}>
-      <Image
-        source={require('./img/tram-front-view.png')}
-        style={{
-          resizeMode: 'contain',
-          width: 200,
-          height: 35,
-          alignSelf: 'center',
-        }}
-      />
-    </View>
-  )
-}
-
-const ComponentRight = () => {
-  return (
-    <View style={{ flex: 1, alignItems: 'flex-end' }}>
-      <TouchableOpacity onPress={() => Alert.alert('pöö')}>
-        <Text style={{ color: 'white' }}> Right </Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
+import Menu from './components/Menu'
+import {
+  ComponentLeft,
+  ComponentCenter,
+  ComponentRight,
+} from './components/Components'
+import { Audio } from 'expo-av';
 
 const App = () => {
+  const soundObject = new Audio.Sound();
+
+  const play = async () => {
+    try {
+      await soundObject.loadAsync(require('./assets/foghorn-daniel_simon.mp3'))
+      await soundObject.playAsync()
+      // Your sound is playing!
+    } catch (error) {
+      // An error occurred!
+    }
+  }
+
+ 
+  
+
+  const [show, setShow] = useState(false)
   return (
     <View style={styles.container}>
       <NavigationBar
-        componentLeft={() => <ComponentLeft />}
-        componentCenter={() => <ComponentCenter />}
+        componentLeft={() => < ComponentLeft  play={play} />}
+        componentCenter={() => (
+          <ComponentCenter setShow={setShow} show={show} />
+        )}
         componentRight={() => <ComponentRight />}
         navigationBarStyle={{ backgroundColor: '#215e79' }}
         statusBarStyle={{
@@ -71,11 +51,10 @@ const App = () => {
           backgroundColor: '#215e79',
         }}
       />
-      <Map style={styles.map}/>
+      {show ? <Map style={styles.map} /> : <Menu style={styles.menu} />}
     </View>
   )
 }
-
 export default App
 
 const styles = StyleSheet.create({
