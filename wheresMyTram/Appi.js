@@ -51,7 +51,7 @@ const Appi = ({
   setTramRoutesOnMap,
 }) => {
   const [show, setShow] = useState(false) 
-  console.log('starting Appi')
+  console.log('rendering Appi')
 
  
   useEffect(() => {
@@ -115,7 +115,7 @@ const Appi = ({
       fetch('https://arcane-shore-64535.herokuapp.com/trams')
         .then(response => response.json())
         .then(body => {
-          //console.log(body)
+          //console.log(body.length,'TRAMS', new Date())
           setTrams(body.map(tram => tram.VP))
         })
         .catch(error => {

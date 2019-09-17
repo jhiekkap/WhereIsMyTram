@@ -1,6 +1,6 @@
 const stopsReducer = (state = [], action) => {
   switch (action.type) {
-    case 'SET_STOPS':
+    case 'SET_STOPS': 
       return action.data
     default:
       return state

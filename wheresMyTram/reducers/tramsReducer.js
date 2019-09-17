@@ -1,6 +1,6 @@
 const tramsReducer = (state = { trams: [], tramRoutesOnMap: [] }, action) => {
   switch (action.type) {
-    case 'SET_TRAMS':
+    case 'SET_TRAMS': 
       return { ...state, trams: action.data }
     case 'SET_TRAM_ROUTES_ON_MAP':
       return { ...state, tramRoutesOnMap: action.data }
