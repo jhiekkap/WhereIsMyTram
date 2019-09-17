@@ -1,11 +1,37 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { setShowTrams } from '../reducers/showTramsReducer'
+import { setMyTram } from '../reducers/myTramReducer'
+import { setTrams } from '../reducers/tramsReducer'
+import {
+  setCenter,
+  setZoom,
+  setShowAlert,
+  openSidebar,
+  closeSidebar,
+  setLine,
+  setAlarm,
+  setShowSidebarOpenButton,
+  setIntro,
+  setShow,
+  setShowLine,
+  setPosition,
+} from '../reducers/settingsReducer'
+import { setMyStop } from '../reducers/myStopReducer'
+/* import driverIcon, {
+  stopIcon,
+  myStopIcon,         IKONIT?????????????????????
+  lineStopIcon,
+  tramIcon,
+  myTramIcon,
+} from '../utils/icons' */
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
   Text,
-  StatusBar,
+  StatusBar, 
   DrawerLayoutAndroid,
   Button,
 } from 'react-native'
@@ -76,5 +102,42 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 })
+ 
 
-export default Map
+const mapStateToProps = state => {
+  return {
+    trams: state.trams.trams,
+    tramRoutesOnMap: state.trams.tramRoutesOnMap,
+    showTrams: state.showTrams,
+    showSidebar: state.showSidebar,
+    showSidebarOpenButton: state.showSidebarOpenButton,
+    stops: state.stops,
+    settings: state.settings,
+    myStop: state.myStop,
+    myTram: state.myTram,
+  }
+}
+
+const mapDispatchToProps = {
+  setShowTrams,
+  setMyStop,
+  setMyTram,
+  setZoom,
+  setCenter,
+  setShowAlert,
+  openSidebar,
+  closeSidebar,
+  setLine,
+  setAlarm,
+  setShowSidebarOpenButton,
+  setIntro,
+  setShow,
+  setTrams,
+  setShowLine,
+  setPosition,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Map)
