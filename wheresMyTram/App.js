@@ -18,10 +18,11 @@ import {
   ComponentCenter,
   ComponentRight,
 } from './components/Components'
-import { Audio } from 'expo-av';
+import { Audio } from 'expo-av'
 
 const App = () => {
-  const soundObject = new Audio.Sound();
+  const [show, setShow] = useState(false)
+  const soundObject = new Audio.Sound()
 
   const play = async () => {
     try {
@@ -33,14 +34,24 @@ const App = () => {
     }
   }
 
- 
-  
 
-  const [show, setShow] = useState(false)
+  if ('geolocation' in navigator) {
+    console.log('geolocation is available')
+    navigator.geolocation.getCurrentPosition(position => {
+      let location = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      }
+      console.log(`lat:${location.lat} lng:${location.lng}`)
+    })
+  } else {
+    console.log('geolocation is NOT available')
+  }
+
   return (
     <View style={styles.container}>
       <NavigationBar
-        componentLeft={() => < ComponentLeft  play={play} />}
+        componentLeft={() => <ComponentLeft play={play} />}
         componentCenter={() => (
           <ComponentCenter setShow={setShow} show={show} />
         )}
