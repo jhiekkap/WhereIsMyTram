@@ -89,7 +89,7 @@ const App = ({
       fetch('/trams')
         .then(response => response.json())
         .then(body => {
-          setTrams(body.map(tram => tram.VP))
+          setTrams(body.map(tram => tram.VP)) 
         })
         .catch(error => {
           console.log(error)

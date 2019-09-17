@@ -109,6 +109,33 @@ const Appi = ({
     }
   }, [settings.geoLocation]) 
 
+  useEffect(() => {
+    setInterval(() => {
+      
+      fetch('https://arcane-shore-64535.herokuapp.com/trams')
+        .then(response => response.json())
+        .then(body => {
+          //console.log(body)
+          setTrams(body.map(tram => tram.VP))
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }, 1000)
+  }, [])
+
+  useEffect(() => {
+    console.log('myStop changed:', myStop)
+    if (myStop) {
+      checkRoutes(myStop.gtfsId).then(routes => {
+        let routeNumbers = routes.data.stop.routes.map(route =>
+          route.gtfsId.slice(4)
+        )
+        console.log('routes going through this stop:', routeNumbers)
+        setPossibleRoutes(routeNumbers)
+      })
+    }
+  }, [myStop])
 
    
   return ( 
