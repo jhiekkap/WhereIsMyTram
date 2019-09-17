@@ -50,7 +50,7 @@ const Menu = () => {
       >
         <View paddingVertical={5} />
 
-        <Text>custom icon using react-native-vector-icons</Text>
+        <Text>customi iconi using react-native-vector-icons</Text>
         {/* and value defined */}
         <RNPickerSelect
           placeholder={placeholder}

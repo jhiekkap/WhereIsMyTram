@@ -8,10 +8,14 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "apollo-boost": "^0.4.4",
+    "apollo-server": "^2.9.3",
     "expo": "^34.0.1",
     "expo-av": "^6.0.0",
+    "graphql": "^14.5.6",
     "navigationbar-react-native": "0.0.5",
     "react": "16.8.3",
+    "react-apollo": "^3.1.1",
     "react-dom": "^16.8.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
     "react-native-gesture-handler": "^1.4.1",
@@ -20,7 +24,11 @@
     "react-native-shapes": "^0.1.0",
     "react-native-web": "^0.11.4",
     "react-navigation": "^4.0.5",
-    "react-navigation-stack": "^1.7.3"
+    "react-navigation-stack": "^1.7.3",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^6.0.0"

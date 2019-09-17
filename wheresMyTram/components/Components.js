@@ -50,7 +50,7 @@ export const ComponentCenter = ({ show, setShow }) => {
           }} 
         /> */}
         <Text style={{ color: 'white', alignSelf: 'center' }}>
-          {show ? 'menu' : 'map'}{' '}
+          {show ? 'menu' : 'mäp'}{' '}
         </Text>
       </TouchableOpacity>
     </View>

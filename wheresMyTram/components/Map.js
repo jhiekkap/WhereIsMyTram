@@ -43,7 +43,7 @@ const Map = () => {
           coordinate={pin}
           title='pöö'
           description='asiaa asiaa \r asiaa'
-          icon={require('../img/rosaPin.png')}
+          icon={require('../assets/img/rosaPin.png')}
           onDragEnd={e =>
             setPin({
               latitude: e.nativeEvent.coordinate.latitude,
