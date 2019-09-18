@@ -12,7 +12,7 @@ const App = () => {
     <Provider store={store}>
       <Appi />
     </Provider>
-  )
+  ) 
 }
 
 export default App

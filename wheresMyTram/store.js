@@ -11,7 +11,7 @@ import settingsReducer from './reducers/settingsReducer'
 const reducer = combineReducers({
   trams: tramsReducer,
   showTrams: showTramsReducer,  
-  stops: stopsReducer,
+  stops: stopsReducer, 
   myStop: myStopReducer,  
   myTram: myTramReducer,
   settings: settingsReducer,

@@ -166,9 +166,12 @@ const Map = (
      /* let tramsToShow = trams.trams.filter(tram =>
       showTrams.map(tram => tram.veh).includes(tram.veh)
     )  */
-    let tramsToShow=trams.trams
+    let tramsToShow=trams 
+    
 
-    if (tramsToShow) {
+    console.log(trams.length, 'trams')
+
+    if (tramsToShow=100000) {
       return tramsToShow.map((tram, i) => (
         <Marker
           //className='trams'
@@ -178,7 +181,8 @@ const Map = (
               ? myTramIcon(settings.zoom, tram.desi)
               : tramIcon(settings.zoom, tram.desi)
           } */
-          icon={require('../assets/img/rosaPin.png')} 
+          //icon={require('../assets/img/rosaPin.png')} 
+          image={require('../assets/img/trams/1tram.png')}
           coordinate={{
             latitude: tram.lat,
             longitude: tram.long,
@@ -206,7 +210,7 @@ const Map = (
 
   return (
     <View style={styles.container}>
-      <MapView
+      {trams ? <MapView
         style={styles.map}
         initialRegion={{
           latitude: 60.169748893653164,
@@ -227,7 +231,8 @@ const Map = (
           coordinate={pin}
           title='pöö'
           description='asiaa asiaa \r asiaa'
-          icon={require('../assets/img/rosaPin.png')}
+          image={require('../assets/img/trams/1tram.png')}
+          pinColor={'blue'}
         >
           <Callout>
             <Text>hellooooasdasdasdoo</Text>
@@ -239,7 +244,7 @@ const Map = (
             <Text>hellooooasdasdasdoo</Text>
           </Callout>
         </Marker>
-      </MapView>
+      </MapView> : <Text>loading...</Text>}
     </View>
   )
 }
