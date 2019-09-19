@@ -24,7 +24,7 @@ const App = ({
   setStops,
   myStop,
   setMyStop,
-  settings,
+  settings, 
   setPosition,
   setCenter,
   setPossibleRoutes,
