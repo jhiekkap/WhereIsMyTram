@@ -16,7 +16,7 @@ import client, {
   stopsByRadiusQuery,
   checkRoutes,
 } from './utils/queries'
- 
+import { turnOn } from './utils/turnOnOff'
 
 const App = ({
   setTrams,
@@ -28,7 +28,8 @@ const App = ({
   setCenter,
   setPossibleRoutes,
   setTramRoutesOnMap,
-}) => { 
+}) => {
+  const [on, setOn] = useState(false)
 
   useEffect(() => {
     client.query({ query: tramStopsQuery }).then(response => {
@@ -112,8 +113,14 @@ const App = ({
 
   return (
     <div>
-      <Sidebar />
-      <LeafletMap stopsQuery={stopsQuery} />
+      {on ? (
+        <div>
+          <Sidebar setOn={setOn} />
+          <LeafletMap stopsQuery={stopsQuery} />{' '}
+        </div>
+      ) : (
+        <button onClick={()=>{setOn(true);turnOn()}}>Welcome!</button>
+      )}
     </div>
   )
 }

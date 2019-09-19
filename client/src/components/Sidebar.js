@@ -38,6 +38,7 @@ import distance, {
   sortStopNames,
 } from '../utils/helpers'
 import closeX from '../img/icons8-close-window-16.png'
+import { turnOff } from '../utils/turnOnOff'
 //import { SoundEffect } from './SoundEffect'
 //import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
 
@@ -69,6 +70,7 @@ const Sidebar = ({
   setAlarmDistance,
   setShow,
   setShowLine,
+  setOn,
 }) => {
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
@@ -155,6 +157,8 @@ const Sidebar = ({
   const reStart = () => {
     reset()
     closeSidebar()
+    turnOff()
+    setOn(false)
   }
 
   const handleChooseMyTram = veh => {
