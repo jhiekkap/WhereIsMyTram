@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native'
 
-export const ComponentLeft = ({ play }) => {
+export const ComponentLeft = ({ play }) => { 
   return (
     <View style={{ flex: 1, alignItems: 'flex-start' }}>
       <TouchableOpacity

@@ -6,7 +6,7 @@ import {
   View,
   Alert,
   DrawerLayoutAndroid,
-} from 'react-native';
+} from 'react-native'; 
 
 const DrawerExample = ( {navigation}) => {
   const NavigationView = () => (

@@ -7,13 +7,13 @@ import {
   Text,
   Image,
   View,
-  TouchableOpacity,
+  TouchableOpacity, 
   Alert,
 } from 'react-native'
 import { NavigationBar } from 'navigationbar-react-native'
 import Map from './components/Map'
 import Menu from './components/Menu'
-import {
+import { 
   ComponentLeft,
   ComponentCenter,
   ComponentRight,
@@ -51,7 +51,8 @@ const Appi = ({
   setTramRoutesOnMap,
 }) => {
   const [show, setShow] = useState(false) 
-  console.log('rendering Appi')
+   
+  console.log('rendering äppi')
 
  
   useEffect(() => {
@@ -111,12 +112,13 @@ const Appi = ({
 
   useEffect(() => {
     setInterval(() => {
-      
+      console.log('RATIKAT', ratikat)
       fetch('https://arcane-shore-64535.herokuapp.com/trams')
         .then(response => response.json())
         .then(body => {
-          //console.log(body.length,'TRAMS', new Date())
-          setTrams(body.map(tram => tram.VP))
+          console.log(body.length,'TRAMS', new Date())
+         setTrams(body.map(tram => tram.VP))
+           
         })
         .catch(error => {
           console.log(error)
@@ -152,7 +154,7 @@ const Appi = ({
           backgroundColor: '#215e79',
         }}
       />
-      {show ? <Map style={styles.map} /> : <Menu style={styles.menu} />}
+      {show ? <Map  style={styles.map} /> : <Menu style={styles.menu} />}
     </View> 
   )
 }

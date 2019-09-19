@@ -9,7 +9,7 @@ import {
   setShowAlert,
   openSidebar,
   closeSidebar,
-  setLine,
+  setLine, 
   setAlarm,
   setShowSidebarOpenButton,
   setIntro,
@@ -68,7 +68,8 @@ const Map = (
   tramRoutesOnMap,
   setShowLine,
   stopsQuery,
-  setPosition,) => {
+  setPosition, 
+  ) => {
 
   const [pin, setPin] = useState({
     latitude: 60.169748893653164,
@@ -166,12 +167,12 @@ const Map = (
      /* let tramsToShow = trams.trams.filter(tram =>
       showTrams.map(tram => tram.veh).includes(tram.veh)
     )  */
-    let tramsToShow=trams 
+    let tramsToShow=false
     
 
-    console.log(trams.length, 'trams')
+    //console.log(ratikat, 'trams')
 
-    if (tramsToShow=100000) {
+    if (tramsToShow) {
       return tramsToShow.map((tram, i) => (
         <Marker
           //className='trams'
@@ -226,7 +227,7 @@ const Map = (
           urlTemplate='http://a.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
           maximumZ={19}
         />
-        {trams && ShowChosenTrams()}
+        {ShowChosenTrams()}
         <Marker 
           coordinate={pin}
           title='pöö'
