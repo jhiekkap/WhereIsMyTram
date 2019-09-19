@@ -132,7 +132,8 @@ const Sidebar = ({
       if (settings.alarm && settings.distance < settings.alarmDistance) {
         /*  horn.src={alarmSound}
         horn.play() */
-        reStart()
+        reset() 
+        closeSidebar()
         setShowAlert(true)
       }
     }
@@ -157,7 +158,6 @@ const Sidebar = ({
 
   const reStart = () => {
     reset()
-    closeSidebar()
     turnOff()
     console.log('INTERVALLI', intervalli)
     clearInterval(intervalli)
