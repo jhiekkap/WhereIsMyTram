@@ -116,7 +116,7 @@ const App = ({
   //}, [])
 
   useEffect(() => {
-    console.log('myStop changed:', myStop)
+    console.log('myStop has changed:', myStop)
     if (myStop) {
       checkRoutes(myStop.gtfsId).then(routes => {
         let routeNumbers = routes.data.stop.routes.map(route =>
