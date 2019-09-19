@@ -17,6 +17,7 @@ import client, {
   checkRoutes,
 } from './utils/queries'
 import { turnOn } from './utils/turnOnOff'
+let intervalli
 
 const App = ({
   setTrams,
@@ -30,6 +31,7 @@ const App = ({
   setTramRoutesOnMap,
 }) => {
   const [on, setOn] = useState(false)
+  
 
   useEffect(() => {
     client.query({ query: tramStopsQuery }).then(response => {
@@ -85,8 +87,11 @@ const App = ({
     }
   }, [settings.geoLocation])
 
-  useEffect(() => {
-    setInterval(() => {
+  const handleTurnOn = () => {
+
+    setOn(true)
+    turnOn() 
+    intervalli = setInterval(() => {
       fetch('/trams')
         .then(response => response.json())
         .then(body => {
@@ -96,7 +101,19 @@ const App = ({
           console.log(error)
         })
     }, 1000)
-  }, [])
+  }
+  /* useEffect(() => { */
+ /*  let intervalli = setInterval(() => {
+    fetch('/trams')
+      .then(response => response.json())
+      .then(body => {
+        setTrams(body.map(tram => tram.VP))
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, 1000) */
+  //}, [])
 
   useEffect(() => {
     console.log('myStop changed:', myStop)
@@ -115,11 +132,15 @@ const App = ({
     <div>
       {on ? (
         <div>
-          <Sidebar setOn={setOn} />
+          <Sidebar intervalli={intervalli} setOn={setOn} />
           <LeafletMap stopsQuery={stopsQuery} />{' '}
         </div>
       ) : (
-        <button onClick={()=>{setOn(true);turnOn()}}>Welcome!</button>
+        <button
+          onClick={handleTurnOn}
+        >
+          Welcome!
+        </button>
       )}
     </div>
   )

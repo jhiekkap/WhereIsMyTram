@@ -71,6 +71,7 @@ const Sidebar = ({
   setShow,
   setShowLine,
   setOn,
+  intervalli,
 }) => {
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
@@ -158,6 +159,8 @@ const Sidebar = ({
     reset()
     closeSidebar()
     turnOff()
+    console.log('INTERVALLI', intervalli)
+    clearInterval(intervalli)
     setOn(false)
   }
 
@@ -557,7 +560,7 @@ const Sidebar = ({
         <Container>
           <Row>
             <Col>
-              <Button onClick={() => reStart()}>RESTART</Button>
+              <Button onClick={() => reStart()}>GOODBYE</Button>
             </Col>
             <Col>
               <Button onClick={() => setShow('menu')}>Cancel</Button>
