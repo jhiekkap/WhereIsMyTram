@@ -18,5 +18,5 @@ const reducer = combineReducers({
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
-
+console.log('STORE', store.trams)
 export default store

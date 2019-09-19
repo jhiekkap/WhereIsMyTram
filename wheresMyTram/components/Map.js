@@ -7,7 +7,7 @@ import {
   setCenter,
   setZoom,
   setShowAlert,
-  openSidebar,
+  openSidebar, 
   closeSidebar,
   setLine, 
   setAlarm,
@@ -163,11 +163,12 @@ const Map = (
   }
 
   const ShowChosenTrams = () => {
-    //console.log('TRAMS:', trams.settings,  new Date())
-     /* let tramsToShow = trams.trams.filter(tram =>
-      showTrams.map(tram => tram.veh).includes(tram.veh)
+    //console.log('TRAMS:', trams.trams.length,  new Date())
+    //console.log('SETTINGS:', showTrams)
+    /*  let tramsToShow = trams.trams.filter(tram =>
+      trams.showTrams.map(tram => tram.veh).includes(tram.veh)
     )  */
-    let tramsToShow=false
+  let tramsToShow=trams.trams
     
 
     //console.log(ratikat, 'trams')
@@ -263,14 +264,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     trams: state.trams.trams,
-    tramRoutesOnMap: state.trams.tramRoutesOnMap,
-    showTrams: state.showTrams,
-    showSidebar: state.showSidebar,
-    showSidebarOpenButton: state.showSidebarOpenButton,
-    stops: state.stops,
-    settings: state.settings,
-    myStop: state.myStop,
-    myTram: state.myTram,
+    tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
+    showTrams: state.trams.showTrams,
+    showSidebar: state.trams.showSidebar,
+    showSidebarOpenButton: state.trams.showSidebarOpenButton,
+    stops: state.trams.stops,
+    settings: state.trams.settings,
+    myStop: state.trams.myStop,
+    myTram: state.trams.myTram,
   }
 }
 

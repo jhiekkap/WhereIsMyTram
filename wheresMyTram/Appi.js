@@ -50,7 +50,7 @@ const Appi = ({
   setPossibleRoutes,
   setTramRoutesOnMap,
 }) => {
-  const [show, setShow] = useState(false) 
+  const [show, setShow] = useState(true) 
    
   console.log('rendering äppi')
 
@@ -70,7 +70,7 @@ const Appi = ({
           .map(edge => edge.node.stop)
           .filter(stop => stop.vehicleType === 0)
         setStops(allStops)
-        console.log('GRAPHQL - stopsByRadiusQuery:', allStops)
+        //console.log('GRAPHQL - stopsByRadiusQuery:', allStops)
         console.log(allStops.length, 'PYSÄKKIÄ LÖYTYI PAIKASTA', location.lat, location.lng)
         if (allStops.length > 0) {
           setMyStop(allStops[0])
@@ -111,19 +111,19 @@ const Appi = ({
   }, [settings.geoLocation]) 
 
   useEffect(() => {
-    setInterval(() => {
-      console.log('RATIKAT', ratikat)
+    /* setInterval(() => { */
+      //console.log('RATIKAT', ratikat)
       fetch('https://arcane-shore-64535.herokuapp.com/trams')
         .then(response => response.json())
         .then(body => {
-          console.log(body.length,'TRAMS', new Date())
+          //console.log(body.length,'TRAMS', new Date())
          setTrams(body.map(tram => tram.VP))
            
         })
         .catch(error => {
           console.log(error)
         })
-    }, 1000)
+   /*  }, 1000) */
   }, [])
 
   useEffect(() => {
