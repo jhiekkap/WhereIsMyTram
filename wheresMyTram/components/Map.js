@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+/* import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import { setTrams } from '../reducers/tramsReducer'
@@ -17,7 +17,7 @@ import {
   setShowLine,
   setPosition,
 } from '../reducers/settingsReducer'
-import { setMyStop } from '../reducers/myStopReducer'
+import { setMyStop } from '../reducers/myStopReducer' */
 /* import driverIcon, {
   stopIcon,
   myStopIcon,         IKONIT?????????????????????
@@ -44,10 +44,9 @@ import centerButton from '../assets/img/icons8-navigation-50.png'
 import tramButton from '../assets/img/icons8-ice-cream-50.png'
 
 
-const Map = (
-  tramssit,
-  trams,
-  setTrams,
+const Map = ( 
+  {trams,}
+  /* setTrams,
   showTrams,
   setShowTrams,
   openSidebar,
@@ -69,9 +68,10 @@ const Map = (
   tramRoutesOnMap,
   setShowLine,
   stopsQuery,
-  setPosition, 
+  setPosition,  */
   ) => {
 
+  //console.log('RENDERING MÄPPI')
   const [pin, setPin] = useState({
     latitude: 60.169748893653164,
     longitude: 24.940102100372314,
@@ -164,12 +164,12 @@ const Map = (
   }
 
   const ShowChosenTrams = () => {
-    console.log('STOREA:', tramssit,  new Date())
+  //console.log('TRAMS:', trams,  new Date())
     //console.log('SETTINGS:', showTrams)
     /*  let tramsToShow = trams.trams.filter(tram =>
       trams.showTrams.map(tram => tram.veh).includes(tram.veh)
     )  */
-  let tramsToShow=false
+  let tramsToShow=trams
     
 
     //console.log(ratikat, 'trams')
@@ -262,10 +262,10 @@ const styles = StyleSheet.create({
 })
  
 
-const mapStateToProps = state => {
+/* const mapStateToProps = state => {
   return { 
 
-    /* trams: state.trams.trams,
+    trams: state.trams.trams,
     tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
     showTrams: state.trams.showTrams,
     showSidebar: state.trams.showSidebar,
@@ -273,12 +273,12 @@ const mapStateToProps = state => {
     stops: state.trams.stops,
     settings: state.trams.settings,
     myStop: state.trams.myStop,
-    myTram: state.trams.myTram, */
+    myTram: state.trams.myTram,
   }
-}
+} */
 
-const mapDispatchToProps = {
-  /* setShowTrams,
+/* const mapDispatchToProps = {
+  setShowTrams,
   setMyStop,
   setMyTram,
   setZoom,
@@ -293,12 +293,12 @@ const mapDispatchToProps = {
   setShow,
   setTrams,
   setShowLine,
-  setPosition, */
-}
+  setPosition,
+} */
 
-export default connect(
+/* export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Map)
+)(Map) */
 
-//export default Map
+export default Map
