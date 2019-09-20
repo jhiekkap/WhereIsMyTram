@@ -3,21 +3,21 @@
 import React, { useState, useEffect } from 'react'
 import {
   AppRegistry,
-  StyleSheet, 
+  StyleSheet,
   Text,
   Image,
   View,
-  TouchableOpacity, 
+  TouchableOpacity,
   Alert,
 } from 'react-native'
 import { NavigationBar } from 'navigationbar-react-native'
 import Map from './components/Map'
 import Menu from './components/Menu'
-import { 
+import {
   ComponentLeft,
   ComponentCenter,
   ComponentRight,
-} from './components/Components' 
+} from './components/Components'
 /* import { setTrams, setTramRoutesOnMap } from './reducers/tramsReducer'
 import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
@@ -36,11 +36,9 @@ import client, {
   checkRoutes,
 } from './utils/queries'
 
-
-
-
-const App = ({
-  /* setTrams,
+const App = (
+  {
+    /* setTrams,
   setStops,
   myStop,
   setMyStop,
@@ -49,22 +47,26 @@ const App = ({
   setCenter,
   setPossibleRoutes,
   setTramRoutesOnMap, */
-}) => {
-  const [show, setShow] = useState(true) 
+  }
+) => {
+  const [show, setShow] = useState(true)
   const [trams, setTrams] = useState([])
-  
-   
-  //console.log('rendering äppi')
+  const [myTram, setMyTram] = useState('')
+  const [myStop, setMyStop] = useState('')
+  const [possibleRoutes, setPossibleroutes] = useState([])
+  const [alarm, setAlarm] = useState(false)
 
- 
- /*  useEffect(() => {
+
+  //console.log('rendering äppi', show)
+
+  /*  useEffect(() => {
     client.query({ query: tramStopsQuery }).then(response => {
       //console.log('GRAPHQL - ALLROUTES - QUERY:', response.data.routes)
       setTramRoutesOnMap(response.data.routes)
     })
   }, []) */
 
- /*  const stopsQuery = location => {
+  /*  const stopsQuery = location => {
     client
       .query({ query: stopsByRadiusQuery(location, settings.radius) })
       .then(response => {
@@ -112,23 +114,22 @@ const App = ({
     }
   }, [settings.geoLocation])  */
 
- /*  useEffect(() => { */
-    const taimeri =  setInterval(() => { 
-      //console.log('RATIKAT', ratikat)
-      fetch('https://arcane-shore-64535.herokuapp.com/trams')
-        .then(response => response.json())
-        .then(body => {
-          //console.log(body.length,'TRAMS', new Date())
-         setTrams(body.map(tram => tram.VP))
-           
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    }, 1000) 
-/*   }, []) */
+  /*  useEffect(() => { */
+  const taimeri = setInterval(() => {
+    //console.log('RATIKAT', ratikat)
+    fetch('https://arcane-shore-64535.herokuapp.com/trams')
+      .then(response => response.json())
+      .then(body => {
+        //console.log(body.length,'TRAMS', new Date())
+        setTrams(body.map(tram => tram.VP))
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, 1000)
+  /*   }, []) */
 
-  /* useEffect(() => {
+  useEffect(() => {
     console.log('myStop changed:', myStop)
     if (myStop) {
       checkRoutes(myStop.gtfsId).then(routes => {
@@ -139,10 +140,9 @@ const App = ({
         setPossibleRoutes(routeNumbers)
       })
     }
-  }, [myStop]) */
+  }, [myStop]) 
 
-   
-  return ( 
+  return (
     <View style={styles.container}>
       <NavigationBar
         componentLeft={() => <ComponentLeft play={play} />}
@@ -156,12 +156,19 @@ const App = ({
           backgroundColor: '#215e79',
         }}
       />
-      {show ? <Map  trams={trams} style={styles.map} /> : <Menu style={styles.menu} />}
-    </View> 
+      {show ? (
+        <Map 
+        trams={trams}
+        myTram={myTram} 
+        possibleRoutes={possibleRoutes}
+        alarm={alarm}
+        style={styles.map} />
+      ) : (
+        <Menu style={styles.menu} />
+      )}
+    </View>
   )
 }
-
-
 
 /* const mapStateToProps = state => {
   return {
@@ -185,10 +192,7 @@ const mapDispatchToProps = {
   mapDispatchToProps
 )(Appi) */
 
-export default App 
-
-
-
+export default App
 
 const styles = StyleSheet.create({
   container: {
@@ -205,12 +209,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 })
-
-
-
- 
-
-
 
 /* 
 import React, { Component, useState } from 'react'

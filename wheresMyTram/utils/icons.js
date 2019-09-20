@@ -1,5 +1,5 @@
 import L from 'leaflet'
-import "leaflet/dist/leaflet.css";
+//import "leaflet/dist/leaflet.css";
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -39,7 +39,7 @@ export const myTramIcon = (zoom, line) => new L.Icon({
   iconUrl: require(`../assets/img/trams/${line}tram.png`),
   iconRetinaUrl: require(`../assets/img/trams/${line}tram.png`),
   iconSize: [Math.round(80 - (19 - zoom) * 4), Math.round(70 - (19 - zoom) * 4)],
-})
+}) 
 
  
 const driverIcon = zoom => new L.Icon({
