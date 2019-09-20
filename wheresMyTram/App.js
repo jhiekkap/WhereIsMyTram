@@ -1,4 +1,4 @@
-// https://www.npmjs.com/package/navigationbar-react-native
+ 
 
 import React from 'react' 
 import { Provider } from 'react-redux'

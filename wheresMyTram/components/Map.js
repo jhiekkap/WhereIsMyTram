@@ -45,6 +45,7 @@ import tramButton from '../assets/img/icons8-ice-cream-50.png'
 
 
 const Map = (
+  tramssit,
   trams,
   setTrams,
   showTrams,
@@ -163,12 +164,12 @@ const Map = (
   }
 
   const ShowChosenTrams = () => {
-    //console.log('TRAMS:', trams.trams.length,  new Date())
+    console.log('STOREA:', tramssit,  new Date())
     //console.log('SETTINGS:', showTrams)
     /*  let tramsToShow = trams.trams.filter(tram =>
       trams.showTrams.map(tram => tram.veh).includes(tram.veh)
     )  */
-  let tramsToShow=trams.trams
+  let tramsToShow=false
     
 
     //console.log(ratikat, 'trams')
@@ -262,8 +263,9 @@ const styles = StyleSheet.create({
  
 
 const mapStateToProps = state => {
-  return {
-    trams: state.trams.trams,
+  return { 
+
+    /* trams: state.trams.trams,
     tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
     showTrams: state.trams.showTrams,
     showSidebar: state.trams.showSidebar,
@@ -271,12 +273,12 @@ const mapStateToProps = state => {
     stops: state.trams.stops,
     settings: state.trams.settings,
     myStop: state.trams.myStop,
-    myTram: state.trams.myTram,
+    myTram: state.trams.myTram, */
   }
 }
 
 const mapDispatchToProps = {
-  setShowTrams,
+  /* setShowTrams,
   setMyStop,
   setMyTram,
   setZoom,
@@ -291,10 +293,12 @@ const mapDispatchToProps = {
   setShow,
   setTrams,
   setShowLine,
-  setPosition,
+  setPosition, */
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Map)
+
+//export default Map

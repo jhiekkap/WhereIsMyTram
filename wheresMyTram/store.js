@@ -1,6 +1,6 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux' 
 import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
+
 import tramsReducer from './reducers/tramsReducer'
 import showTramsReducer from './reducers/showTramsReducer'  
 import stopsReducer from './reducers/stopsReducer' 
@@ -17,6 +17,6 @@ const reducer = combineReducers({
   settings: settingsReducer,
 })
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
-console.log('STORE', store.trams)
+const store = createStore(reducer, applyMiddleware(thunk) ) 
+
 export default store
