@@ -12,7 +12,7 @@ import {
   setLine, 
   setAlarm,
   setShowSidebarOpenButton,
-  setIntro,
+  setIntro, 
   setShow,
   setShowLine,
   setPosition,
