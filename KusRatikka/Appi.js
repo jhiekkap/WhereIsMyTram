@@ -2,9 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import {
   setTrams,
-  //setTramRoutesOnMap
+  setTramRoutesOnMap
 } from './reducers/tramsReducer'
 import { connect } from 'react-redux'
+import client, {
+  tramStopsQuery,
+  stopsByRadiusQuery,
+  checkRoutes,
+} from './utils/queries'
+ 
 
 const Appi = ({ trams, setTrams }) => {
   const [counter, setCounter] = useState(0)
