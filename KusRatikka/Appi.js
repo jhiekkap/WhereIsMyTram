@@ -46,7 +46,7 @@ const Appi = ({
           .map(edge => edge.node.stop)
           .filter(stop => stop.vehicleType === 0)
         setStops(allStops)
-        console.log('GRAPHQL - stopsByRadiusQuery:', allStops)
+        console.log('GRAPHQL - stopsByRadiusQuery:', allStops.length)
         if (allStops.length > 0) {
           setMyStop(allStops[0])
         } else {
@@ -102,7 +102,7 @@ const Appi = ({
   }, [])
 
   useEffect(() => {
-    console.log('myStop changed:', myStop)
+    console.log('myStop changed:', myStop.name)
     if (myStop) {
       checkRoutes(myStop.gtfsId).then(routes => {
         let routeNumbers = routes.data.stop.routes.map(route =>
