@@ -7,7 +7,7 @@ const tramsReducer = (state = { trams: [], tramRoutesOnMap: [] }, action) => {
     default:
       return state
   }
-}
+} 
 
 export const setTrams = trams => {
   return dispatch => {
