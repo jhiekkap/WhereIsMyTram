@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
-import {
-  setTrams,
-  setTramRoutesOnMap
-} from './reducers/tramsReducer'
+import { setTrams, setTramRoutesOnMap } from './reducers/tramsReducer'
 import { connect } from 'react-redux'
 import client, {
   tramStopsQuery,
   stopsByRadiusQuery,
   checkRoutes,
 } from './utils/queries'
- 
 
 const Appi = ({ trams, setTrams }) => {
   const [counter, setCounter] = useState(0)
 
   //console.log('hellouuta')
+  useEffect(() => {
+    client.query({ query: tramStopsQuery }).then(response => {
+      console.log('GRAPHQL - ALLROUTES - QUERY:', response.data.routes.length)
+      setTramRoutesOnMap(response.data.routes)
+    })
+  }, [])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -23,7 +25,7 @@ const Appi = ({ trams, setTrams }) => {
       fetch('https://arcane-shore-64535.herokuapp.com/trams')
         .then(response => response.json())
         .then(body => {
-          setTrams(body.map(tram => tram.VP)) 
+          setTrams(body.map(tram => tram.VP))
           console.log(new Date())
         })
         .catch(error => {
@@ -65,8 +67,8 @@ const mapDispatchToProps = {
   setMyStop,
   setPosition,
   setCenter,
-  setPossibleRoutes,
-  setTramRoutesOnMap, */
+  setPossibleRoutes,*/
+  setTramRoutesOnMap, 
 }
 
 export default connect(
