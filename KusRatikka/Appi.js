@@ -1,3 +1,12 @@
+// https://www.npmjs.com/package/navigationbar-react-native
+
+import { NavigationBar } from 'navigationbar-react-native'
+import {
+  ComponentLeft,
+  ComponentCenter,
+  ComponentRight,
+} from './components/Components'
+import play from './utils/sound'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import { connect } from 'react-redux'
@@ -20,15 +29,15 @@ const Appi = ({
   setTrams,
   myStop,
   setTramRoutesOnMap,
-  setPossibleRoutes, 
+  setPossibleRoutes,
   setStops,
-  setMyStop, 
+  setMyStop,
   setPosition,
   setCenter,
   settings,
-
 }) => {
   const [counter, setCounter] = useState(0)
+  const [show, setShow] = useState(true)
 
   //console.log('hellouuta')
   useEffect(() => {
@@ -85,7 +94,6 @@ const Appi = ({
     }
   }, [settings.geoLocation])
 
-
   useEffect(() => {
     const timer = setInterval(() => {
       //setCounter(counter + 1)   ei toimi!!!!
@@ -116,6 +124,19 @@ const Appi = ({
 
   return (
     <View style={styles.container}>
+      <NavigationBar
+        componentLeft={() => <ComponentLeft play={play} />}
+        componentCenter={() => (
+          <ComponentCenter setShow={setShow} show={show} />
+        )}
+        componentRight={() => <ComponentRight />}
+        navigationBarStyle={{ backgroundColor: '#215e79' }}
+        statusBarStyle={{
+          barStyle: 'light-content',
+          backgroundColor: '#215e79',
+        }}
+      />
+
       <Text>
         Open up to fart {trams.length} working on your räppi nr. {counter}!
       </Text>
@@ -127,9 +148,9 @@ const Appi = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    /* backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center', */
   },
 })
 
@@ -152,6 +173,6 @@ const mapDispatchToProps = {
 }
 
 export default connect(
-  mapStateToProps, 
+  mapStateToProps,
   mapDispatchToProps
 )(Appi)
