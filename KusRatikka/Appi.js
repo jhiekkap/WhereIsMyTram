@@ -14,16 +14,23 @@ const Appi = ({ trams, setTrams }) => {
   useEffect(() => {
     const timer = setInterval(() => {
       //setCounter(counter + 1)   ei toimi!!!!
-      let heppi = Math.floor(Math.random() * 10)
-      setTrams([heppi])
-    
-      console.log(heppi, new Date())
+      fetch('https://arcane-shore-64535.herokuapp.com/trams')
+        .then(response => response.json())
+        .then(body => {
+          setTrams(body.map(tram => tram.VP)) 
+          console.log(new Date())
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }, 1000)
   }, [])
 
   return (
     <View style={styles.container}>
-      <Text>Open up to fart {trams[0]} working on your räppi nr. {counter}!</Text>
+      <Text>
+        Open up to fart {trams.length} working on your räppi nr. {counter}!
+      </Text>
       <Button title='push' onPress={() => setCounter(counter + 1)} />
     </View>
   )

@@ -4,7 +4,7 @@ import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
 import { 
   setPosition,
-  setCenter,
+  setCenter, 
   setPossibleRoutes,
 } from './reducers/settingsReducer'
 import './App.css'
