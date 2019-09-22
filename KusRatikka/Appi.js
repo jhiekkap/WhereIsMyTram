@@ -23,6 +23,9 @@ import client, {
   stopsByRadiusQuery,
   checkRoutes,
 } from './utils/queries'
+import Menu from './components/Menu'
+import Map from './components/Map'
+
 
 const Appi = ({
   trams,
@@ -141,6 +144,18 @@ const Appi = ({
         Open up to fart {trams.length} working on your räppi nr. {counter}!
       </Text>
       <Button title='push' onPress={() => setCounter(counter + 1)} />
+
+      {show ? (
+        <Map
+           trams={trams}
+          /*myTram={myTram}
+          possibleRoutes={possibleRoutes}
+          alarm={alarm} */
+          style={styles.map}
+        />
+      ) : (
+        <Menu style={styles.menu} />
+      )}
     </View>
   )
 }
@@ -151,6 +166,13 @@ const styles = StyleSheet.create({
     /* backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center', */
+  },
+  menu: {
+    flex: 1,
+    height: 10,
+  },
+  map: {
+    flex: 1,
   },
 })
 

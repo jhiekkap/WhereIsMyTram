@@ -40,7 +40,7 @@ const Menu = () => {
     label: 'Select a sport...',
     value: null,
     color: '#9EA0A4',
-  } 
+  }  
 
   return (
     <View style={styles.container}>

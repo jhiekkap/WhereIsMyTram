@@ -38,13 +38,16 @@ import {
 } from 'react-native'
 
 import MapView, { Marker, Callout, UrlTile } from 'react-native-maps'
-import { printDuration } from '../utils/helpers'
+/* import { printDuration } from '../utils/helpers'
 import alarmOnButton from '../assets/img/icon-alarm.png'
 import alarmOffButton from '../assets/img/iconfinder_stop_green_61688.png'
 import centerButton from '../assets/img/icons8-navigation-50.png'
 import tramButton from '../assets/img/icons8-ice-cream-50.png'
-
-const Map = ({ trams, myTram, alarm, possibleRoutes }) =>
+ */
+const Map = ({
+  trams,
+  //myTram, alarm, possibleRoutes
+}) =>
   /* trams,
   setTrams,
   showTrams,
@@ -76,7 +79,7 @@ const Map = ({ trams, myTram, alarm, possibleRoutes }) =>
       longitude: 24.940102100372314,
     })
 
-    const handleChooseTram = e => {
+    /* const handleChooseTram = e => {
       console.log('valitse nro: ', e.target.value, trams)
       let chosenTram = trams.find(tram => tram.veh == e.target.value)
       console.log('CHOSEN TRAM:', chosenTram)
@@ -90,9 +93,9 @@ const Map = ({ trams, myTram, alarm, possibleRoutes }) =>
       } else {
         console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
       }
-    }
+    } */
 
-    const handleCancelTram = e => {
+    /* const handleCancelTram = e => {
       console.log('TRAM CANCELED', e.target.value)
       setAlarm(false)
       setMyTram('')
@@ -100,8 +103,8 @@ const Map = ({ trams, myTram, alarm, possibleRoutes }) =>
       setShowTrams(trams)
       setLine('')
       //setZoom(16)
-    }
-
+    } */
+    /* 
     const handleChangeZoom = e => {
       setZoom(e.target._zoom)
       //setCenter({lat:e.target._animateToCenter.lat, lng:e.target._animateToCenter.lng})
@@ -112,31 +115,31 @@ const Map = ({ trams, myTram, alarm, possibleRoutes }) =>
         e.target._animateToCenter.lat,
         e.target._animateToCenter.lng
       )
-    }
+    } */
 
-    const handleCenterButton = () => {
+    /* const handleCenterButton = () => {
       setCenter(settings.position)
       setZoom(16)
       closeSidebar()
-    }
+    } */
 
-    const handleSetMyStop = stop => {
+    /*  const handleSetMyStop = stop => {
       if (!myTram) {
         setMyStop(stop)
         setLine('')
       }
-    }
+    } */
 
-    const handleChangeCenter = e => {
+    /*  const handleChangeCenter = e => {
       setZoom(e.target._zoom)
       console.log('CHANGED CENTER \n GET ZOOM: ', e.target._zoom)
       console.log('NEW CENTER:\n', e.latlng)
       setCenter(e.latlng)
       setPosition(e.latlng)
       stopsQuery(e.latlng)
-    }
+    } */
 
-    const popUp = tram => {
+    /* const popUp = tram => {
       return (
         <Callout 
         >
@@ -169,28 +172,28 @@ const Map = ({ trams, myTram, alarm, possibleRoutes }) =>
           )} 
         </Callout>
       )
-    }
+    } */
 
-    const ShowChosenTrams = () => {
-      //console.log('TRAMS:', trams,  new Date())
-      //console.log('SETTINGS:', showTrams)
-      /*  let tramsToShow = trams.trams.filter(tram =>
+    //const ShowChosenTrams = () => {
+    //console.log('TRAMS:', trams,  new Date())
+    //console.log('SETTINGS:', showTrams)
+    /*  let tramsToShow = trams.trams.filter(tram =>
       trams.showTrams.map(tram => tram.veh).includes(tram.veh)
     )  */
-      let tramsToShow = trams
+    //let tramsToShow = trams
 
-      //console.log(ratikat, 'trams')
+    //console.log(ratikat, 'trams')
 
-      if (tramsToShow) {
+    /* if (tramsToShow) {
         return tramsToShow.map((tram, i) => (
           <Marker
             //className='trams'
             key={i}
-            /* icon={
+              icon={
             myTram && myTram.veh === tram.veh
               ? myTramIcon(settings.zoom, tram.desi)
               : tramIcon(settings.zoom, tram.desi)
-          } */
+          }  
             image={require('../assets/img/icons8-color-50.png')}
             //icon={require(`../assets/img/trams/${tram.desi}tram.png`)}
             coordinate={{
@@ -202,7 +205,7 @@ const Map = ({ trams, myTram, alarm, possibleRoutes }) =>
           </Marker>
         ))
       }
-    }
+    } */
 
     return (
       <View style={styles.container}>
@@ -223,12 +226,12 @@ const Map = ({ trams, myTram, alarm, possibleRoutes }) =>
               urlTemplate='http://a.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
               maximumZ={19}
             />
-            {ShowChosenTrams()}
+            {/*  {ShowChosenTrams()} */}
             <Marker
               coordinate={pin}
               title='pöö'
               description='asiaa asiaa \r asiaa'
-              image={require('../assets/img/trams/1tram.png')}
+              //image={require('../assets/img/trams/1tram.png')}
               pinColor={'blue'}
             >
               <Callout>
