@@ -104,6 +104,7 @@ const Appi = ({
         .then(body => {
           setTrams(body.map(tram => tram.VP))
           console.log(new Date())
+          //console.log('MYSTOPPI', myStop)
         })
         .catch(error => {
           console.log(error)

@@ -46,6 +46,7 @@ import tramButton from '../assets/img/icons8-ice-cream-50.png'
  */
 const Map = ({
   trams,
+  stops,
   //myTram, alarm, possibleRoutes
 }) =>
   /* trams,
@@ -181,8 +182,7 @@ const Map = ({
       trams.showTrams.map(tram => tram.veh).includes(tram.veh)
     )  */
        let tramsToShow = trams
- 
-
+  
        if (tramsToShow) {
         return tramsToShow.map((tram, i) => {
           if(tram.lat && tram.long){
@@ -210,6 +210,37 @@ const Map = ({
       } 
     }
 
+    const showStops = () => {
+      
+      return (
+        stops &&
+        stops.map((stop, i) => (
+          <Marker
+            //className='stops'
+            //onClick={() => handleSetMyStop(stop)}
+            key={i}
+            /* icon={
+              stop.id === myStop.id
+                ? myStopIcon(settings.zoom)
+                : stopIcon(settings.zoom)
+            } */
+            coordinate={{ latitude: stop.lat, longitude: stop.lon }}
+            //zIndexOffset={-500}
+          >
+            {/* <Popup 
+            closeButton={false} autoPan={false}>
+              <br /> {stop.name}
+              <br /> {stop.gtfsId}
+            </Popup> */}
+            <Callout>
+              <Text>{stop.name}</Text>
+              <Text>{stop.gtfsId}</Text>
+            </Callout>
+          </Marker>
+        ))
+      )
+    }
+
     return (
       <View style={styles.container}>
         {trams ? (
@@ -230,6 +261,7 @@ const Map = ({
               maximumZ={19}
             />
             {ShowChosenTrams()}
+            {showStops()}
             <Marker
               coordinate={pin}
               title='pöö'
@@ -261,14 +293,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     trams: state.trams.trams,
-    /* tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
-    showTrams: state.trams.showTrams,
-    showSidebar: state.trams.showSidebar,
-    showSidebarOpenButton: state.trams.showSidebarOpenButton,
-    stops: state.trams.stops,
-    settings: state.trams.settings,
-    myStop: state.trams.myStop,
-    myTram: state.trams.myTram, */
+     /* tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
+    showTrams: state.showTrams,
+    showSidebar: state.showSidebar,
+    showSidebarOpenButton: state.showSidebarOpenButton, */
+    stops: state.stops,
+    /* settings: state.settings,
+    myStop: state.myStop,
+    myTram: state.myTram, */  
   }
 }
 
