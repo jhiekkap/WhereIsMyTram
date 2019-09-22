@@ -174,38 +174,41 @@ const Map = ({
       )
     } */
 
-    //const ShowChosenTrams = () => {
-    //console.log('TRAMS:', trams,  new Date())
-    //console.log('SETTINGS:', showTrams)
-    /*  let tramsToShow = trams.trams.filter(tram =>
+    const ShowChosenTrams = () => {
+      //console.log(trams.length, 'TRAMS:', new Date())
+      //console.log('SETTINGS:', showTrams)
+      /*  let tramsToShow = trams.trams.filter(tram =>
       trams.showTrams.map(tram => tram.veh).includes(tram.veh)
     )  */
-    //let tramsToShow = trams
+       let tramsToShow = trams
+ 
 
-    //console.log(ratikat, 'trams')
-
-    /* if (tramsToShow) {
-        return tramsToShow.map((tram, i) => (
-          <Marker
-            //className='trams'
-            key={i}
-              icon={
-            myTram && myTram.veh === tram.veh
-              ? myTramIcon(settings.zoom, tram.desi)
-              : tramIcon(settings.zoom, tram.desi)
-          }  
-            image={require('../assets/img/icons8-color-50.png')}
-            //icon={require(`../assets/img/trams/${tram.desi}tram.png`)}
-            coordinate={{
-              latitude: tram.lat,
-              longitude: tram.long,
-            }}
-          >
-            {popUp(tram)}
-          </Marker>
-        ))
-      }
-    } */
+       if (tramsToShow) {
+        return tramsToShow.map((tram, i) => {
+          if(tram.lat && tram.long){
+            return (
+              <Marker
+                //className='trams'
+                key={i}
+                  /* icon={
+                myTram && myTram.veh === tram.veh
+                  ? myTramIcon(settings.zoom, tram.desi)
+                  : tramIcon(settings.zoom, tram.desi)
+              }   */
+                image={require('../assets/img/icons8-color-50.png')}
+                //icon={require(`../assets/img/trams/${tram.desi}tram.png`)}
+                coordinate={{
+                  latitude: tram.lat,
+                  longitude: tram.long,
+                }}
+              >
+                {/* popUp(tram) */} 
+              </Marker>
+            )
+          }
+          })
+      } 
+    }
 
     return (
       <View style={styles.container}>
@@ -226,7 +229,7 @@ const Map = ({
               urlTemplate='http://a.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
               maximumZ={19}
             />
-            {/*  {ShowChosenTrams()} */}
+            {ShowChosenTrams()}
             <Marker
               coordinate={pin}
               title='pöö'
@@ -256,8 +259,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  return { 
-
+  return {
     trams: state.trams.trams,
     /* tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
     showTrams: state.trams.showTrams,
@@ -270,7 +272,7 @@ const mapStateToProps = state => {
   }
 }
 
-  const mapDispatchToProps = {
+const mapDispatchToProps = {
   /* setShowTrams,
   setMyStop,
   setMyTram,
@@ -287,11 +289,11 @@ const mapStateToProps = state => {
   setTrams,
   setShowLine,
   setPosition, */
-} 
+}
 
- export default connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Map)  
+)(Map)
 
 //export default Map
