@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
-//import { setMyTram } from '../reducers/myTramReducer'
+import { setMyTram } from '../reducers/myTramReducer'
 //import { setTrams } from '../reducers/tramsReducer'
 import {
   setCenter,
@@ -15,7 +15,7 @@ import {
   //setShowSidebarOpenButton,
   //setIntro,
   //setShow,
-  //setShowLine,
+  setShowLine,
   //setPosition,
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
@@ -44,32 +44,39 @@ import alarmOffButton from '../assets/img/iconfinder_stop_green_61688.png'
 import centerButton from '../assets/img/icons8-navigation-50.png'
 import tramButton from '../assets/img/icons8-ice-cream-50.png'
  */
-const Map = ({ trams, stops, myStop, settings, setMyStop, myTram, 
-  setLine, }) =>
+const Map = ({
+  trams,
+  stops,
+  myStop,
+  settings,
+  setMyStop,
+  myTram,
+  setMyTram,
+  setLine,
+  setCenter,
+  setZoom,
+  setShowLine,
+}) =>
   /* 
   setTrams,
   showTrams,
   setShowTrams,
   openSidebar,
   closeSidebar,
-  setCenter,
-  setZoom,
-  setMyTram, 
   setShowAlert,
   setAlarm,
   setShowSidebarOpenButton,
   setIntro,
   setShow,
   tramRoutesOnMap,
-  setShowLine,
   stopsQuery,
   setPosition,  */
   {
     //console.log('RENDERING MÄPPI')
 
-    /* const handleChooseTram = e => {
-      console.log('valitse nro: ', e.target.value, trams)
-      let chosenTram = trams.find(tram => tram.veh == e.target.value)
+    const handleChooseTram = veh => {
+      console.log('valitse nro: ', veh)
+      let chosenTram = trams.find(tram => tram.veh == veh)
       console.log('CHOSEN TRAM:', chosenTram)
       if (settings.possibleRoutes.includes(chosenTram.route)) {
         setMyTram(chosenTram)
@@ -81,7 +88,7 @@ const Map = ({ trams, stops, myStop, settings, setMyStop, myTram,
       } else {
         console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
       }
-    } */
+    }
 
     /* const handleCancelTram = e => {
       console.log('TRAM CANCELED', e.target.value)
@@ -111,7 +118,7 @@ const Map = ({ trams, stops, myStop, settings, setMyStop, myTram,
       closeSidebar()
     } */
 
-     const handleSetMyStop = stop => {
+    const handleSetMyStop = stop => {
       if (!myTram) {
         setMyStop(stop)
         setLine('')
@@ -140,21 +147,26 @@ const Map = ({ trams, stops, myStop, settings, setMyStop, myTram,
             {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
           </Text>
           <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text>
-
           {/* (!myTram || (myTram && myTram.veh !== tram.veh)) &&
-            possibleRoutes.includes(tram.route) &&
-            !alarm && ( 
+            settings.possibleRoutes.includes(tram.route) &&
+            !settings.alarm && <Button
+                title='choose' 
+                onPress={()=>handleChooseTram(tram.veh)}
+              /> */}
+          {/* (!myTram || (myTram && myTram.veh !== tram.veh)) &&
+            settings.possibleRoutes.includes(tram.route) &&
+            !settings.alarm && (
               <Button
-                title="CHOOSE"
-                value={tram.veh}
-                onPress={handleChooseTram}
+                title='choose'
+                //value={tram.veh}
+                onPress={()=>handleChooseTram()}
               />
             )}
           {myTram && myTram.veh === tram.veh && (
             <Button
-              title="CANCEL"
-              value={tram.veh}
-              onPress={handleCancelTram}
+              title='cancel'
+              //value={tram.veh}
+              onPress={()=>handleCancelTram()}
             />
           ) */}
         </Callout>
@@ -234,6 +246,7 @@ const Map = ({ trams, stops, myStop, settings, setMyStop, myTram,
               longitudeDelta: 0.0421,
             }}
             mapType='standard'
+            //zoom={settings.zoom}
             //zoomControlEnabled={true}
             //showsMyLocationButton={true}
           >
@@ -276,7 +289,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     trams: state.trams.trams,
-    //tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
+    //tramRoutesOnMap: state.trams.tramRoutesOnMap,
     //showTrams: state.showTrams,
     //showSidebar: state.showSidebar,
     //showSidebarOpenButton: state.showSidebarOpenButton,
@@ -290,7 +303,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   //setShowTrams,
   setMyStop,
-  //setMyTram,
+  setMyTram,
   setZoom,
   setCenter,
   //setShowAlert,
@@ -302,11 +315,11 @@ const mapDispatchToProps = {
   //setIntro,
   //setShow,
   //setTrams,
-  //setShowLine,
+  setShowLine,
   //setPosition,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Map) 
+)(Map)
