@@ -110,25 +110,7 @@ const Map = ({
       setLine('')
       //setZoom(16)
     }
-    /* 
-    const handleChangeZoom = e => {
-      setZoom(e.target._zoom)
-      //setCenter({lat:e.target._animateToCenter.lat, lng:e.target._animateToCenter.lng})
-      console.log(
-        'ZOOM',
-        e.target._zoom,
-        'CENTER',
-        e.target._animateToCenter.lat,
-        e.target._animateToCenter.lng
-      )
-    } */
-
-    /* const handleCenterButton = () => {
-      setCenter(settings.position)
-      setZoom(16)
-      closeSidebar()
-    } */
-
+     
     const handleSetMyStop = stop => {
       if (!myTram) {
         setMyStop(stop)
@@ -136,15 +118,7 @@ const Map = ({
       }
     }
 
-    /*  const handleChangeCenter = e => {
-      setZoom(e.target._zoom)
-      console.log('CHANGED CENTER \n GET ZOOM: ', e.target._zoom)
-      console.log('NEW CENTER:\n', e.latlng)
-      setCenter(e.latlng)
-      setPosition(e.latlng)
-      stopsQuery(e.latlng)
-    } */
-
+   
     const popUp = tram => {
       let buttoni = () => {
         if (myTram && myTram.veh === tram.veh) {
@@ -163,44 +137,11 @@ const Map = ({
           <Text> speed:{(tram.spd * 3.6).toFixed(2)} km/h}</Text>
           {tram.stop && <Text> stop: {tram.stop}</Text>}
           <Text> route:{tram.route}</Text>
-          <Text>
-            {' '}
-            {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
-          </Text>
+          <Text> {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds</Text>
           <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text>
-          {/* (!myTram || (myTram && myTram.veh !== tram.veh)) &&
-            settings.possibleRoutes.includes(tram.route) &&
-            !settings.alarm && (
-              <View>
-                <Button
-                  title='choose'
-                  onPress={() => handleChooseTram(tram.veh)}
-                />
-              </View>
-            ) */}
-
+            
           {buttoni()}
-          {/* (myTram && (myTram.veh === tram.veh)) &&   
-          <TouchableHighlight onPress={() => handleCancelTram(tram.veh)}>
-          <View><Text>cancel</Text></View>
-          </TouchableHighlight>
-            */}
-
-          {/* (!myTram || (myTram && myTram.veh !== tram.veh)) &&
-            settings.possibleRoutes.includes(tram.route) &&
-            !settings.alarm && (
-              <Button
-                title='choose'
-                //value={tram.veh}
-                onPress={()=>handleChooseTram()}
-              />
-            )}
-          {(myTram && myTram.veh === tram.veh) && (
-            <Button
-              title='cancel' 
-              onPress={()=>handleCancelTram(tram.veh)}
-            />
-          ) */}
+           
         </Callout>
       )
     }
@@ -218,6 +159,7 @@ const Map = ({
           if (tram.lat && tram.long) {
             return (
               <Marker
+                style = {styles.tramMarker}
                 //className='trams'
                 key={i}
                 /* icon={
@@ -316,6 +258,9 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
   },
+  tramMarker: {
+    width: 50,
+  }
 })
 
 const mapStateToProps = state => {

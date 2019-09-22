@@ -12,7 +12,7 @@ import {
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm,
+  setAlarm, 
   setIntro,
   setGeolocation,
   setAlarmDistance,

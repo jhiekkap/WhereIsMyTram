@@ -146,11 +146,7 @@ const Appi = ({
       <Button title='push' onPress={() => setCounter(counter + 1)} />
   */}
       {show ? (
-        <Map
-          //trams={trams}
-          /*myTram={myTram}
-          possibleRoutes={possibleRoutes}
-          alarm={alarm} */
+        <Map 
           style={styles.map}
         />
       ) : (

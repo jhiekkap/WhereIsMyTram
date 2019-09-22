@@ -36,8 +36,7 @@ export const ComponentCenter = ({ show, setShow }) => {
     <View style={{ flex: 1 }}>
       <TouchableOpacity
         onPress={() => {
-          setShow(!show)
-          //Alert.alert(show ? 'pöö': 'möö')
+          setShow(!show) 
         }}
       >
         {/* <Image
@@ -50,7 +49,7 @@ export const ComponentCenter = ({ show, setShow }) => {
           }} 
         /> */}
         <Text style={{ color: 'black', alignSelf: 'center' }}>
-          {show ? 'menu' : 'mäp'}{' '}
+          {show ? 'menu' : 'mäp'} 
         </Text>
       </TouchableOpacity>
     </View>
