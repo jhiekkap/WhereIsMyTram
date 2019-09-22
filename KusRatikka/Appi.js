@@ -26,7 +26,6 @@ import client, {
 import Menu from './components/Menu'
 import Map from './components/Map'
 
-
 const Appi = ({
   trams,
   setTrams,
@@ -140,14 +139,14 @@ const Appi = ({
         }}
       />
 
-      <Text>
+      {/*  <Text>
         Open up to fart {trams.length} working on your räppi nr. {counter}!
       </Text>
       <Button title='push' onPress={() => setCounter(counter + 1)} />
-
+ */}
       {show ? (
         <Map
-           trams={trams}
+          trams={trams}
           /*myTram={myTram}
           possibleRoutes={possibleRoutes}
           alarm={alarm} */
@@ -156,6 +155,20 @@ const Appi = ({
       ) : (
         <Menu style={styles.menu} />
       )}
+
+      <NavigationBar
+        style={styles.navbar}
+        componentLeft={() => <ComponentLeft play={play} />}
+        componentCenter={() => (
+          <ComponentCenter setShow={setShow} show={show} />
+        )}
+        componentRight={() => <ComponentRight />}
+        navigationBarStyle={{ backgroundColor: '#215e79' }}
+        statusBarStyle={{
+          barStyle: 'light-content',
+          backgroundColor: '#215e79',
+        }}
+      />
     </View>
   )
 }
@@ -173,6 +186,10 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+  navbar: {
+    flex: 1,
+    marginTop:0,
   },
 })
 
