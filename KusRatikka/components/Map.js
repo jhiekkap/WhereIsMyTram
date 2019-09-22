@@ -54,6 +54,9 @@ import alarmOffButton from '../assets/img/iconfinder_stop_green_61688.png'
 import centerButton from '../assets/img/icons8-navigation-50.png'
 import tramButton from '../assets/img/icons8-ice-cream-50.png'
  */
+
+ import ShowTrams from './ShowTrams'
+
 const Map = ({
   trams,
   stops,
@@ -110,7 +113,7 @@ const Map = ({
       setLine('')
       //setZoom(16)
     }
-     
+
     const handleSetMyStop = stop => {
       if (!myTram) {
         setMyStop(stop)
@@ -118,15 +121,20 @@ const Map = ({
       }
     }
 
-   
     const popUp = tram => {
       let buttoni = () => {
         if (myTram && myTram.veh === tram.veh) {
-          return <Button title='cancel' onPress={() => handleCancelTram(tram.veh)}/>
-        } else if ((!myTram || (myTram && myTram.veh !== tram.veh)) &&
-        settings.possibleRoutes.includes(tram.route) &&
-        !settings.alarm) {
-          return <Button title='choose' onPress={() => handleChooseTram(tram.veh)}/> 
+          return (
+            <Button title='cancel' onPress={() => handleCancelTram(tram.veh)} />
+          )
+        } else if (
+          (!myTram || (myTram && myTram.veh !== tram.veh)) &&
+          settings.possibleRoutes.includes(tram.route) &&
+          !settings.alarm
+        ) {
+          return (
+            <Button title='choose' onPress={() => handleChooseTram(tram.veh)} />
+          )
         }
       }
 
@@ -137,11 +145,13 @@ const Map = ({
           <Text> speed:{(tram.spd * 3.6).toFixed(2)} km/h}</Text>
           {tram.stop && <Text> stop: {tram.stop}</Text>}
           <Text> route:{tram.route}</Text>
-          <Text> {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds</Text>
+          <Text>
+            {' '}
+            {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
+          </Text>
           <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text>
-            
+
           {buttoni()}
-           
         </Callout>
       )
     }
@@ -156,27 +166,35 @@ const Map = ({
 
       if (tramsToShow) {
         return tramsToShow.map((tram, i) => {
-          if (tram.lat && tram.long) {
-            return (
-              <Marker
-                style = {styles.tramMarker}
-                //className='trams'
-                key={i}
-                /* icon={
-                myTram && myTram.veh === tram.veh
-                  ? myTramIcon(settings.zoom, tram.desi)
-                  : tramIcon(settings.zoom, tram.desi)
-              }   */
-                image={require('../assets/img/icons8-color-50.png')}
-                //icon={require(`../assets/img/trams/${tram.desi}tram.png`)}
-                coordinate={{
-                  latitude: tram.lat,
-                  longitude: tram.long,
-                }}
-              >
-                {popUp(tram)}
-              </Marker>
-            )
+          if (tram.lat && tram.long) { 
+            switch (tram.desi) {
+              case '3':
+                return (
+                  <Marker
+                    key={i}
+                    image={require('../assets/img/trams/3tram.png')}
+                    coordinate={{
+                      latitude: tram.lat,
+                      longitude: tram.long,
+                    }}
+                  >
+                    {popUp(tram)}
+                  </Marker>
+                )
+              default:
+                return (
+                  <Marker
+                    key={i}
+                    image={require('../assets/img/trams/1tram.png')}
+                    coordinate={{
+                      latitude: tram.lat,
+                      longitude: tram.long,
+                    }}
+                  >
+                    {popUp(tram)}
+                  </Marker>
+                )
+            }
           }
         })
       }
@@ -229,6 +247,7 @@ const Map = ({
               maximumZ={19}
             />
             {ShowChosenTrams()}
+            {/* <ShowTrams trams={trams} /> */}
             {showStops()}
             <Marker
               coordinate={{
@@ -258,9 +277,6 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
   },
-  tramMarker: {
-    width: 50,
-  }
 })
 
 const mapStateToProps = state => {
