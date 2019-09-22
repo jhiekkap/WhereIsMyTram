@@ -38,8 +38,8 @@ const Appi = ({
   setCenter,
   settings,
 }) => {
-  const [counter, setCounter] = useState(0)
-  const [show, setShow] = useState(false)
+  //const [counter, setCounter] = useState(0)
+  const [show, setShow] = useState(true)
 
   //console.log('hellouuta')
   useEffect(() => {

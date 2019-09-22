@@ -1,24 +1,24 @@
 import React, { useState } from 'react'
 
 import { connect } from 'react-redux'
-/* import { setShowTrams } from '../reducers/showTramsReducer'
-import { setMyTram } from '../reducers/myTramReducer'
-import { setTrams } from '../reducers/tramsReducer'
+import { setShowTrams } from '../reducers/showTramsReducer'
+//import { setMyTram } from '../reducers/myTramReducer'
+//import { setTrams } from '../reducers/tramsReducer'
 import {
-  setCenter, 
+  setCenter,
   setZoom,
-  setShowAlert,
-  openSidebar, 
-  closeSidebar,
-  setLine, 
-  setAlarm,
-  setShowSidebarOpenButton,
-  setIntro, 
-  setShow,
-  setShowLine,
-  setPosition,
+  //setShowAlert,
+  //openSidebar,
+  //closeSidebar,
+  //setLine,
+  //setAlarm,
+  //setShowSidebarOpenButton,
+  //setIntro,
+  //setShow,
+  //setShowLine,
+  //setPosition,
 } from '../reducers/settingsReducer'
-import { setMyStop } from '../reducers/myStopReducer' */
+//import { setMyStop } from '../reducers/myStopReducer'
 /* import driverIcon, {
   stopIcon,
   myStopIcon,         IKONIT?????????????????????
@@ -44,11 +44,7 @@ import alarmOffButton from '../assets/img/iconfinder_stop_green_61688.png'
 import centerButton from '../assets/img/icons8-navigation-50.png'
 import tramButton from '../assets/img/icons8-ice-cream-50.png'
  */
-const Map = ({
-  trams,
-  stops,
-  myStop, 
-}) =>
+const Map = ({ trams, stops, myStop, settings }) =>
   /* 
   setTrams,
   showTrams,
@@ -59,8 +55,7 @@ const Map = ({
   setZoom,  
   setMyStop,
   myTram,
-  setMyTram,
-  settings,
+  setMyTram, 
   setShowAlert,
   setLine,
   setAlarm,
@@ -72,11 +67,7 @@ const Map = ({
   stopsQuery,
   setPosition,  */
   {
-    //console.log('RENDERING MÄPPI')
-    const [pin, setPin] = useState({
-      latitude: 60.169748893653164,
-      longitude: 24.940102100372314,
-    })
+    //console.log('RENDERING MÄPPI')  
 
     /* const handleChooseTram = e => {
       console.log('valitse nro: ', e.target.value, trams)
@@ -138,10 +129,9 @@ const Map = ({
       stopsQuery(e.latlng)
     } */
 
-     const popUp = tram => {
+    const popUp = tram => {
       return (
-        <Callout 
-        >
+        <Callout>
           <Text> line:{tram.desi}</Text>
           <Text> vehicle:{tram.veh}</Text>
           <Text> speed:{(tram.spd * 3.6).toFixed(2)} km/h}</Text>
@@ -152,8 +142,8 @@ const Map = ({
             {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
           </Text>
           <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text>
-           
-           {/* (!myTram || (myTram && myTram.veh !== tram.veh)) &&
+
+          {/* (!myTram || (myTram && myTram.veh !== tram.veh)) &&
             possibleRoutes.includes(tram.route) &&
             !alarm && ( 
               <Button
@@ -168,10 +158,10 @@ const Map = ({
               value={tram.veh}
               onPress={handleCancelTram}
             />
-          ) */} 
+          ) */}
         </Callout>
       )
-    }  
+    }
 
     const ShowChosenTrams = () => {
       //console.log(trams.length, 'TRAMS:', new Date())
@@ -179,16 +169,16 @@ const Map = ({
       /*  let tramsToShow = trams.trams.filter(tram =>
       trams.showTrams.map(tram => tram.veh).includes(tram.veh)
     )  */
-       let tramsToShow = trams
-  
-       if (tramsToShow) {
+      let tramsToShow = trams
+
+      if (tramsToShow) {
         return tramsToShow.map((tram, i) => {
-          if(tram.lat && tram.long){
+          if (tram.lat && tram.long) {
             return (
               <Marker
                 //className='trams'
                 key={i}
-                  /* icon={
+                /* icon={
                 myTram && myTram.veh === tram.veh
                   ? myTramIcon(settings.zoom, tram.desi)
                   : tramIcon(settings.zoom, tram.desi)
@@ -200,16 +190,15 @@ const Map = ({
                   longitude: tram.long,
                 }}
               >
-                {popUp(tram)} 
+                {popUp(tram)}
               </Marker>
             )
           }
-          })
-      } 
+        })
+      }
     }
 
     const showStops = () => {
-      
       return (
         stops &&
         stops.map((stop, i) => (
@@ -224,10 +213,8 @@ const Map = ({
             } */
             coordinate={{ latitude: stop.lat, longitude: stop.lon }}
             //zIndexOffset={-500}
-            pinColor={stop.id === myStop.id
-              ? 'blue'
-              : 'red'}
-          > 
+            pinColor={stop.id === myStop.id ? 'blue' : 'red'}
+          >
             <Callout>
               <Text>{stop.name}</Text>
               <Text>{stop.gtfsId}</Text>
@@ -243,8 +230,8 @@ const Map = ({
           <MapView
             style={styles.map}
             initialRegion={{
-              latitude: 60.169748893653164,
-              longitude: 24.940102100372314,
+              latitude: settings.center.lat,
+              longitude: settings.center.lng,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
@@ -259,11 +246,13 @@ const Map = ({
             {ShowChosenTrams()}
             {showStops()}
             <Marker
-              coordinate={pin}
+              coordinate={{
+                latitude: settings.center.lat,
+                longitude: settings.center.lng,
+              }}
               title='pöö'
               description='asiaa asiaa \r asiaa'
               image={require('../assets/img/icons8-policeman-female-48.png')}
-              //pinColor={'blue'}
             >
               <Callout>
                 <Text>I'm you!</Text>
@@ -289,34 +278,34 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     trams: state.trams.trams,
-     /* tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
-    showTrams: state.showTrams,
-    showSidebar: state.showSidebar,
-    showSidebarOpenButton: state.showSidebarOpenButton, */
+     //tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
+    //showTrams: state.showTrams,
+    //showSidebar: state.showSidebar,
+    //showSidebarOpenButton: state.showSidebarOpenButton,  
     stops: state.stops,
-    //settings: state.settings,
+    settings: state.settings,
     myStop: state.myStop,
-    //myTram: state.myTram,    
+    //myTram: state.myTram,
   }
 }
 
 const mapDispatchToProps = {
-  /* setShowTrams,
-  setMyStop,
-  setMyTram,
+ //setShowTrams,
+  //setMyStop,
+  //setMyTram,  
   setZoom,
   setCenter,
-  setShowAlert,
-  openSidebar,
-  closeSidebar,
-  setLine,
-  setAlarm,
-  setShowSidebarOpenButton,
-  setIntro,
-  setShow,
-  setTrams,
-  setShowLine,
-  setPosition, */
+   //setShowAlert,
+  //openSidebar,
+  //closeSidebar,
+  //setLine,
+  //setAlarm,
+  //setShowSidebarOpenButton,
+  //setIntro,
+  //setShow,
+  //setTrams,
+  //setShowLine,
+  //setPosition,   
 }
 
 export default connect(
