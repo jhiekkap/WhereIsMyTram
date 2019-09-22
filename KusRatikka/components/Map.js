@@ -139,7 +139,7 @@ const Map = ({
       stopsQuery(e.latlng)
     } */
 
-    /* const popUp = tram => {
+     const popUp = tram => {
       return (
         <Callout 
         >
@@ -154,7 +154,7 @@ const Map = ({
           </Text>
           <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text>
            
-           {(!myTram || (myTram && myTram.veh !== tram.veh)) &&
+           {/* (!myTram || (myTram && myTram.veh !== tram.veh)) &&
             possibleRoutes.includes(tram.route) &&
             !alarm && ( 
               <Button
@@ -169,10 +169,10 @@ const Map = ({
               value={tram.veh}
               onPress={handleCancelTram}
             />
-          )} 
+          ) */} 
         </Callout>
       )
-    } */
+    }  
 
     const ShowChosenTrams = () => {
       //console.log(trams.length, 'TRAMS:', new Date())
@@ -202,7 +202,7 @@ const Map = ({
                   longitude: tram.long,
                 }}
               >
-                {/* popUp(tram) */} 
+                {popUp(tram)} 
               </Marker>
             )
           }
