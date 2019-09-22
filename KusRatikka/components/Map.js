@@ -10,7 +10,7 @@ import {
   //setShowAlert,
   //openSidebar,
   //closeSidebar,
-  //setLine,
+  setLine,
   //setAlarm,
   //setShowSidebarOpenButton,
   //setIntro,
@@ -18,7 +18,7 @@ import {
   //setShowLine,
   //setPosition,
 } from '../reducers/settingsReducer'
-//import { setMyStop } from '../reducers/myStopReducer'
+import { setMyStop } from '../reducers/myStopReducer'
 /* import driverIcon, {
   stopIcon,
   myStopIcon,         IKONIT?????????????????????
@@ -44,7 +44,8 @@ import alarmOffButton from '../assets/img/iconfinder_stop_green_61688.png'
 import centerButton from '../assets/img/icons8-navigation-50.png'
 import tramButton from '../assets/img/icons8-ice-cream-50.png'
  */
-const Map = ({ trams, stops, myStop, settings }) =>
+const Map = ({ trams, stops, myStop, settings, setMyStop, myTram, 
+  setLine, }) =>
   /* 
   setTrams,
   showTrams,
@@ -52,12 +53,9 @@ const Map = ({ trams, stops, myStop, settings }) =>
   openSidebar,
   closeSidebar,
   setCenter,
-  setZoom,  
-  setMyStop,
-  myTram,
+  setZoom,
   setMyTram, 
   setShowAlert,
-  setLine,
   setAlarm,
   setShowSidebarOpenButton,
   setIntro,
@@ -67,7 +65,7 @@ const Map = ({ trams, stops, myStop, settings }) =>
   stopsQuery,
   setPosition,  */
   {
-    //console.log('RENDERING MÄPPI')  
+    //console.log('RENDERING MÄPPI')
 
     /* const handleChooseTram = e => {
       console.log('valitse nro: ', e.target.value, trams)
@@ -113,12 +111,12 @@ const Map = ({ trams, stops, myStop, settings }) =>
       closeSidebar()
     } */
 
-    /*  const handleSetMyStop = stop => {
+     const handleSetMyStop = stop => {
       if (!myTram) {
         setMyStop(stop)
         setLine('')
       }
-    } */
+    }
 
     /*  const handleChangeCenter = e => {
       setZoom(e.target._zoom)
@@ -204,7 +202,7 @@ const Map = ({ trams, stops, myStop, settings }) =>
         stops.map((stop, i) => (
           <Marker
             //className='stops'
-            //onClick={() => handleSetMyStop(stop)}
+            onPress={() => handleSetMyStop(stop)}
             key={i}
             /* icon={
               stop.id === myStop.id
@@ -250,13 +248,13 @@ const Map = ({ trams, stops, myStop, settings }) =>
                 latitude: settings.center.lat,
                 longitude: settings.center.lng,
               }}
-              title='pöö'
-              description='asiaa asiaa \r asiaa'
+              title='hei'
+              description='tääl ollaan'
               image={require('../assets/img/icons8-policeman-female-48.png')}
             >
-              <Callout>
+              {/*   <Callout>
                 <Text>I'm you!</Text>
-              </Callout>
+              </Callout> */}
             </Marker>
           </MapView>
         ) : (
@@ -278,39 +276,37 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     trams: state.trams.trams,
-     //tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
+    //tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
     //showTrams: state.showTrams,
     //showSidebar: state.showSidebar,
-    //showSidebarOpenButton: state.showSidebarOpenButton,  
+    //showSidebarOpenButton: state.showSidebarOpenButton,
     stops: state.stops,
     settings: state.settings,
     myStop: state.myStop,
-    //myTram: state.myTram,
+    myTram: state.myTram,
   }
 }
 
 const mapDispatchToProps = {
- //setShowTrams,
-  //setMyStop,
-  //setMyTram,  
+  //setShowTrams,
+  setMyStop,
+  //setMyTram,
   setZoom,
   setCenter,
-   //setShowAlert,
+  //setShowAlert,
   //openSidebar,
   //closeSidebar,
-  //setLine,
+  setLine,
   //setAlarm,
   //setShowSidebarOpenButton,
   //setIntro,
   //setShow,
   //setTrams,
   //setShowLine,
-  //setPosition,   
+  //setPosition,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Map)
-
-//export default Map
+)(Map) 
