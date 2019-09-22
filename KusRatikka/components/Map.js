@@ -1,9 +1,18 @@
 import React, { useState } from 'react'
+/* import 
+ //driverIcon,
+  {
+  //stopIcon,
+  //myStopIcon,
+  //lineStopIcon,
+  //tramIcon,
+  //myTramIcon,
+} from '../utils/icons'  */
 
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
-//import { setTrams } from '../reducers/tramsReducer'
+import { setTrams } from '../reducers/tramsReducer'
 import {
   setCenter,
   setZoom,
@@ -11,7 +20,7 @@ import {
   //openSidebar,
   //closeSidebar,
   setLine,
-  //setAlarm,
+  setAlarm,
   //setShowSidebarOpenButton,
   //setIntro,
   //setShow,
@@ -35,6 +44,7 @@ import {
   StatusBar,
   DrawerLayoutAndroid,
   Button,
+  TouchableHighlight,
 } from 'react-native'
 
 import MapView, { Marker, Callout, UrlTile } from 'react-native-maps'
@@ -56,15 +66,16 @@ const Map = ({
   setCenter,
   setZoom,
   setShowLine,
+  setTrams,
+  setAlarm,
+  setShowTrams,
 }) =>
   /* 
-  setTrams,
+ 
   showTrams,
-  setShowTrams,
   openSidebar,
   closeSidebar,
   setShowAlert,
-  setAlarm,
   setShowSidebarOpenButton,
   setIntro,
   setShow,
@@ -77,7 +88,7 @@ const Map = ({
     const handleChooseTram = veh => {
       console.log('valitse nro: ', veh)
       let chosenTram = trams.find(tram => tram.veh == veh)
-      console.log('CHOSEN TRAM:', chosenTram)
+      //console.log('CHOSEN TRAM:', chosenTram)
       if (settings.possibleRoutes.includes(chosenTram.route)) {
         setMyTram(chosenTram)
         setLine(chosenTram.desi)
@@ -90,15 +101,15 @@ const Map = ({
       }
     }
 
-    /* const handleCancelTram = e => {
-      console.log('TRAM CANCELED', e.target.value)
+    const handleCancelTram = veh => {
+      console.log('TRAM CANCELED', veh)
       setAlarm(false)
       setMyTram('')
       setTrams([])
       setShowTrams(trams)
       setLine('')
       //setZoom(16)
-    } */
+    }
     /* 
     const handleChangeZoom = e => {
       setZoom(e.target._zoom)
@@ -135,6 +146,16 @@ const Map = ({
     } */
 
     const popUp = tram => {
+      let buttoni = () => {
+        if (myTram && myTram.veh === tram.veh) {
+          return <Button title='cancel' onPress={() => handleCancelTram(tram.veh)}/>
+        } else if ((!myTram || (myTram && myTram.veh !== tram.veh)) &&
+        settings.possibleRoutes.includes(tram.route) &&
+        !settings.alarm) {
+          return <Button title='choose' onPress={() => handleChooseTram(tram.veh)}/> 
+        }
+      }
+
       return (
         <Callout>
           <Text> line:{tram.desi}</Text>
@@ -149,10 +170,22 @@ const Map = ({
           <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text>
           {/* (!myTram || (myTram && myTram.veh !== tram.veh)) &&
             settings.possibleRoutes.includes(tram.route) &&
-            !settings.alarm && <Button
-                title='choose' 
-                onPress={()=>handleChooseTram(tram.veh)}
-              /> */}
+            !settings.alarm && (
+              <View>
+                <Button
+                  title='choose'
+                  onPress={() => handleChooseTram(tram.veh)}
+                />
+              </View>
+            ) */}
+
+          {buttoni()}
+          {/* (myTram && (myTram.veh === tram.veh)) &&   
+          <TouchableHighlight onPress={() => handleCancelTram(tram.veh)}>
+          <View><Text>cancel</Text></View>
+          </TouchableHighlight>
+            */}
+
           {/* (!myTram || (myTram && myTram.veh !== tram.veh)) &&
             settings.possibleRoutes.includes(tram.route) &&
             !settings.alarm && (
@@ -162,11 +195,10 @@ const Map = ({
                 onPress={()=>handleChooseTram()}
               />
             )}
-          {myTram && myTram.veh === tram.veh && (
+          {(myTram && myTram.veh === tram.veh) && (
             <Button
-              title='cancel'
-              //value={tram.veh}
-              onPress={()=>handleCancelTram()}
+              title='cancel' 
+              onPress={()=>handleCancelTram(tram.veh)}
             />
           ) */}
         </Callout>
@@ -216,10 +248,10 @@ const Map = ({
             //className='stops'
             onPress={() => handleSetMyStop(stop)}
             key={i}
-            /* icon={
+            /* image={
               stop.id === myStop.id
-                ? myStopIcon(settings.zoom)
-                : stopIcon(settings.zoom)
+                ? require('../assets/img/iconfinder_5_41693.png')
+                : require('../assets/img/rosaPin.png')
             } */
             coordinate={{ latitude: stop.lat, longitude: stop.lon }}
             //zIndexOffset={-500}
@@ -301,7 +333,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  //setShowTrams,
+  setShowTrams,
   setMyStop,
   setMyTram,
   setZoom,
@@ -310,11 +342,11 @@ const mapDispatchToProps = {
   //openSidebar,
   //closeSidebar,
   setLine,
-  //setAlarm,
+  setAlarm,
   //setShowSidebarOpenButton,
   //setIntro,
   //setShow,
-  //setTrams,
+  setTrams,
   setShowLine,
   //setPosition,
 }
