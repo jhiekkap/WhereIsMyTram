@@ -16,16 +16,16 @@ export const ComponentLeft = ({ play }) => {
         style={{ justifyContent: 'center', flexDirection: 'row' }}
         onPress={() => play()}
       >
-        {/* <Image
-            source={require('../../img/icon_size_41px.png')}
+         <Image
+            source={require('./../assets/img/icon_size_41px.png')}
             style={{
               resizeMode: 'contain',
               width: 20,
               height: 20,
               alignSelf: 'center',
             }}
-          /> */}
-        <Text style={{ color: 'white' }}>Back Home</Text>
+          /> 
+        <Text style={{ color: 'black' }}>Back Home</Text>
       </TouchableOpacity>
     </View>
   )
@@ -49,7 +49,7 @@ export const ComponentCenter = ({ show, setShow }) => {
             alignSelf: 'center',
           }} 
         /> */}
-        <Text style={{ color: 'white', alignSelf: 'center' }}>
+        <Text style={{ color: 'black', alignSelf: 'center' }}>
           {show ? 'menu' : 'mäp'}{' '}
         </Text>
       </TouchableOpacity>
@@ -61,7 +61,7 @@ export const ComponentRight = () => {
   return (
     <View style={{ flex: 1, alignItems: 'flex-end' }}>
       <TouchableOpacity onPress={() => Alert.alert('möö')}>
-        <Text style={{ color: 'white' }}> Right </Text>
+        <Text style={{ color: 'black' }}> Right </Text>
       </TouchableOpacity>
     </View>
   )

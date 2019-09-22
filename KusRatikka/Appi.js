@@ -132,18 +132,18 @@ const Appi = ({
           <ComponentCenter setShow={setShow} show={show} />
         )}
         componentRight={() => <ComponentRight />}
-        navigationBarStyle={{ backgroundColor: '#215e79' }}
-        statusBarStyle={{
+        navigationBarStyle={{ backgroundColor: '#6FEFEA' }}
+        statusBarStyle={{ 
           barStyle: 'light-content',
-          backgroundColor: '#215e79',
+          backgroundColor: '#6FEFEA',
         }}
       />
 
-      {/*  <Text>
+       {/* <Text>
         Open up to fart {trams.length} working on your räppi nr. {counter}!
       </Text>
       <Button title='push' onPress={() => setCounter(counter + 1)} />
- */}
+  */}
       {show ? (
         <Map
           trams={trams}
@@ -163,11 +163,11 @@ const Appi = ({
           <ComponentCenter setShow={setShow} show={show} />
         )}
         componentRight={() => <ComponentRight />}
-        navigationBarStyle={{ backgroundColor: '#215e79' }}
-        statusBarStyle={{
+        navigationBarStyle={{ backgroundColor: '#6FEFEA' }}
+        /* statusBarStyle={{ 
           barStyle: 'light-content',
-          backgroundColor: '#215e79',
-        }}
+          backgroundColor: '#6FEFEA',
+        }} */
       />
     </View>
   )
@@ -176,6 +176,7 @@ const Appi = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#6FEFEA',
     /* backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center', */
