@@ -146,7 +146,7 @@ const Appi = ({
   */}
       {show ? (
         <Map
-          trams={trams}
+          //trams={trams}
           /*myTram={myTram}
           possibleRoutes={possibleRoutes}
           alarm={alarm} */

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-/* import { connect } from 'react-redux'
-import { setShowTrams } from '../reducers/showTramsReducer'
+import { connect } from 'react-redux'
+/* import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import { setTrams } from '../reducers/tramsReducer'
 import {
@@ -255,23 +255,23 @@ const styles = StyleSheet.create({
   },
 })
 
-/* const mapStateToProps = state => {
+const mapStateToProps = state => {
   return { 
 
     trams: state.trams.trams,
-    tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
+    /* tramRoutesOnMap: state.trams.trams.tramRoutesOnMap,
     showTrams: state.trams.showTrams,
     showSidebar: state.trams.showSidebar,
     showSidebarOpenButton: state.trams.showSidebarOpenButton,
     stops: state.trams.stops,
     settings: state.trams.settings,
     myStop: state.trams.myStop,
-    myTram: state.trams.myTram,
+    myTram: state.trams.myTram, */
   }
-} */
+}
 
-/* const mapDispatchToProps = {
-  setShowTrams,
+  const mapDispatchToProps = {
+  /* setShowTrams,
   setMyStop,
   setMyTram,
   setZoom,
@@ -286,12 +286,12 @@ const styles = StyleSheet.create({
   setShow,
   setTrams,
   setShowLine,
-  setPosition,
-} */
+  setPosition, */
+} 
 
-/* export default connect(
+ export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Map) */
+)(Map)  
 
-export default Map
+//export default Map
