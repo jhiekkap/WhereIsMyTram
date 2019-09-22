@@ -47,18 +47,16 @@ import tramButton from '../assets/img/icons8-ice-cream-50.png'
 const Map = ({
   trams,
   stops,
-  //myTram, alarm, possibleRoutes
+  myStop, 
 }) =>
-  /* trams,
+  /* 
   setTrams,
   showTrams,
   setShowTrams,
   openSidebar,
   closeSidebar,
   setCenter,
-  setZoom,
-  stops,
-  myStop,
+  setZoom,  
   setMyStop,
   myTram,
   setMyTram,
@@ -226,12 +224,10 @@ const Map = ({
             } */
             coordinate={{ latitude: stop.lat, longitude: stop.lon }}
             //zIndexOffset={-500}
-          >
-            {/* <Popup 
-            closeButton={false} autoPan={false}>
-              <br /> {stop.name}
-              <br /> {stop.gtfsId}
-            </Popup> */}
+            pinColor={stop.id === myStop.id
+              ? 'blue'
+              : 'red'}
+          > 
             <Callout>
               <Text>{stop.name}</Text>
               <Text>{stop.gtfsId}</Text>
@@ -266,11 +262,11 @@ const Map = ({
               coordinate={pin}
               title='pöö'
               description='asiaa asiaa \r asiaa'
-              //image={require('../assets/img/trams/1tram.png')}
-              pinColor={'blue'}
+              image={require('../assets/img/icons8-policeman-female-48.png')}
+              //pinColor={'blue'}
             >
               <Callout>
-                <Text>hellooooasdasdasdoo</Text>
+                <Text>I'm you!</Text>
               </Callout>
             </Marker>
           </MapView>
@@ -298,9 +294,9 @@ const mapStateToProps = state => {
     showSidebar: state.showSidebar,
     showSidebarOpenButton: state.showSidebarOpenButton, */
     stops: state.stops,
-    /* settings: state.settings,
+    //settings: state.settings,
     myStop: state.myStop,
-    myTram: state.myTram, */  
+    //myTram: state.myTram,    
   }
 }
 
