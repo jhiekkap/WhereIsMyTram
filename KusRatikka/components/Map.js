@@ -184,10 +184,10 @@ const Map = ({
     const ShowChosenTrams = () => {
       //console.log(trams.length, 'TRAMS:', new Date())
       //console.log('SETTINGS:', showTrams)
-       let tramsToShow = trams.filter(tram =>
+       /* let tramsToShow = trams.filter(tram =>
       showTrams.map(tram => tram.veh).includes(tram.veh)
-    ) 
-      //let tramsToShow = trams
+    )  */
+      let tramsToShow = trams
 
       if (tramsToShow) {
         return tramsToShow.map((tram, i) => {
@@ -210,20 +210,25 @@ const Map = ({
     }
 
     const showStops = () => {
+
+       
+      
       return (
         stops &&
         stops.map((stop, i) => (
           <Marker
             //className='stops'
-            onPress={() => handleSetMyStop(stop)}
+            //onPress={() => handleSetMyStop(stop)}
             key={i} 
             coordinate={{ latitude: stop.lat, longitude: stop.lon }}
             //zIndexOffset={-500}
             pinColor={stop.id === myStop.id ? 'blue' : 'red'}
           >
             <Callout>
-              <Text>{stop.name}</Text>
-              <Text>{stop.gtfsId}</Text>
+              {stop.id === myStop.id && <Text> My Stop:</Text>}
+              <Text> {stop.name}</Text>
+              <Text> {stop.gtfsId}</Text>
+              {stop.id !== myStop.id && <Button title='choose' onPress={() => handleSetMyStop(stop)}/>}
             </Callout>
           </Marker>
         ))
