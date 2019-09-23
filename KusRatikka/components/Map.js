@@ -45,6 +45,8 @@ import {
   DrawerLayoutAndroid,
   Button,
   TouchableHighlight,
+  Image,
+  Alert,
 } from 'react-native'
 
 import MapView, { Marker, Callout, UrlTile } from 'react-native-maps'
@@ -55,7 +57,30 @@ import centerButton from '../assets/img/icons8-navigation-50.png'
 import tramButton from '../assets/img/icons8-ice-cream-50.png'
  */
 
- import ShowTrams from './ShowTrams'
+const tramIcons = {
+  ///dynamic 'require' not supported in React Native:)
+  '1': require('../assets/img/trams/1tram.png'),
+  '1H': require('../assets/img/trams/1Htram.png'),
+  '2': require('../assets/img/trams/2tram.png'),
+  '2H': require('../assets/img/trams/2Htram.png'),
+  '3': require('../assets/img/trams/3tram.png'),
+  '3H': require('../assets/img/trams/3Htram.png'),
+  '4': require('../assets/img/trams/4tram.png'),
+  '4H': require('../assets/img/trams/4Htram.png'),
+  '5': require('../assets/img/trams/5tram.png'),
+  '5H': require('../assets/img/trams/5Htram.png'),
+  '6': require('../assets/img/trams/6tram.png'),
+  '6H': require('../assets/img/trams/6Htram.png'),
+  '6T': require('../assets/img/trams/6Ttram.png'),
+  '7': require('../assets/img/trams/7tram.png'),
+  '7H': require('../assets/img/trams/7Htram.png'),
+  '8': require('../assets/img/trams/8tram.png'),
+  '8H': require('../assets/img/trams/8Htram.png'),
+  '9': require('../assets/img/trams/9tram.png'),
+  '9H': require('../assets/img/trams/9Htram.png'),
+  '10': require('../assets/img/trams/10tram.png'),
+  '10H': require('../assets/img/trams/10Htram.png'),
+}
 
 const Map = ({
   trams,
@@ -155,6 +180,7 @@ const Map = ({
         </Callout>
       )
     }
+   
 
     const ShowChosenTrams = () => {
       //console.log(trams.length, 'TRAMS:', new Date())
@@ -166,35 +192,19 @@ const Map = ({
 
       if (tramsToShow) {
         return tramsToShow.map((tram, i) => {
-          if (tram.lat && tram.long) { 
-            switch (tram.desi) {
-              case '3':
-                return (
-                  <Marker
-                    key={i}
-                    image={require('../assets/img/trams/3tram.png')}
-                    coordinate={{
-                      latitude: tram.lat,
-                      longitude: tram.long,
-                    }}
-                  >
-                    {popUp(tram)}
-                  </Marker>
-                )
-              default:
-                return (
-                  <Marker
-                    key={i}
-                    image={require('../assets/img/trams/1tram.png')}
-                    coordinate={{
-                      latitude: tram.lat,
-                      longitude: tram.long,
-                    }}
-                  >
-                    {popUp(tram)}
-                  </Marker>
-                )
-            }
+          if (tram.lat && tram.long) {
+            return (
+              <Marker
+                key={i}
+                image={tramIcons[tram.desi]}
+                coordinate={{
+                  latitude: tram.lat,
+                  longitude: tram.long,
+                }}
+              >
+                {popUp(tram)}
+              </Marker>
+            )
           }
         })
       }
