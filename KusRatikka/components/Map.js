@@ -244,9 +244,15 @@ const Map = ({
             initialRegion={{
               latitude: settings.center.lat,
               longitude: settings.center.lng,
+              latitudeDelta: 0.0122,
+              longitudeDelta: 0.0121,
+            }}
+            /* region={{
+              latitude: settings.center.lat,
+              longitude: settings.center.lng,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
-            }}
+            }} */
             mapType='standard'
             //zoom={settings.zoom}
             //zoomControlEnabled={true}
@@ -261,8 +267,8 @@ const Map = ({
             {showStops()}
             <Marker
               coordinate={{
-                latitude: settings.center.lat,
-                longitude: settings.center.lng,
+                latitude: settings.position.lat,
+                longitude: settings.position.lng,
               }}
               title='hei'
               description='tääl ollaan'
