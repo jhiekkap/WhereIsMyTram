@@ -12,7 +12,7 @@ import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
 import { connect } from 'react-redux'
 import client, {
-  tramStopsQuery, 
+  tramStopsQuery,
   stopsByRadiusQuery,
   checkRoutes,
 } from './utils/queries'
@@ -24,14 +24,13 @@ const App = ({
   setStops,
   myStop,
   setMyStop,
-  settings, 
+  settings,
   setPosition,
   setCenter,
   setPossibleRoutes,
   setTramRoutesOnMap,
 }) => {
   const [on, setOn] = useState(false)
-  
 
   useEffect(() => {
     client.query({ query: tramStopsQuery }).then(response => {
@@ -88,14 +87,21 @@ const App = ({
   }, [settings.geoLocation])
 
   const handleTurnOn = () => {
-
     setOn(true)
-    turnOn() 
+    turnOn()
     intervalli = setInterval(() => {
       fetch('/trams')
         .then(response => response.json())
-        .then(body => {
+        .then(body => { 
           setTrams(body.map(tram => tram.VP))
+          //console.log(body)
+          if (body.length < 1) {
+            console.log('OFFFFFF') 
+              setTimeout(() => {
+              turnOn()
+              console.log('TURNED ON AGAIN!')
+            }, 4000)  
+          } 
         })
         .catch(error => {
           console.log(error)
@@ -103,7 +109,7 @@ const App = ({
     }, 1000)
   }
   /* useEffect(() => { */
- /*  let intervalli = setInterval(() => {
+  /*  let intervalli = setInterval(() => {
     fetch('/trams')
       .then(response => response.json())
       .then(body => {
@@ -136,11 +142,7 @@ const App = ({
           <LeafletMap stopsQuery={stopsQuery} />{' '}
         </div>
       ) : (
-        <button
-          onClick={handleTurnOn}
-        >
-          Welcome!
-        </button>
+        <button onClick={handleTurnOn}>Welcome!</button>
       )}
     </div>
   )

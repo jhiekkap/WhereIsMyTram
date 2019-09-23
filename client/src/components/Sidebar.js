@@ -116,7 +116,7 @@ const Sidebar = ({
         if (durations.length > 4 && speed > 0) {
           setAvgDuration(avgDuration)
         }
-        console.log(
+        /* console.log(
           'DISTANCE NOW: ',
           distanceNow,
           ' m',
@@ -127,7 +127,7 @@ const Sidebar = ({
           ' m/s',
           'ESTIMATED DURATION: ',
           printDuration(settings.avgDuration)
-        )
+        ) */
       }
       if (settings.alarm && settings.distance < settings.alarmDistance) {
         /*  horn.src={alarmSound}
@@ -472,7 +472,7 @@ const Sidebar = ({
                   onClick={() => {
                     setShowTrams(trams)
                     setShowLine('')
-                    setZoom(15)
+                    //setZoom(15)
                     closeSidebar(false)
                   }}
                   variant={buttonVariant}

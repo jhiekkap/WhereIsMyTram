@@ -78,7 +78,7 @@ const LeafletMap = ({
   }
 
   const handleChooseTram = e => {
-    console.log('valitse nro: ', e.target.value, trams)
+    console.log('valitse nro: ', e.target.value)
     let chosenTram = trams.find(tram => tram.veh == e.target.value)
     console.log('CHOSEN TRAM:', chosenTram)
     if (settings.possibleRoutes.includes(chosenTram.route)) {
@@ -348,7 +348,7 @@ const LeafletMap = ({
                   </Popup>
                 </Marker>
               </Map>
-            )}
+            )} 
 
             <Alert
               id='alert'
