@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Where is my street car?",
-    "slug": "KusRatikka",
+    "name": "Where's my tram?",
+    "slug": "missRatikka",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
+    "sdkVersion": "34.0.0",
     "platforms": [
       "ios",
       "android",
@@ -11,9 +11,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
