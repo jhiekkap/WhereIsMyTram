@@ -2,9 +2,12 @@
 
 import { NavigationBar } from 'navigationbar-react-native'
 import {
-  ComponentLeft,
-  ComponentCenter,
-  ComponentRight,
+  ComponentLeftUp,
+  ComponentCenterUp,
+  ComponentRightUp,
+  ComponentLeftDown,
+  ComponentCenterDown,
+  ComponentRightDown,
 } from './components/Components'
 import play from './utils/sound'
 import React, { useEffect, useState } from 'react'
@@ -63,7 +66,7 @@ const Appi = ({
         } else {
           setMyStop('')
         }
-      })
+      }) 
   }
 
   useEffect(() => {
@@ -97,8 +100,7 @@ const Appi = ({
   }, [settings.geoLocation])
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      //setCounter(counter + 1)   ei toimi!!!!
+    const timer = setInterval(() => { 
       fetch('https://arcane-shore-64535.herokuapp.com/trams')
         .then(response => response.json())
         .then(body => {
@@ -128,11 +130,11 @@ const Appi = ({
   return (
     <View style={styles.container}>
       <NavigationBar
-        componentLeft={() => <ComponentLeft play={play} />}
+        componentLeft={() => <ComponentLeftUp play={play} />}
         componentCenter={() => (
-          <ComponentCenter setShow={setShow} show={show} />
+          <ComponentCenterUp setShow={setShow} show={show} />
         )}
-        componentRight={() => <ComponentRight />}
+        componentRight={() => <ComponentRightUp />}
         navigationBarStyle={{ backgroundColor: '#6FEFEA' }}
         statusBarStyle={{ 
           barStyle: 'light-content',
@@ -155,11 +157,11 @@ const Appi = ({
 
       <NavigationBar
         style={styles.navbar}
-        componentLeft={() => <ComponentLeft play={play} />}
+        componentLeft={() => <ComponentLeftDown show={show} setShow={setShow} />}
         componentCenter={() => (
-          <ComponentCenter setShow={setShow} show={show} />
+          <ComponentCenterDown   settings={settings} setCenter={setCenter}/>
         )}
-        componentRight={() => <ComponentRight />}
+        componentRight={() => <ComponentRightDown />}
         navigationBarStyle={{ backgroundColor: '#6FEFEA' }}
         /* statusBarStyle={{ 
           barStyle: 'light-content',
@@ -181,7 +183,7 @@ const styles = StyleSheet.create({
   menu: {
     flex: 1,
     height: 10,
-  },
+  }, 
   map: {
     flex: 1,
   },

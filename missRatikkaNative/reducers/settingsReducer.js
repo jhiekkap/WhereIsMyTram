@@ -10,7 +10,7 @@ const settingsReducer = (
     init: true,
     avgDuration: 0,
     line: '',
-    distance: 0,
+    distance: 0, 
     alarm: false,
     intro: false,
     geoLocation: false,   

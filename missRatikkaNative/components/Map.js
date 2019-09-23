@@ -179,12 +179,11 @@ const Map = ({
         </Callout>
       )
     }
-   
 
     const ShowChosenTrams = () => {
       //console.log(trams.length, 'TRAMS:', new Date())
       //console.log('SETTINGS:', showTrams)
-       /* let tramsToShow = trams.filter(tram =>
+      /* let tramsToShow = trams.filter(tram =>
       showTrams.map(tram => tram.veh).includes(tram.veh)
     )  */
       let tramsToShow = trams
@@ -210,16 +209,13 @@ const Map = ({
     }
 
     const showStops = () => {
-
-       
-      
       return (
         stops &&
         stops.map((stop, i) => (
           <Marker
             //className='stops'
             //onPress={() => handleSetMyStop(stop)}
-            key={i} 
+            key={i}
             coordinate={{ latitude: stop.lat, longitude: stop.lon }}
             //zIndexOffset={-500}
             pinColor={stop.id === myStop.id ? 'blue' : 'red'}
@@ -228,11 +224,41 @@ const Map = ({
               {stop.id === myStop.id && <Text> My Stop:</Text>}
               <Text> {stop.name}</Text>
               <Text> {stop.gtfsId}</Text>
-              {stop.id !== myStop.id && <Button title='choose' onPress={() => handleSetMyStop(stop)}/>}
+              {stop.id !== myStop.id && (
+                <Button title='choose' onPress={() => handleSetMyStop(stop)} />
+              )}
             </Callout>
           </Marker>
         ))
       )
+    }
+    /* let regionCenter = {
+      latitude: settings.center.lat,
+      longitude: settings.center.lng,
+      latitudeDelta: 0.0122,
+      longitudeDelta: 0.0121,
+    } */
+
+    const handleRegionChange = (region, lastLat, lastLong) => {
+      regioni = {
+        mapRegion: region,
+        // If there are no new values set the current ones
+        /* lastLat: lastLat || settings.region.lastLat,
+        lastLong: lastLong || settings.region.lastLong, */
+        lastLat: lastLat || 0,
+        lastLong: lastLong || 0,
+      }
+      console.log(region, lastLat, lastLong)
+      /* regionCenter = {
+        latitude: regioni.mapRegion.latitude,
+        longitude: regioni.mapRegion.longitude,
+        latitudeDelta: 0.0122,
+        longitudeDelta: 0.0121,
+      } */
+      setCenter({
+        lat: regioni.mapRegion.latitude,
+        lng: regioni.mapRegion.longitude,
+      })
     }
 
     return (
@@ -246,13 +272,17 @@ const Map = ({
               latitudeDelta: 0.0122,
               longitudeDelta: 0.0121,
             }}
-            /* region={{
+            region={{
               latitude: settings.center.lat,
               longitude: settings.center.lng,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }} */
+              latitudeDelta: 0.0122,
+              longitudeDelta: 0.0121,
+            }}
             mapType='standard'
+            onRegionChange={handleRegionChange}
+            //followsUserLocation={true}
+            //showsUserLocation={true}
+
             //zoom={settings.zoom}
             //zoomControlEnabled={true}
             //showsMyLocationButton={true}

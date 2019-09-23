@@ -5,7 +5,7 @@ import { setMyTram } from '../reducers/myTramReducer'
 import { setTrams } from '../reducers/tramsReducer'
 import {
   setCenter,
-  setZoom,
+  setZoom, 
   setShowAlert,
   openSidebar,
   closeSidebar,
@@ -94,7 +94,7 @@ const LeafletMap = ({
   }
 
   const handleCancelTram = e => {
-    console.log('TRAM CANCELED', e.target.value)
+    console.log('TRAM CANCELLED', e.target.value)
     setAlarm(false)
     setMyTram('')
     setTrams([])
