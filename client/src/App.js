@@ -12,7 +12,7 @@ import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
 import { connect } from 'react-redux'
 import client, {
-  tramStopsQuery,
+  tramStopsQuery, 
   stopsByRadiusQuery,
   checkRoutes,
 } from './utils/queries'

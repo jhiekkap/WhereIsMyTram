@@ -97,10 +97,9 @@ const Map = ({
   setTrams,
   setAlarm,
   setShowTrams,
-}) =>
-  /* 
- 
   showTrams,
+}) =>
+  /*  
   openSidebar,
   closeSidebar,
   setShowAlert,
@@ -185,10 +184,10 @@ const Map = ({
     const ShowChosenTrams = () => {
       //console.log(trams.length, 'TRAMS:', new Date())
       //console.log('SETTINGS:', showTrams)
-      /*  let tramsToShow = trams.trams.filter(tram =>
-      trams.showTrams.map(tram => tram.veh).includes(tram.veh)
-    )  */
-      let tramsToShow = trams
+       let tramsToShow = trams.filter(tram =>
+      showTrams.map(tram => tram.veh).includes(tram.veh)
+    ) 
+      //let tramsToShow = trams
 
       if (tramsToShow) {
         return tramsToShow.map((tram, i) => {
@@ -217,12 +216,7 @@ const Map = ({
           <Marker
             //className='stops'
             onPress={() => handleSetMyStop(stop)}
-            key={i}
-            /* image={
-              stop.id === myStop.id
-                ? require('../assets/img/iconfinder_5_41693.png')
-                : require('../assets/img/rosaPin.png')
-            } */
+            key={i} 
             coordinate={{ latitude: stop.lat, longitude: stop.lon }}
             //zIndexOffset={-500}
             pinColor={stop.id === myStop.id ? 'blue' : 'red'}
@@ -299,7 +293,7 @@ const mapStateToProps = state => {
   return {
     trams: state.trams.trams,
     //tramRoutesOnMap: state.trams.tramRoutesOnMap,
-    //showTrams: state.showTrams,
+    showTrams: state.showTrams,
     //showSidebar: state.showSidebar,
     //showSidebarOpenButton: state.showSidebarOpenButton,
     stops: state.stops,
