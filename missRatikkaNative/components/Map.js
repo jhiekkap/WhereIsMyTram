@@ -252,6 +252,7 @@ const Map = ({
           <MapView
             //provider='undefined'
             style={styles.map}
+            //onRegionChange={handleRegionChange}
             onRegionChangeComplete={handleRegionChange}
             initialRegion={settings.defaultCenter} 
             region={settings.center}

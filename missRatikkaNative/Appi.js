@@ -6,10 +6,10 @@ import {
   ComponentCenterUp,
   ComponentRightUp,
   ComponentLeftDown,
-  ComponentCenterDown,
+  ComponentCenterDown, 
   ComponentRightDown,
 } from './components/Components'
-import play from './utils/sound'
+//import play from './utils/sound'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import { connect } from 'react-redux'
@@ -44,7 +44,7 @@ const Appi = ({
 }) => {
   //const [counter, setCounter] = useState(0)
   const [show, setShow] = useState(true)  
-  //console.log('hellouuta')
+  //console.log('RENDERING APPI')
   useEffect(() => {
     client.query({ query: tramStopsQuery }).then(response => {
       console.log('GRAPHQL - ALLROUTES - QUERY:', response.data.routes.length)
@@ -132,11 +132,11 @@ const Appi = ({
   return (
     <View style={styles.container}>
       <NavigationBar
-        componentLeft={() => <ComponentLeftUp play={play} />}
+        componentLeft={() => <ComponentLeftUp  />}
         componentCenter={() => (
           <ComponentCenterUp setShow={setShow} show={show} />
         )}
-        componentRight={() => <ComponentRightUp />}
+        componentRight={() => <ComponentRightUp settings={settings}  setCenter={setCenter}/>}
         navigationBarStyle={{ backgroundColor: '#6FEFEA' }}
         statusBarStyle={{ 
           barStyle: 'light-content',
@@ -158,7 +158,7 @@ const Appi = ({
       )}
  
       <NavigationBar
-        style={styles.navbar}
+        style={styles.navbarDown}
         componentLeft={() => <ComponentLeftDown show={show} setShow={setShow} />}
         componentCenter={() => (
           <ComponentCenterDown   settings={settings} setCenter={setCenter}/>
@@ -188,10 +188,15 @@ const styles = StyleSheet.create({
   }, 
   map: {
     flex: 1,
+    
   },
   navbar: {
     flex: 1,
     marginTop:0,
+  },
+  navbarDown: {
+    flex: 1,
+    marginTop:0, 
   },
 })
 

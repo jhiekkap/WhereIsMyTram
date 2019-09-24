@@ -9,15 +9,17 @@ import {
   Alert,
 } from 'react-native'
 
-export const ComponentLeftUp = ({ play }) => {
+import play from './../utils/sound'
+
+export const ComponentLeftUp = () => {
   return (
     <View style={{ flex: 1, alignItems: 'flex-start' }}>
       <TouchableOpacity
-        style={{ justifyContent: 'center', flexDirection: 'row' }}
         onPress={() => {
           play()
           console.log('PLAY HORN')
         }}
+        style={{ justifyContent: 'center', flexDirection: 'row' }}
       >
         <Image
           source={require('./../assets/img/icon_size_41px.png')}
@@ -39,19 +41,11 @@ export const ComponentCenterUp = ({ show, setShow }) => {
     <View style={{ flex: 1 }}>
       <TouchableOpacity
         onPress={() => {
+          play()
           setShow(!show)
           console.log('GOTO MAP/MENU')
         }}
       >
-        {/* <Image
-          source={require('./img/tram-front-view.png')}
-          style={{
-            resizeMode: 'contain',
-            width: 200,
-            height: 35,
-            alignSelf: 'center',
-          }} 
-        /> */}
         <Text style={{ color: 'black', alignSelf: 'center' }}>
           {show ? 'menu' : 'mäp'}
         </Text>
@@ -60,10 +54,15 @@ export const ComponentCenterUp = ({ show, setShow }) => {
   )
 }
 
-export const ComponentRightUp = () => {
+export const ComponentRightUp = ({ setCenter, settings }) => {
   return (
     <View style={{ flex: 1, alignItems: 'flex-end' }}>
-      <TouchableOpacity onPress={() => Alert.alert('möö')}>
+      <TouchableOpacity
+        onPress={() => {
+          setCenter(settings.position)
+          console.log('SET CENTER TO OWN POSITION: ', settings.position)
+        }}
+      >
         <Text style={{ color: 'black' }}> Right </Text>
       </TouchableOpacity>
     </View>
@@ -118,6 +117,30 @@ export const ComponentCenterDown = ({ setCenter, settings }) => {
     <View
       style={{
         flex: 1,
+        backgroundColor: 'yellow',
+        //alignItems: 'flex-end'
+      }}
+    >
+      <TouchableOpacity
+        onPress={() => {
+          setCenter(settings.position)
+          console.log('SET CENTER TO OWN POSITION: ', settings.position)
+        }}
+      >
+        <Image
+          source={require('../assets/img/icons8-navigation-50.png')}
+          style={{
+            resizeMode: 'contain',
+            width: 200,
+            height: 35,
+            alignSelf: 'center',
+          }}
+        />
+      </TouchableOpacity>
+    </View>
+    /* <View
+      style={{
+        flex: 1,
         //alignSelf: 'center',
         marginBottom: 20,
         marginLeft: 0,
@@ -138,10 +161,9 @@ export const ComponentCenterDown = ({ setCenter, settings }) => {
             height: 35,
             alignSelf: 'center',
           }}
-        />
-        {/* <Text>center</Text> */}
+        /> 
       </TouchableOpacity>
-    </View>
+    </View> */
   )
 }
 
