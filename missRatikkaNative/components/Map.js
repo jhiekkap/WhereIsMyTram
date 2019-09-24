@@ -120,7 +120,7 @@ const Map = ({
         setMyTram(chosenTram)
         setLine(chosenTram.desi)
         //setShowTrams([chosenTram])
-        setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
+        setCenter({ latitude: chosenTram.lat, longitude: chosenTram.long })
         setZoom(16)
         setShowLine('')
       } else {
@@ -239,47 +239,37 @@ const Map = ({
       longitudeDelta: 0.0121,
     } */
 
-    const handleRegionChange = (region, lastLat, lastLong) => {
-      regioni = {
-        mapRegion: region,
+    //const handleRegionChange =  region => {
+    /*   regioni = {
+        mapRegion: region, */
         // If there are no new values set the current ones
         /* lastLat: lastLat || settings.region.lastLat,
         lastLong: lastLong || settings.region.lastLong, */
-        lastLat: lastLat || 0,
+       /*  lastLat: lastLat || 0,
         lastLong: lastLong || 0,
-      }
-      console.log(region, lastLat, lastLong)
+      } */
+     // console.log(region)
       /* regionCenter = {
         latitude: regioni.mapRegion.latitude,
         longitude: regioni.mapRegion.longitude,
         latitudeDelta: 0.0122,
         longitudeDelta: 0.0121,
       } */
-      setCenter({
-        lat: regioni.mapRegion.latitude,
-        lng: regioni.mapRegion.longitude,
+     /*  setCenter({
+        lat: region.latitude,
+        lng: region.longitude,
       })
-    }
+    } */
 
     return (
       <View style={styles.container}>
         {trams ? (
           <MapView
             style={styles.map}
-            initialRegion={{
-              latitude: settings.center.lat,
-              longitude: settings.center.lng,
-              latitudeDelta: 0.0122,
-              longitudeDelta: 0.0121,
-            }}
-            region={{
-              latitude: settings.center.lat,
-              longitude: settings.center.lng,
-              latitudeDelta: 0.0122,
-              longitudeDelta: 0.0121,
-            }}
+            initialRegion={settings.defaultCenter}  
+            //region={settings.center}
             mapType='standard'
-            onRegionChange={handleRegionChange}
+            onRegionChange={mapRegion => setCenter({mapRegion})}
             //followsUserLocation={true}
             //showsUserLocation={true}
 
@@ -296,8 +286,8 @@ const Map = ({
             {showStops()}
             <Marker
               coordinate={{
-                latitude: settings.position.lat,
-                longitude: settings.position.lng,
+                latitude: settings.position.latitude,
+                longitude: settings.position.longitude,
               }}
               title='hei'
               description='tääl ollaan'
@@ -318,7 +308,7 @@ const Map = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
+  }, 
   map: {
     flex: 1,
   },

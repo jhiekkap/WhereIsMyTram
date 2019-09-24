@@ -5,7 +5,7 @@ import store from './store'
 import Appi from './Appi'
 
  
-
+ 
 const App = () => {
   return (
     <Provider store={store}> 

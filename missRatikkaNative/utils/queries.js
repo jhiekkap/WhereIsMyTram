@@ -22,7 +22,7 @@ export const tramStopsQuery = gql`
 
 export const stopsByRadiusQuery = (location, radius) => gql`
 {
-  stopsByRadius(lat:${location.lat}, lon:${location.lng}, radius:${radius}) {
+  stopsByRadius(lat:${location.latitude}, lon:${location.longitude}, radius:${radius}) {
     edges {
       node {
         stop { 

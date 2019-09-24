@@ -30,7 +30,7 @@ import Menu from './components/Menu'
 import Map from './components/Map'
 
 const Appi = ({
-  trams,
+  //trams,
   setTrams,
   myStop,
   setTramRoutesOnMap,
@@ -79,8 +79,8 @@ const Appi = ({
       navigator.geolocation.getCurrentPosition(position => {
         let location = settings.geoLocation
           ? {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
             }
           : settings.defaultCenter
         console.log(
@@ -88,11 +88,13 @@ const Appi = ({
           settings.geoLocation ? 'GEOLOCATION' : 'DEFAULT LOCATION',
           location
         )
-        setPosition(location)
-        setCenter(location)
-        stopsQuery(location)
+        console.log('NJEEEEETTT')
+        setPosition(...settings.position, {location})
+        setCenter(...settings.center, {location})
+        stopsQuery({location})
       })
     } else {
+      console.log('DAAAAAA')
       stopsQuery(settings.defaultCenter)
       setCenter(settings.defaultCenter)
       setPosition(settings.defaultCenter) // ??????????????????????
@@ -154,7 +156,7 @@ const Appi = ({
       ) : (
         <Menu style={styles.menu} />
       )}
-
+ 
       <NavigationBar
         style={styles.navbar}
         componentLeft={() => <ComponentLeftDown show={show} setShow={setShow} />}
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    trams: state.trams.trams,
+    //trams: state.trams.trams,
     settings: state.settings,
     myStop: state.myStop,
   }
