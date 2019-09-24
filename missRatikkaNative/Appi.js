@@ -30,7 +30,8 @@ import Menu from './components/Menu'
 import Map from './components/Map'
 
 const Appi = ({
-  //trams,
+  trams,
+  myTram,
   setTrams,
   myStop,
   setTramRoutesOnMap,
@@ -42,8 +43,7 @@ const Appi = ({
   settings,
 }) => {
   //const [counter, setCounter] = useState(0)
-  const [show, setShow] = useState(true)
-
+  const [show, setShow] = useState(true)  
   //console.log('hellouuta')
   useEffect(() => {
     client.query({ query: tramStopsQuery }).then(response => {
@@ -163,7 +163,7 @@ const Appi = ({
         componentCenter={() => (
           <ComponentCenterDown   settings={settings} setCenter={setCenter}/>
         )}
-        componentRight={() => <ComponentRightDown />}
+        componentRight={() => <ComponentRightDown trams={trams} myTram={myTram} setCenter={setCenter} settings={settings}/>}
         navigationBarStyle={{ backgroundColor: '#6FEFEA' }}
         /* statusBarStyle={{ 
           barStyle: 'light-content',
@@ -197,7 +197,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    //trams: state.trams.trams,
+    trams: state.trams.trams,
+    myTram: state.myTram,
     settings: state.settings,
     myStop: state.myStop,
   }

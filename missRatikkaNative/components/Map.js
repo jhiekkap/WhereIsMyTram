@@ -120,7 +120,13 @@ const Map = ({
         setMyTram(chosenTram)
         setLine(chosenTram.desi)
         //setShowTrams([chosenTram])
-        setCenter({ latitude: chosenTram.lat, longitude: chosenTram.long })
+        setCenter(
+          {
+            latitude: chosenTram.lat,
+            longitude: chosenTram.long,
+            latitudeDelta:settings.center.latitudeDelta,
+            longitudeDelta:settings.center.longitudeDelta
+          })
         setZoom(16)
         setShowLine('')
       } else {
@@ -243,7 +249,7 @@ const Map = ({
         {trams ? (
           <MapView
             style={styles.map}
-            initialRegion={settings.defaultCenter}
+            //initialRegion={settings.defaultCenter}
             region={settings.center}
             mapType='standard'
             onRegionChange={region => setCenter(region)}

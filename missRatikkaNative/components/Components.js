@@ -14,7 +14,10 @@ export const ComponentLeftUp = ({ play }) => {
     <View style={{ flex: 1, alignItems: 'flex-start' }}>
       <TouchableOpacity
         style={{ justifyContent: 'center', flexDirection: 'row' }}
-        onPress={() => play()}
+        onPress={() => {
+          play()
+          console.log('PLAY HORN')
+        }}
       >
         <Image
           source={require('./../assets/img/icon_size_41px.png')}
@@ -37,6 +40,7 @@ export const ComponentCenterUp = ({ show, setShow }) => {
       <TouchableOpacity
         onPress={() => {
           setShow(!show)
+          console.log('GOTO MAP/MENU')
         }}
       >
         {/* <Image
@@ -74,11 +78,13 @@ export const ComponentLeftDown = ({ show, setShow }) => {
         //alignItems: 'flex-start',
         marginLeft: 20,
         marginBottom: 20,
+        backgroundColor: 'hotpink',
       }}
     >
       <TouchableOpacity
         onPress={() => {
           setShow(!show)
+          console.log('GOTO MAP/MENU')
         }}
       >
         {show ? (
@@ -107,11 +113,16 @@ export const ComponentLeftDown = ({ show, setShow }) => {
   )
 }
 
-export const ComponentCenterDown = ({setCenter, settings}) => { 
-
+export const ComponentCenterDown = ({ setCenter, settings }) => {
   return (
     <View
-      style={{ flex: 1, alignSelf: 'center', marginBottom: 20, marginLeft: 0 }}
+      style={{
+        flex: 1,
+        alignSelf: 'center',
+        marginBottom: 20,
+        marginLeft: 0,
+        backgroundColor: 'yellow',
+      }}
     >
       <TouchableOpacity
         onPress={() => {
@@ -133,7 +144,7 @@ export const ComponentCenterDown = ({setCenter, settings}) => {
   )
 }
 
-export const ComponentRightDown = () => {
+export const ComponentRightDown = ({ trams, myTram, setCenter, settings }) => {
   return (
     <View
       style={{
@@ -142,9 +153,23 @@ export const ComponentRightDown = () => {
         alignSelf: 'center',
         marginBottom: 25,
         marginRight: 20,
+        backgroundColor: 'green',
       }}
     >
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          let chosenTram = trams.find(tram => tram.veh == myTram.veh)
+          setCenter(
+            {
+              latitude: chosenTram.lat,
+              longitude: chosenTram.long,
+              latitudeDelta:settings.center.latitudeDelta,
+              longitudeDelta:settings.center.longitudeDelta
+            } 
+          )
+          console.log('SET CENTER TO TRAM POSITION')
+        }}
+      >
         <Image
           source={require('../assets/img/tram-front-view.png')}
           style={{
