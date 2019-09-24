@@ -1,7 +1,7 @@
 const settingsReducer = (
   state = {
     center: {latitude: 60.169748893653164, longitude: 24.940102100372314,latitudeDelta: 0.0122,
-      longitudeDelta: 0.0121}, 
+      longitudeDelta: 0.0121},
     defaultCenter: {latitude: 60.169748893653164, longitude: 24.940102100372314,latitudeDelta: 0.0122,
       longitudeDelta: 0.0121}, 
     showAlert: false,

@@ -267,7 +267,7 @@ const Map = ({
           <MapView
             style={styles.map}
             initialRegion={settings.defaultCenter}  
-            //region={settings.center}
+            region={settings.center}
             mapType='standard'
             onRegionChange={mapRegion => setCenter({mapRegion})}
             //followsUserLocation={true}
