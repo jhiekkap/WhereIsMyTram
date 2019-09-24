@@ -158,15 +158,15 @@ export const ComponentRightDown = ({ trams, myTram, setCenter, settings }) => {
     >
       <TouchableOpacity
         onPress={() => {
-          let chosenTram = trams.find(tram => tram.veh == myTram.veh)
-          setCenter(
-            {
+          if (myTram) {
+            let chosenTram = trams.find(tram => tram.veh == myTram.veh)
+            setCenter({
               latitude: chosenTram.lat,
               longitude: chosenTram.long,
-              latitudeDelta:settings.center.latitudeDelta,
-              longitudeDelta:settings.center.longitudeDelta
-            } 
-          )
+              latitudeDelta: settings.center.latitudeDelta,
+              longitudeDelta: settings.center.longitudeDelta,
+            })
+          }
           console.log('SET CENTER TO TRAM POSITION')
         }}
       >

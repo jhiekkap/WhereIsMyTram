@@ -239,20 +239,21 @@ const Map = ({
       )
     }
 
-    /* const handleRegionChange = region => {
+    const handleRegionChange = region => {
       //console.log(region)
       setCenter(region)
-    } */
+    }
 
     return (
       <View style={styles.container}>
         {trams ? (
           <MapView
+            //provider={MapKit}
             style={styles.map}
             initialRegion={settings.defaultCenter}
             region={settings.center}
             mapType='standard'
-            onRegionChange={region => setCenter(region)}
+            onRegionChange={handleRegionChange}
             //followsUserLocation={true}
             //showsUserLocation={true}
 
