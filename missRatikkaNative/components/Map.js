@@ -111,6 +111,7 @@ const Map = ({
   setPosition,  */
   {
     //console.log('RENDERING MÄPPI')
+ 
 
     const handleChooseTram = veh => {
       console.log('valitse nro: ', veh)
@@ -240,20 +241,22 @@ const Map = ({
     }
 
     const handleRegionChange = region => {
-      //console.log(region)
+      console.log('REGION!!!!!',region)
       setCenter(region)
+      
     }
 
     return (
       <View style={styles.container}>
         {trams ? (
           <MapView
-            //provider={MapKit}
+            //provider='undefined'
             style={styles.map}
-            initialRegion={settings.defaultCenter}
+            onRegionChangeComplete={handleRegionChange}
+            initialRegion={settings.defaultCenter} 
             region={settings.center}
+            
             mapType='standard'
-            onRegionChange={handleRegionChange}
             //followsUserLocation={true}
             //showsUserLocation={true}
 
@@ -261,10 +264,10 @@ const Map = ({
             //zoomControlEnabled={true}
             //showsMyLocationButton={true}
           >
-            <UrlTile
+            {/* <UrlTile
               urlTemplate='http://a.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
               maximumZ={19}
-            />
+            /> */}
             {ShowChosenTrams()}
             {/* <ShowTrams trams={trams} /> */}
             {showStops()}

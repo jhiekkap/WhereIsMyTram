@@ -118,13 +118,13 @@ export const ComponentCenterDown = ({ setCenter, settings }) => {
     <View
       style={{
         flex: 1,
-        alignSelf: 'center',
+        //alignSelf: 'center',
         marginBottom: 20,
         marginLeft: 0,
         backgroundColor: 'yellow',
       }}
     >
-      <TouchableOpacity
+      <TouchableOpacity 
         onPress={() => {
           setCenter(settings.position)
           console.log('SET CENTER TO OWN POSITION: ', settings.position)
@@ -139,6 +139,7 @@ export const ComponentCenterDown = ({ setCenter, settings }) => {
             alignSelf: 'center',
           }}
         />
+        {/* <Text>center</Text> */}
       </TouchableOpacity>
     </View>
   )
