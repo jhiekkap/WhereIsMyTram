@@ -249,7 +249,7 @@ const Map = ({
         {trams ? (
           <MapView
             style={styles.map}
-            //initialRegion={settings.defaultCenter}
+            initialRegion={settings.defaultCenter}
             region={settings.center}
             mapType='standard'
             onRegionChange={region => setCenter(region)}
