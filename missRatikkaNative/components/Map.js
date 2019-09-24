@@ -232,44 +232,21 @@ const Map = ({
         ))
       )
     }
-    /* let regionCenter = {
-      latitude: settings.center.lat,
-      longitude: settings.center.lng,
-      latitudeDelta: 0.0122,
-      longitudeDelta: 0.0121,
-    } */
 
-    //const handleRegionChange =  region => {
-    /*   regioni = {
-        mapRegion: region, */
-        // If there are no new values set the current ones
-        /* lastLat: lastLat || settings.region.lastLat,
-        lastLong: lastLong || settings.region.lastLong, */
-       /*  lastLat: lastLat || 0,
-        lastLong: lastLong || 0,
-      } */
-     // console.log(region)
-      /* regionCenter = {
-        latitude: regioni.mapRegion.latitude,
-        longitude: regioni.mapRegion.longitude,
-        latitudeDelta: 0.0122,
-        longitudeDelta: 0.0121,
-      } */
-     /*  setCenter({
-        lat: region.latitude,
-        lng: region.longitude,
-      })
-    } */
+    const handleRegionChange = mapRegion => {
+      console.log(mapRegion)
+      setCenter(mapRegion)
+    }
 
     return (
       <View style={styles.container}>
         {trams ? (
           <MapView
             style={styles.map}
-            initialRegion={settings.defaultCenter}  
+            //initialRegion={settings.defaultCenter}
             region={settings.center}
             mapType='standard'
-            onRegionChange={mapRegion => setCenter({mapRegion})}
+            onRegionChange={handleRegionChange}
             //followsUserLocation={true}
             //showsUserLocation={true}
 
@@ -308,7 +285,7 @@ const Map = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  }, 
+  },
   map: {
     flex: 1,
   },
