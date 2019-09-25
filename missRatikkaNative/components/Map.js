@@ -111,7 +111,6 @@ const Map = ({
   setPosition,  */
   {
     //console.log('RENDERING MÄPPI')
- 
 
     const handleChooseTram = veh => {
       console.log('valitse nro: ', veh)
@@ -121,13 +120,12 @@ const Map = ({
         setMyTram(chosenTram)
         setLine(chosenTram.desi)
         //setShowTrams([chosenTram])
-        setCenter(
-          {
-            latitude: chosenTram.lat,
-            longitude: chosenTram.long,
-            latitudeDelta:settings.center.latitudeDelta,
-            longitudeDelta:settings.center.longitudeDelta
-          })
+        setCenter({
+          latitude: chosenTram.lat,
+          longitude: chosenTram.long,
+          latitudeDelta: settings.center.latitudeDelta,
+          longitudeDelta: settings.center.longitudeDelta,
+        })
         setZoom(16)
         setShowLine('')
       } else {
@@ -241,9 +239,10 @@ const Map = ({
     }
 
     const handleRegionChange = region => {
-      console.log('REGION!!!!!',region)
+      console.log('REGION!!!!!', region)
+      //setCenter(region)
       setCenter(region)
-      
+      //MapView._root.animateToRegion(region,500)
     }
 
     return (
@@ -253,24 +252,21 @@ const Map = ({
             //provider='undefined'
             style={styles.map}
             //onRegionChange={handleRegionChange}
-            onRegionChangeComplete={handleRegionChange}
-            initialRegion={settings.defaultCenter} 
-            region={settings.center}
-            
+            //onRegionChangeComplete={handleRegionChange}
+            initialRegion={settings.defaultCenter}
+            //region={settings.center}
             mapType='standard'
             //followsUserLocation={true}
-            //showsUserLocation={true}
-
+            showsUserLocation={true}
             //zoom={settings.zoom}
-            //zoomControlEnabled={true}
-            //showsMyLocationButton={true}
+            zoomControlEnabled={true}
+            showsMyLocationButton={true}
           >
-            {/* <UrlTile
+            {/*  <UrlTile
               urlTemplate='http://a.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
               maximumZ={19}
-            /> */}
+            />  */}
             {ShowChosenTrams()}
-            {/* <ShowTrams trams={trams} /> */}
             {showStops()}
             <Marker
               coordinate={{
@@ -289,6 +285,12 @@ const Map = ({
         ) : (
           <Text>loading...</Text>
         )}
+        <View style={styles.button1}>
+          <Button title='hello' />
+        </View>
+        <View style={styles.button2}>
+          <Button title='hellooooooooooooooooooo' />
+        </View>
       </View>
     )
   }
@@ -298,7 +300,46 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    flex: 1,
+    /* flex: 1, */
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+  },
+  button1: {
+    position: 'absolute', //use absolute position to show button on top of the map
+    top: '50%',
+    right: '5%', //for center align
+    alignSelf: 'flex-end', //for align to right
+    backgroundColor: 'white',
+    //borderRadius:10,
+    borderWidth: 1,
+    borderRadius: 40,
+    borderColor: '#ddd',
+    borderBottomWidth: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  button2: {
+    position: 'absolute', //use absolute position to show button on top of the map
+    top: '5%',
+    left: '5%', //for center align
+    alignSelf: 'flex-end', //for align to right
+    backgroundColor: 'white',
+    //borderRadius:10,
+    borderWidth: 1,
+    borderRadius: 40,
+    borderColor: '#ddd',
+    borderBottomWidth: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
   },
 })
 

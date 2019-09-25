@@ -101,8 +101,8 @@ const Appi = ({
     }
   }, [settings.geoLocation])
 
-  useEffect(() => {
-    const timer = setInterval(() => { 
+ /*  useEffect(() => {
+    const timer = setInterval(() => {  */
       fetch('https://arcane-shore-64535.herokuapp.com/trams')
         .then(response => response.json())
         .then(body => {
@@ -113,8 +113,8 @@ const Appi = ({
         .catch(error => {
           console.log(error)
         })
-    }, 1000)
-  }, [])
+  /*   }, 1000)
+  }, []) */
 
   useEffect(() => {
     console.log('myStop changed:', myStop.name)
@@ -131,7 +131,7 @@ const Appi = ({
 
   return (
     <View style={styles.container}>
-      <NavigationBar
+       {/* <NavigationBar
         componentLeft={() => <ComponentLeftUp  />}
         componentCenter={() => (
           <ComponentCenterUp setShow={setShow} show={show} />
@@ -142,7 +142,7 @@ const Appi = ({
           barStyle: 'light-content',
           backgroundColor: '#6FEFEA',
         }}
-      />
+      />  */}
 
        {/* <Text>
         Open up to fart {trams.length} working on your räppi nr. {counter}!
@@ -157,7 +157,7 @@ const Appi = ({
         <Menu style={styles.menu} />
       )}
  
-      <NavigationBar
+      {/* <NavigationBar
         style={styles.navbarDown}
         componentLeft={() => <ComponentLeftDown show={show} setShow={setShow} />}
         componentCenter={() => (
@@ -165,11 +165,11 @@ const Appi = ({
         )}
         componentRight={() => <ComponentRightDown trams={trams} myTram={myTram} setCenter={setCenter} settings={settings}/>}
         navigationBarStyle={{ backgroundColor: '#6FEFEA' }}
-        /* statusBarStyle={{ 
+         statusBarStyle={{ 
           barStyle: 'light-content',
           backgroundColor: '#6FEFEA',
-        }} */
-      />
+        }} 
+      /> */}
     </View>
   )
 }
@@ -187,8 +187,12 @@ const styles = StyleSheet.create({
     height: 10,
   }, 
   map: {
-    flex: 1,
-    
+    /* flex: 1, */
+    top:0,
+    right:0,
+    bottom:0,
+    left:0,
+    position: 'absolute' 
   },
   navbar: {
     flex: 1,

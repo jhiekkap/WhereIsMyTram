@@ -1,9 +1,15 @@
 const settingsReducer = (
   state = {
-    center: {latitude: 60.169748893653164, longitude: 24.940102100372314,latitudeDelta: 0.0122,
-      longitudeDelta: 0.0121},
-    defaultCenter: {latitude: 60.169748893653164, longitude: 24.940102100372314,latitudeDelta: 0.0122,
-      longitudeDelta: 0.0121}, 
+    center: {latitude: 60.169748893653164,
+      longitude: 24.940102100372314,
+      latitudeDelta: 0.0122,
+      longitudeDelta: 0.0121,},
+    defaultCenter: {
+      latitude: 60.169748893653164,
+      longitude: 24.940102100372314,
+      latitudeDelta: 0.0122,
+      longitudeDelta: 0.0121,
+    },
     showAlert: false,
     alertVariant: true,
     zoom: 16,
@@ -12,13 +18,17 @@ const settingsReducer = (
     init: true,
     avgDuration: 0,
     line: '',
-    distance: 0, 
-    alarm: false, 
+    distance: 0,
+    alarm: false,
     intro: false,
-    geoLocation: false,   
+    geoLocation: false,
     alarmDistance: 50,
-    position: {latitude: 60.169748893653164, longitude: 24.940102100372314,latitudeDelta: 0.0122,
-      longitudeDelta: 0.0121},
+    position: {
+      latitude: 60.169748893653164,
+      longitude: 24.940102100372314,
+      latitudeDelta: 0.0122,
+      longitudeDelta: 0.0121,
+    },
     show: 'menu',
     possibleRoutes: [],
     showLine: '',
@@ -268,6 +278,5 @@ export const setRadius = meters => {
     })
   }
 }
-
 
 export default settingsReducer
