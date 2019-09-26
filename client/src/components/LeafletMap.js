@@ -5,7 +5,7 @@ import { setMyTram } from '../reducers/myTramReducer'
 import { setTrams } from '../reducers/tramsReducer'
 import {
   setCenter,
-  setZoom, 
+  setZoom,
   setShowAlert,
   openSidebar,
   closeSidebar,
@@ -34,7 +34,7 @@ import centerButton from '../img/icons8-navigation-50.png'
 import tramButton from '../img/icons8-ice-cream-50.png'
 //import { SoundEffect } from './SoundEffect'
 import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
-import Intro from '../components/Intro' 
+import Intro from '../components/Intro'
 
 //let horn = {}
 
@@ -74,7 +74,7 @@ const LeafletMap = ({
       setPlayHorn(false)
     }, 2000)
     //horn.src={alarmSound}
-    //horn.play() 
+    //horn.play()
   }
 
   const handleChooseTram = e => {
@@ -140,13 +140,13 @@ const LeafletMap = ({
   const popUp = tram => {
     return (
       <Popup closeButton={false} value={tram.veh} autoPan={false}>
-       {/*  line:{tram.desi}
+        {/*  line:{tram.desi}
         <br /> */}
         vehicle: {tram.veh}
         <br />
         speed: {(tram.spd * 3.6).toFixed(2)} km/h
         <br />
-       {/*  {tram.stop && (
+        {/*  {tram.stop && (
           <span>
             stop: {tram.stop}
             <br />
@@ -156,7 +156,7 @@ const LeafletMap = ({
         <br />
         {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
         <br />
-       {/*  {tram.drst === 0 ? 'doors closed' : 'doors open'}
+        {/*  {tram.drst === 0 ? 'doors closed' : 'doors open'}
         <br /> */}
         {(!myTram || (myTram && myTram.veh !== tram.veh)) &&
           settings.possibleRoutes.includes(tram.route) &&
@@ -218,8 +218,9 @@ const LeafletMap = ({
           zIndexOffset={-500}
         >
           <Popup closeButton={false} autoPan={false}>
-            <br /> {stop.name}
-            <br /> {stop.gtfsId}
+            {stop.name}
+            <br />
+            {stop.gtfsId}
           </Popup>
         </Marker>
       ))
@@ -348,7 +349,7 @@ const LeafletMap = ({
                   </Popup>
                 </Marker>
               </Map>
-            )} 
+            )}
 
             <Alert
               id='alert'
