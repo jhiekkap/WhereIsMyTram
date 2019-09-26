@@ -1,14 +1,4 @@
-import React, { useEffect} from 'react'
-/* import 
- //driverIcon,
-  {
-  //stopIcon,
-  //myStopIcon,
-  //lineStopIcon,
-  //tramIcon,
-  //myTramIcon,
-} from '../utils/icons'  */
-
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
@@ -16,26 +6,12 @@ import { setTrams } from '../reducers/tramsReducer'
 import {
   setCenter,
   setZoom,
-  //setShowAlert,
-  //openSidebar,
-  //closeSidebar,
   setLine,
   setAlarm,
-  //setShowSidebarOpenButton,
-  //setIntro,
-  //setShow,
   setShowLine,
-  //setPosition,
   setDistance,
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
-/* import driverIcon, {
-  stopIcon,
-  myStopIcon,         IKONIT?????????????????????
-  lineStopIcon,
-  tramIcon,
-  myTramIcon,
-} from '../utils/icons' */
 import {
   SafeAreaView,
   StyleSheet,
@@ -53,12 +29,6 @@ import {
 import distance from '../utils/helpers'
 
 import MapView, { Marker, Callout, UrlTile } from 'react-native-maps'
-/* import { printDuration } from '../utils/helpers'
-import alarmOnButton from '../assets/img/icon-alarm.png'
-import alarmOffButton from '../assets/img/iconfinder_stop_green_61688.png'
-import centerButton from '../assets/img/icons8-navigation-50.png'
-import tramButton from '../assets/img/icons8-ice-cream-50.png'
- */
 
 const tramIcons = {
   ///dynamic 'require' not supported in React Native:)
@@ -99,247 +69,198 @@ const Map = ({
   setShowLine,
   setTrams,
   setAlarm,
-  setShowTrams,
-  showTrams,
+  setShowTrams, 
   setDistance,
-}) =>
-  /*  
-  openSidebar,
-  closeSidebar,
-  setShowAlert,
-  setShowSidebarOpenButton,
-  setIntro,
-  setShow,
-  tramRoutesOnMap,
-  stopsQuery,
-  setPosition,  */
-  {
-    //console.log('RENDERING MÄPPI')
-
-    useEffect(() => {
-      if (myTram) {
-        let chosenTram = trams.find(tram => tram.veh === myTram.veh)
-        let distanceNow = distance(
-          myStop.lat,
-          myStop.lon,
-          chosenTram.lat,
-          chosenTram.long
-        )
-        setDistance(distanceNow)
-      }
-    }, [trams])
-
-    const handleChooseTram = veh => {
-      console.log('valitse nro: ', veh)
-      let chosenTram = trams.find(tram => tram.veh == veh)
-      //console.log('CHOSEN TRAM:', chosenTram)
-      if (settings.possibleRoutes.includes(chosenTram.route)) {
-        setMyTram(chosenTram)
-        setLine(chosenTram.desi)
-        //setShowTrams([chosenTram])
-        setCenter({
-          latitude: chosenTram.lat,
-          longitude: chosenTram.long,
-          latitudeDelta: settings.center.latitudeDelta,
-          longitudeDelta: settings.center.longitudeDelta,
-        })
-        setZoom(16)
-        setShowLine('')
-      } else {
-        console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
-      }
+}) => {
+  useEffect(() => {
+    if (myTram) {
+      let chosenTram = trams.find(tram => tram.veh === myTram.veh)
+      let distanceNow = distance(
+        myStop.lat,
+        myStop.lon,
+        chosenTram.lat,
+        chosenTram.long
+      )
+      setDistance(distanceNow)
     }
+  }, [trams])
 
-    const handleCancelTram = veh => {
-      console.log('TRAM CANCELED', veh)
-      setAlarm(false)
-      setMyTram('')
-      setTrams([])
-      setShowTrams(trams)
+  const handleChooseTram = veh => {
+    console.log('TRAM CHOSEN: ', veh)
+    let chosenTram = trams.find(tram => tram.veh == veh) 
+    if (settings.possibleRoutes.includes(chosenTram.route)) {
+      setMyTram(chosenTram)
+      //setLine(chosenTram.desi) 
+      /* setCenter({
+        latitude: chosenTram.lat,
+        longitude: chosenTram.long,
+        latitudeDelta: settings.center.latitudeDelta,
+        longitudeDelta: settings.center.longitudeDelta,
+      })  */
+    } else {
+      console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
+    }
+  }
+
+  const handleCancelTram = veh => {
+    console.log('TRAM CANCELLED', veh)
+    setAlarm(false)
+    setMyTram('')
+    setTrams([])
+    setShowTrams(trams)
+    setLine('') 
+  }
+
+  const handleSetMyStop = stop => {
+    if (!myTram) {
+      console.log('STOP SET: ', stop.name)
+      setMyStop(stop)
       setLine('')
-      //setZoom(16)
     }
+  }
 
-    const handleSetMyStop = stop => {
-      if (!myTram) {
-        setMyStop(stop)
-        setLine('')
-      }
-    }
-
-    const popUp = tram => {
-      let buttoni = () => {
-        if (myTram && myTram.veh === tram.veh) {
-          return (
-            <Button title='cancel' onPress={() => handleCancelTram(tram.veh)} />
-          )
-        } else if (
-          (!myTram || (myTram && myTram.veh !== tram.veh)) &&
-          settings.possibleRoutes.includes(tram.route) &&
-          !settings.alarm
-        ) {
-          return (
-            <Button title='choose' onPress={() => handleChooseTram(tram.veh)} />
-          )
-        }
-      }
-
-      return (
-        <Callout>
-          <Text> line:{tram.desi}</Text>
-          <Text> vehicle:{tram.veh}</Text>
-          <Text> speed:{(tram.spd * 3.6).toFixed(2)} km/h}</Text>
-          {tram.stop && <Text> stop: {tram.stop}</Text>}
-          <Text> route:{tram.route}</Text>
-          <Text>
-            {' '}
-            {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
-          </Text>
-          <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text>
-
-          {buttoni()}
-        </Callout>
-      )
-    }
-
-    const ShowChosenTrams = () => {
-      //console.log(trams.length, 'TRAMS:', new Date())
-      //console.log('SETTINGS:', showTrams)
-      /* let tramsToShow = trams.filter(tram =>
-      showTrams.map(tram => tram.veh).includes(tram.veh)
-    )  */
-      let tramsToShow = trams
-
-      if (tramsToShow) {
-        return tramsToShow.map((tram, i) => {
-          if (tram.lat && tram.long) {
-            return (
-              <Marker
-                key={i}
-                image={tramIcons[tram.desi]}
-                coordinate={{
-                  latitude: tram.lat,
-                  longitude: tram.long,
-                }}
-              >
-                {popUp(tram)}
-              </Marker>
-            )
-          }
-        })
-      }
-    }
-
-    const showStops = () => {
-      return (
-        stops &&
-        stops.map((stop, i) => (
-          <Marker
-            //className='stops'
-            //onPress={() => handleSetMyStop(stop)}
-            key={i}
-            coordinate={{ latitude: stop.lat, longitude: stop.lon }}
-            //zIndexOffset={-500}
-            pinColor={stop.id === myStop.id ? 'blue' : 'red'}
-          >
-            <Callout>
-              {stop.id === myStop.id && <Text> My Stop:</Text>}
-              <Text> {stop.name}</Text>
-              <Text> {stop.gtfsId}</Text>
-              {stop.id !== myStop.id && (
-                <Button title='choose' onPress={() => handleSetMyStop(stop)} />
-              )}
-            </Callout>
-          </Marker>
-        ))
-      )
-    }
-
-    //const mapRef = React.createRef();
-
-    /* const handleRegionChange = region => {
-      //console.log('REGION!!!!!', nativeEvent.coordinate) 
-      setCenter(region)
-      //mapRef.animateToRegion(region,500)
-    } */
-
-    const alarmButton = () => {
-      if (myTram) {
+  const popUp = tram => {
+    let buttoni = () => {
+      if (myTram && myTram.veh === tram.veh) {
         return (
-          <View
-            style={
-              settings.alarm ? styles.alarmOffButton : styles.alarmOnButton
-            }
-          >
-            <Button
-              title='alarm'
-              onPress={() => {
-                setAlarm(!settings.alarm)
-              }}
-            />
-          </View>
+          <Button title='cancel' onPress={() => handleCancelTram(tram.veh)} />
         )
-      }
-    }
-
-    const showDistance = () => {
-      let distanssi = settings.distance + ' m'
-      if (myTram) {
+      } else if (
+        (!myTram || (myTram && myTram.veh !== tram.veh)) &&
+        settings.possibleRoutes.includes(tram.route) &&
+        !settings.alarm
+      ) {
         return (
-          <View style={styles.distance}>
-            <Button title={distanssi} />
-          </View>
+          <Button title='choose' onPress={() => handleChooseTram(tram.veh)} />
         )
       }
     }
 
     return (
-      <View style={styles.container}>
-        {trams ? (
-          <MapView
-            //ref={mapRef}
-            //onPress={handleRegionChange}
-            //provider='undefined'
-            style={styles.map}
-            // onRegionChange={handleRegionChange}
-            //onRegionChangeComplete={handleRegionChange}
-            initialRegion={settings.defaultCenter}
-            //region={settings.center}
-            mapType='standard'
-            //followsUserLocation={true}
-            showsUserLocation={true}
-            //zoom={settings.zoom}
-            zoomControlEnabled={true}
-            showsMyLocationButton={true}
-          >
-            {/*  <UrlTile
+      <Callout>
+        <Text> line:{tram.desi}</Text>
+        <Text> vehicle:{tram.veh}</Text>
+        <Text> speed:{(tram.spd * 3.6).toFixed(2)} km/h}</Text>
+        {tram.stop && <Text> stop: {tram.stop}</Text>}
+        <Text> route:{tram.route}</Text>
+        <Text>
+          {' '}
+          {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
+        </Text>
+        <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text>
+
+        {buttoni()}
+      </Callout>
+    )
+  }
+
+  const ShowChosenTrams = () => { 
+      return trams && trams.map((tram, i) => {
+        if (tram.lat && tram.long) {
+          return (
+            <Marker
+              key={i}
+              image={tramIcons[tram.desi]}
+              coordinate={{
+                latitude: tram.lat,
+                longitude: tram.long,
+              }}
+            >
+              {popUp(tram)}
+            </Marker>
+          )
+        }
+      })
+    } 
+
+  const showStops = () => {
+    return (
+      stops &&
+      stops.map((stop, i) => (
+        <Marker 
+          key={i}
+          coordinate={{ latitude: stop.lat, longitude: stop.lon }} 
+          pinColor={stop.id === myStop.id ? 'blue' : 'red'}
+        >
+          <Callout>
+            {stop.id === myStop.id && <Text> My Stop:</Text>}
+            <Text> {stop.name}</Text>
+            <Text> {stop.gtfsId}</Text>
+            {stop.id !== myStop.id && (
+              <Button title='choose' onPress={() => handleSetMyStop(stop)} />
+            )}
+          </Callout>
+        </Marker>
+      ))
+    )
+  } 
+
+  const alarmButton = () => {
+    if (myTram) {
+      return (
+        <View
+          style={settings.alarm ? styles.alarmOffButton : styles.alarmOnButton}
+        >
+          <Button
+            title='alarm'
+            onPress={() => {
+              setAlarm(!settings.alarm)
+              console.log(settings.alarm ? 'ALARM ON' : 'ALARM OFF')
+            }}
+          />
+        </View>
+      )
+    }
+  }
+
+  const showDistance = () => {
+    let distanssi = settings.distance + ' m'
+    if (myTram) {
+      return (
+        <View style={styles.distance}>
+          <Button title={distanssi} />
+        </View>
+      )
+    }
+  }
+
+  return (
+    <View style={styles.container}>
+      {trams ? (
+        <MapView 
+          style={styles.map} 
+          initialRegion={settings.defaultCenter} 
+          mapType='standard'
+          //followsUserLocation={true}
+          showsUserLocation={true} 
+          zoomControlEnabled={true}
+          showsMyLocationButton={true}
+        >
+          {/*  <UrlTile
               urlTemplate='http://a.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
               maximumZ={19}
             />  */}
-            {ShowChosenTrams()}
-            {showStops()}
-            <Marker
-              coordinate={{
-                latitude: settings.position.latitude,
-                longitude: settings.position.longitude,
-              }}
-              title='hei'
-              description='tääl ollaan'
-              image={require('../assets/img/icons8-policeman-female-48.png')}
-            >
-              {/*   <Callout>
-                <Text>I'm you!</Text>
-              </Callout> */}
-            </Marker>
-          </MapView>
-        ) : (
-          <Text>loading...</Text>
-        )}
-        {showDistance()}
-        {alarmButton()}
-      </View>
-    )
-  }
+          {ShowChosenTrams()}
+          {showStops()}
+          <Marker
+            coordinate={{
+              latitude: settings.position.latitude,
+              longitude: settings.position.longitude,
+            }}
+            title='hei'
+            description='tääl ollaan'
+            image={require('../assets/img/icons8-policeman-female-48.png')}
+          > 
+          </Marker>
+        </MapView>
+      ) : (
+        <Text>loading...</Text>
+      )}
+      {showDistance()}
+      {alarmButton()}
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -355,7 +276,7 @@ const styles = StyleSheet.create({
   },
   alarmOnButton: {
     position: 'absolute', //use absolute position to show button on top of the map
-    top: '50%',
+    top: '5%',
     right: '5%', //for center align
     alignSelf: 'flex-end', //for align to right
     backgroundColor: 'red',
@@ -371,7 +292,7 @@ const styles = StyleSheet.create({
   },
   alarmOffButton: {
     position: 'absolute', //use absolute position to show button on top of the map
-    top: '50%',
+    top: '5%',
     right: '5%', //for center align
     alignSelf: 'flex-end', //for align to right
     backgroundColor: 'green',
@@ -405,11 +326,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    trams: state.trams.trams,
-    //tramRoutesOnMap: state.trams.tramRoutesOnMap,
-    showTrams: state.showTrams,
-    //showSidebar: state.showSidebar,
-    //showSidebarOpenButton: state.showSidebarOpenButton,
+    trams: state.trams.trams,  
     stops: state.stops,
     settings: state.settings,
     myStop: state.myStop,
@@ -422,18 +339,11 @@ const mapDispatchToProps = {
   setMyStop,
   setMyTram,
   setZoom,
-  setCenter,
-  //setShowAlert,
-  //openSidebar,
-  //closeSidebar,
+  setCenter, 
   setLine,
-  setAlarm,
-  //setShowSidebarOpenButton,
-  //setIntro,
-  //setShow,
+  setAlarm, 
   setTrams,
-  setShowLine,
-  //setPosition,
+  setShowLine, 
   setDistance,
 }
 

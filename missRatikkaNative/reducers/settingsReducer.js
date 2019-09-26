@@ -7,8 +7,8 @@ const settingsReducer = (
     defaultCenter: {
       latitude: 60.169748893653164,
       longitude: 24.940102100372314,
-      latitudeDelta: 0.0062,
-      longitudeDelta: 0.0061,
+      latitudeDelta: 0.0032,
+      longitudeDelta: 0.0031,
     },
     showAlert: false,
     alertVariant: true,

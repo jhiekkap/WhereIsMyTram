@@ -157,7 +157,7 @@ const Appi = ({
         <Menu style={styles.menu} />
       )}
  
-       <NavigationBar
+       {/* <NavigationBar
         style={styles.navbarDown}
         componentLeft={() => <ComponentLeftDown show={show} setShow={setShow} />}
         componentCenter={() => (
@@ -169,7 +169,7 @@ const Appi = ({
           barStyle: 'light-content',
           backgroundColor: '#6FEFEA',
         }} 
-      />  
+      />   */}
     </View>
   )
 }
