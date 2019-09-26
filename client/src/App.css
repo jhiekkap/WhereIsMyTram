@@ -66,6 +66,10 @@
   font-size: 23px;
   margin-top: '4px'; 
   color: black; 
+  background-color: whitesmoke;
+  padding:25 px;
+  border-radius: 10px;
+  opacity: 0.9;
 }
 #durationOnMap {
   position: fixed;
@@ -74,6 +78,10 @@
   z-index: 1;
   font-size: 23px;
   margin-top: '4px';
+  background-color: whitesmoke;
+  padding:25 px;
+  border-radius: 10px;
+  opacity: 0.9;
 }
 #alarmButtonOnMap {
   position: fixed;

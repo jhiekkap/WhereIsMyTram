@@ -74,7 +74,7 @@ const LeafletMap = ({
       setPlayHorn(false)
     }, 2000)
     //horn.src={alarmSound}
-    //horn.play()
+    //horn.play() 
   }
 
   const handleChooseTram = e => {
@@ -140,24 +140,24 @@ const LeafletMap = ({
   const popUp = tram => {
     return (
       <Popup closeButton={false} value={tram.veh} autoPan={false}>
-        line:{tram.desi}
+       {/*  line:{tram.desi}
+        <br /> */}
+        vehicle: {tram.veh}
         <br />
-        vehicle:{tram.veh}
+        speed: {(tram.spd * 3.6).toFixed(2)} km/h
         <br />
-        speed:{(tram.spd * 3.6).toFixed(2)} km/h
-        <br />
-        {tram.stop && (
+       {/*  {tram.stop && (
           <span>
             stop: {tram.stop}
             <br />
           </span>
-        )}
-        route:{tram.route}
+        )} */}
+        route: {tram.route}
         <br />
         {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
         <br />
-        {tram.drst === 0 ? 'doors closed' : 'doors open'}
-        <br />
+       {/*  {tram.drst === 0 ? 'doors closed' : 'doors open'}
+        <br /> */}
         {(!myTram || (myTram && myTram.veh !== tram.veh)) &&
           settings.possibleRoutes.includes(tram.route) &&
           !settings.alarm && (

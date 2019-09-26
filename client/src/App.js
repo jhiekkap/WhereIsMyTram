@@ -15,9 +15,7 @@ import client, {
   tramStopsQuery,
   stopsByRadiusQuery,
   checkRoutes,
-} from './utils/queries'
-import { turnOn } from './utils/turnOnOff'
-let intervalli
+} from './utils/queries' 
 
 const App = ({
   setTrams,
@@ -29,9 +27,7 @@ const App = ({
   setCenter,
   setPossibleRoutes,
   setTramRoutesOnMap,
-}) => {
-  const [on, setOn] = useState(false)
-
+}) => { 
   useEffect(() => {
     client.query({ query: tramStopsQuery }).then(response => {
       console.log('GRAPHQL - ALLROUTES - QUERY:', response.data.routes)
@@ -86,30 +82,9 @@ const App = ({
     }
   }, [settings.geoLocation])
 
-  const handleTurnOn = () => {
-    setOn(true)
-    turnOn()
-    intervalli = setInterval(() => {
-      fetch('/trams')
-        .then(response => response.json())
-        .then(body => { 
-          setTrams(body.map(tram => tram.VP))
-          //console.log(body)
-          if (body.length < 1) {
-            console.log('OFFFFFF') 
-              setTimeout(() => {
-              turnOn()
-              console.log('TURNED ON AGAIN!')
-            }, 4000)  
-          } 
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    }, 1000)
-  }
-  /* useEffect(() => { */
-  /*  let intervalli = setInterval(() => {
+  
+   useEffect(() => {  
+   let interval = setInterval(() => {
     fetch('/trams')
       .then(response => response.json())
       .then(body => {
@@ -118,8 +93,8 @@ const App = ({
       .catch(error => {
         console.log(error)
       })
-  }, 1000) */
-  //}, [])
+  }, 1000)
+  }, [])
 
   useEffect(() => {
     console.log('myStop has changed:', myStop)
@@ -135,15 +110,9 @@ const App = ({
   }, [myStop])
 
   return (
-    <div>
-      {on ? (
-        <div>
-          <Sidebar intervalli={intervalli} setOn={setOn} />
-          <LeafletMap stopsQuery={stopsQuery} />{' '}
-        </div>
-      ) : (
-        <button onClick={handleTurnOn}>Welcome!</button>
-      )}
+    <div> 
+          <Sidebar/>
+          <LeafletMap stopsQuery={stopsQuery} />{' '} 
     </div>
   )
 }

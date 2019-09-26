@@ -70,8 +70,8 @@ const Sidebar = ({
   setAlarmDistance,
   setShow,
   setShowLine,
-  setOn,
-  intervalli,
+  /* setOn,
+  intervalli, */
 }) => {
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
@@ -158,10 +158,10 @@ const Sidebar = ({
 
   const reStart = () => {
     reset()
-    turnOff()
-    console.log('INTERVALLI', intervalli)
-    clearInterval(intervalli)
-    setOn(false)
+    /* turnOff() */
+   /*  console.log('INTERVALLI', intervalli) */
+    /* clearInterval(intervalli) */
+   /*  setOn(false) */
   }
 
   const handleChooseMyTram = veh => {
@@ -169,8 +169,7 @@ const Sidebar = ({
     if (veh !== 'reset') {
       let chosenTram = trams.find(tram => tram.veh === veh)
       console.log('chosen Tram:', chosenTram)
-      setMyTram(chosenTram)
-      //setShowTrams([chosenTram])
+      setMyTram(chosenTram) 
       setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
       setZoom(16)
     } else {
@@ -186,8 +185,7 @@ const Sidebar = ({
   const showMyTram = () => {
     let chosenTram = trams.find(tram => tram.veh === myTram.veh)
     setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
-    console.log('SHOW MY TRAM', chosenTram)
-    //setShowTrams([chosenTram])
+    console.log('SHOW MY TRAM', chosenTram) 
     setZoom(16)
   }
 
