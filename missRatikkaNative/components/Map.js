@@ -37,7 +37,7 @@ const tramIcons = {
   '1H': require('../assets/img/trams/1Htram.png'),
   '2': require('../assets/img/trams/2tram.png'),
   '2H': require('../assets/img/trams/2Htram.png'),
-  '3': require('../assets/img/trams/3tram.png'),
+  '3': require('../assets/img/trams/1myTram.png'),
   '3H': require('../assets/img/trams/3Htram.png'),
   '4': require('../assets/img/trams/4tram.png'),
   '4H': require('../assets/img/trams/4Htram.png'),
@@ -54,7 +54,52 @@ const tramIcons = {
   '9H': require('../assets/img/trams/9Htram.png'),
   '10': require('../assets/img/trams/10tram.png'),
   '10H': require('../assets/img/trams/10Htram.png'),
+  'my1': require('../assets/img/trams/1myTram.png'),
+  'my1H': require('../assets/img/trams/1myTram.png'),
+  'my2': require('../assets/img/trams/1myTram.png'),
+  'my2H': require('../assets/img/trams/1myTram.png'),
+  'my3': require('../assets/img/trams/1myTram.png'),
+  'my3H': require('../assets/img/trams/1myTram.png'),
+  'my4': require('../assets/img/trams/1myTram.png'),
+  'my4H': require('../assets/img/trams/1myTram.png'),
+  'my5': require('../assets/img/trams/1myTram.png'),
+  'my5H': require('../assets/img/trams/1myTram.png'),
+  'my6': require('../assets/img/trams/1myTram.png'),
+  'my6H': require('../assets/img/trams/1myTram.png'),
+  'my6T': require('../assets/img/trams/1myTram.png'),
+  'my7': require('../assets/img/trams/1myTram.png'),
+  'my7H': require('../assets/img/trams/1myTram.png'),
+  'my8': require('../assets/img/trams/1myTram.png'),
+  'my8H': require('../assets/img/trams/1myTram.png'),
+  'my9': require('../assets/img/trams/1myTram.png'),
+  'my9H': require('../assets/img/trams/1myTram.png'),
+  'my10': require('../assets/img/trams/1myTram.png'),
+  'my10H': require('../assets/img/trams/1myTram.png'),
 }
+/* const myTramIcons = { 
+
+  '1': require('../assets/img/trams/1myTram.png'),
+  '1H': require('../assets/img/trams/1myTram.png'),
+  '2': require('../assets/img/trams/1myTram.png'),
+  '2H': require('../assets/img/trams/1myTram.png'),
+  '3': require('../assets/img/trams/1myTram.png'),
+  '3H': require('../assets/img/trams/1myTram.png'),
+  '4': require('../assets/img/trams/1myTram.png'),
+  '4H': require('../assets/img/trams/1myTram.png'),
+  '5': require('../assets/img/trams/1myTram.png'),
+  '5H': require('../assets/img/trams/1myTram.png'),
+  '6': require('../assets/img/trams/1myTram.png'),
+  '6H': require('../assets/img/trams/1myTram.png'),
+  '6T': require('../assets/img/trams/1myTram.png'),
+  '7': require('../assets/img/trams/1myTram.png'),
+  '7H': require('../assets/img/trams/1myTram.png'),
+  '8': require('../assets/img/trams/1myTram.png'),
+  '8H': require('../assets/img/trams/1myTram.png'),
+  '9': require('../assets/img/trams/1myTram.png'),
+  '9H': require('../assets/img/trams/1myTram.png'),
+  '10': require('../assets/img/trams/1myTram.png'),
+  '10H': require('../assets/img/trams/1myTram.png'),
+} */
 
 const Map = ({
   trams,
@@ -70,7 +115,7 @@ const Map = ({
   setShowLine,
   setTrams,
   setAlarm,
-  setShowTrams, 
+  setShowTrams,
   setDistance,
 }) => {
   useEffect(() => {
@@ -82,7 +127,7 @@ const Map = ({
         chosenTram.lat,
         chosenTram.long
       )
-      if(settings.alarm && distanceNow < 50){
+      if (settings.alarm && distanceNow < 50) {
         setAlarm(false)
         setMyTram('')
         play()
@@ -94,9 +139,9 @@ const Map = ({
 
   const handleChooseTram = veh => {
     console.log('TRAM CHOSEN: ', veh)
-    let chosenTram = trams.find(tram => tram.veh == veh) 
+    let chosenTram = trams.find(tram => tram.veh == veh)
     if (settings.possibleRoutes.includes(chosenTram.route)) {
-      setMyTram(chosenTram) 
+      setMyTram(chosenTram)
     } else {
       console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
     }
@@ -107,15 +152,15 @@ const Map = ({
     setAlarm(false)
     setMyTram('')
     setTrams([])
-    setShowTrams(trams)
-    setLine('') 
+    /* setShowTrams(trams) */
+   /*  setLine('') */
   }
 
   const handleSetMyStop = stop => {
     if (!myTram) {
       console.log('STOP SET: ', stop.name)
       setMyStop(stop)
-      setLine('')
+     /*  setLine('') */
     }
   }
 
@@ -143,43 +188,46 @@ const Map = ({
         <Text> speed:{(tram.spd * 3.6).toFixed(2)} km/h}</Text>
         {tram.stop && <Text> stop: {tram.stop}</Text>}
         <Text> route:{tram.route}</Text>
-        <Text>
-          {' '}
-          {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
+        <Text> 
+          {tram.dl > 0 ? ' ahead ' : ' lagging '} {Math.abs(tram.dl)} seconds
         </Text>
-        <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text>
-
+        <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text> 
         {buttoni()}
       </Callout>
     )
   }
 
-  const ShowChosenTrams = () => { 
-      return trams && trams.map((tram, i) => {
-        if (tram.lat && tram.long) {
-          return (
-            <Marker
-              key={i}
-              image={tramIcons[tram.desi]}
-              coordinate={{
-                latitude: tram.lat,
-                longitude: tram.long,
-              }}
-            >
-              {popUp(tram)}
-            </Marker>
-          )
+  const ShowChosenTrams = () => {
+    return trams && trams.map((tram, i) => {
+      if (tram.lat && tram.long) {
+        let tramIcon = tramIcons[tram.desi]
+        if (myTram && tram.veh === myTram.veh) {
+          tramIcon = tramIcons['my' + tram.desi]
         }
-      })
-    } 
+
+        return (
+          <Marker
+            key={i}
+            image={tramIcon}
+            coordinate={{
+              latitude: tram.lat,
+              longitude: tram.long,
+            }}
+          >
+            {popUp(tram)}
+          </Marker>
+        )
+      }
+    })
+  }
 
   const showStops = () => {
     return (
       stops &&
       stops.map((stop, i) => (
-        <Marker 
+        <Marker
           key={i}
-          coordinate={{ latitude: stop.lat, longitude: stop.lon }} 
+          coordinate={{ latitude: stop.lat, longitude: stop.lon }}
           pinColor={stop.id === myStop.id ? 'blue' : 'red'}
         >
           <Callout>
@@ -193,7 +241,7 @@ const Map = ({
         </Marker>
       ))
     )
-  } 
+  }
 
   const alarmButton = () => {
     if (myTram) {
@@ -201,8 +249,8 @@ const Map = ({
         <View
           style={settings.alarm ? styles.alarmOffButton : styles.alarmOnButton}
         >
-          <Button  
-            title='alarm' 
+          <Button
+            title='alarm'
             onPress={() => {
               setAlarm(!settings.alarm)
               console.log(settings.alarm ? 'ALARM ON' : 'ALARM OFF')
@@ -214,8 +262,8 @@ const Map = ({
   }
 
   const showDistance = () => {
-    
-    if (myTram && settings.distance  > 0) {
+
+    if (myTram && settings.distance > 0) {
       return (
         <View style={styles.distance}>
           <Button title={settings.distance + ' m'} />
@@ -227,12 +275,12 @@ const Map = ({
   return (
     <View style={styles.container}>
       {trams ? (
-        <MapView 
-          style={styles.map} 
-          initialRegion={settings.defaultCenter} 
+        <MapView
+          style={styles.map}
+          initialRegion={settings.defaultCenter}
           mapType='standard'
           //followsUserLocation={true}
-          showsUserLocation={true} 
+          showsUserLocation={true}
           zoomControlEnabled={true}
           showsMyLocationButton={true}
         >
@@ -250,12 +298,12 @@ const Map = ({
             title='hei'
             description='tääl ollaan'
             image={require('../assets/img/icons8-policeman-female-48.png')}
-          > 
+          >
           </Marker>
         </MapView>
       ) : (
-        <Text>loading...</Text>
-      )}
+          <Text>loading...</Text>
+        )}
       {showDistance()}
       {alarmButton()}
     </View>
@@ -279,7 +327,7 @@ const styles = StyleSheet.create({
     top: '5%',
     right: '5%', //for center align
     alignSelf: 'flex-end', //for align to right'
-    color:'yellow',
+    color: 'yellow',
     backgroundColor: '#e1eb34',
     borderWidth: 1,
     borderRadius: 40,
@@ -296,7 +344,7 @@ const styles = StyleSheet.create({
     top: '5%',
     right: '5%', //for center align
     alignSelf: 'flex-end', //for align to right
-    color:'white',
+    color: 'white',
     backgroundColor: '#eb5934',
     borderWidth: 1,
     borderRadius: 40,
@@ -328,7 +376,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    trams: state.trams.trams,  
+    trams: state.trams.trams,
     stops: state.stops,
     settings: state.settings,
     myStop: state.myStop,
@@ -341,11 +389,11 @@ const mapDispatchToProps = {
   setMyStop,
   setMyTram,
   setZoom,
-  setCenter, 
+  setCenter,
   setLine,
-  setAlarm, 
+  setAlarm,
   setTrams,
-  setShowLine, 
+  setShowLine,
   setDistance,
 }
 
