@@ -27,6 +27,7 @@ import {
   Alert,
 } from 'react-native'
 import distance from '../utils/helpers'
+import play from './../utils/sound'
 
 import MapView, { Marker, Callout, UrlTile } from 'react-native-maps'
 
@@ -81,6 +82,12 @@ const Map = ({
         chosenTram.lat,
         chosenTram.long
       )
+      if(settings.alarm && distanceNow < 50){
+        setAlarm(false)
+        setMyTram('')
+        play()
+        Alert.alert('Tram has arrived!')
+      }
       setDistance(distanceNow)
     }
   }, [trams])
@@ -89,14 +96,7 @@ const Map = ({
     console.log('TRAM CHOSEN: ', veh)
     let chosenTram = trams.find(tram => tram.veh == veh) 
     if (settings.possibleRoutes.includes(chosenTram.route)) {
-      setMyTram(chosenTram)
-      //setLine(chosenTram.desi) 
-      /* setCenter({
-        latitude: chosenTram.lat,
-        longitude: chosenTram.long,
-        latitudeDelta: settings.center.latitudeDelta,
-        longitudeDelta: settings.center.longitudeDelta,
-      })  */
+      setMyTram(chosenTram) 
     } else {
       console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
     }
