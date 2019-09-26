@@ -45,6 +45,7 @@ import {
   DrawerLayoutAndroid,
   Button,
   TouchableHighlight,
+  TouchableOpacity,
   Image,
   Alert,
 } from 'react-native'
@@ -238,20 +239,37 @@ const Map = ({
       )
     }
 
-    const handleRegionChange = region => {
-      console.log('REGION!!!!!', region)
-      //setCenter(region)
+    //const mapRef = React.createRef();
+
+    /* const handleRegionChange = region => {
+      //console.log('REGION!!!!!', nativeEvent.coordinate) 
       setCenter(region)
-      //MapView._root.animateToRegion(region,500)
+      //mapRef.animateToRegion(region,500)
+    } */
+
+    const alarmButton = () => {
+      if (myTram) {
+        return (
+          <View
+            style={
+              settings.alarm ? styles.alarmOffButton : styles.alarmOnButton
+            }
+          >
+            <Button title='alarm' onPress={()=>{setAlarm(!settings.alarm)}}/>
+          </View>
+        )
+      }
     }
 
     return (
       <View style={styles.container}>
         {trams ? (
           <MapView
+            //ref={mapRef}
+            //onPress={handleRegionChange}
             //provider='undefined'
             style={styles.map}
-            //onRegionChange={handleRegionChange}
+            // onRegionChange={handleRegionChange}
             //onRegionChangeComplete={handleRegionChange}
             initialRegion={settings.defaultCenter}
             //region={settings.center}
@@ -285,12 +303,8 @@ const Map = ({
         ) : (
           <Text>loading...</Text>
         )}
-        <View style={styles.button1}>
-          <Button title='hello' />
-        </View>
-        <View style={styles.button2}>
-          <Button title='hellooooooooooooooooooo' />
-        </View>
+
+        {alarmButton()}
       </View>
     )
   }
@@ -307,13 +321,28 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
   },
-  button1: {
+  alarmOnButton: {
     position: 'absolute', //use absolute position to show button on top of the map
     top: '50%',
     right: '5%', //for center align
     alignSelf: 'flex-end', //for align to right
-    backgroundColor: 'white',
-    //borderRadius:10,
+    backgroundColor: 'red',
+    borderWidth: 1,
+    borderRadius: 40,
+    borderColor: '#ddd',
+    borderBottomWidth: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  alarmOffButton: {
+    position: 'absolute', //use absolute position to show button on top of the map
+    top: '50%',
+    right: '5%', //for center align
+    alignSelf: 'flex-end', //for align to right
+    backgroundColor: 'green',
     borderWidth: 1,
     borderRadius: 40,
     borderColor: '#ddd',
@@ -330,7 +359,6 @@ const styles = StyleSheet.create({
     left: '5%', //for center align
     alignSelf: 'flex-end', //for align to right
     backgroundColor: 'white',
-    //borderRadius:10,
     borderWidth: 1,
     borderRadius: 40,
     borderColor: '#ddd',

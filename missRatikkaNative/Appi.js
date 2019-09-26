@@ -101,8 +101,8 @@ const Appi = ({
     }
   }, [settings.geoLocation])
 
- /*  useEffect(() => {
-    const timer = setInterval(() => {  */
+   useEffect(() => {
+    const timer = setInterval(() => {   
       fetch('https://arcane-shore-64535.herokuapp.com/trams')
         .then(response => response.json())
         .then(body => {
@@ -113,8 +113,8 @@ const Appi = ({
         .catch(error => {
           console.log(error)
         })
-  /*   }, 1000)
-  }, []) */
+     }, 1000)
+  }, [])  
 
   useEffect(() => {
     console.log('myStop changed:', myStop.name)
@@ -157,7 +157,7 @@ const Appi = ({
         <Menu style={styles.menu} />
       )}
  
-      {/* <NavigationBar
+       <NavigationBar
         style={styles.navbarDown}
         componentLeft={() => <ComponentLeftDown show={show} setShow={setShow} />}
         componentCenter={() => (
@@ -169,7 +169,7 @@ const Appi = ({
           barStyle: 'light-content',
           backgroundColor: '#6FEFEA',
         }} 
-      /> */}
+      />  
     </View>
   )
 }
