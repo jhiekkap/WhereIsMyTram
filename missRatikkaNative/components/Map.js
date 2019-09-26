@@ -30,14 +30,15 @@ import distance from '../utils/helpers'
 import play from './../utils/sound'
 
 import MapView, { Marker, Callout, UrlTile } from 'react-native-maps'
+//import tramIcons from './tramIcons'
 
-const tramIcons = {
+  const tramIcons = {
   ///dynamic 'require' not supported in React Native:)
   '1': require('../assets/img/trams/1tram.png'),
   '1H': require('../assets/img/trams/1Htram.png'),
   '2': require('../assets/img/trams/2tram.png'),
   '2H': require('../assets/img/trams/2Htram.png'),
-  '3': require('../assets/img/trams/1myTram.png'),
+  '3': require('../assets/img/trams/1tram.png'),
   '3H': require('../assets/img/trams/3Htram.png'),
   '4': require('../assets/img/trams/4tram.png'),
   '4H': require('../assets/img/trams/4Htram.png'),
@@ -55,51 +56,28 @@ const tramIcons = {
   '10': require('../assets/img/trams/10tram.png'),
   '10H': require('../assets/img/trams/10Htram.png'),
   'my1': require('../assets/img/trams/1myTram.png'),
-  'my1H': require('../assets/img/trams/1myTram.png'),
-  'my2': require('../assets/img/trams/1myTram.png'),
-  'my2H': require('../assets/img/trams/1myTram.png'),
-  'my3': require('../assets/img/trams/1myTram.png'),
-  'my3H': require('../assets/img/trams/1myTram.png'),
-  'my4': require('../assets/img/trams/1myTram.png'),
-  'my4H': require('../assets/img/trams/1myTram.png'),
-  'my5': require('../assets/img/trams/1myTram.png'),
-  'my5H': require('../assets/img/trams/1myTram.png'),
-  'my6': require('../assets/img/trams/1myTram.png'),
-  'my6H': require('../assets/img/trams/1myTram.png'),
-  'my6T': require('../assets/img/trams/1myTram.png'),
-  'my7': require('../assets/img/trams/1myTram.png'),
-  'my7H': require('../assets/img/trams/1myTram.png'),
-  'my8': require('../assets/img/trams/1myTram.png'),
-  'my8H': require('../assets/img/trams/1myTram.png'),
-  'my9': require('../assets/img/trams/1myTram.png'),
-  'my9H': require('../assets/img/trams/1myTram.png'),
-  'my10': require('../assets/img/trams/1myTram.png'),
-  'my10H': require('../assets/img/trams/1myTram.png'),
+  'my1H': require('../assets/img/trams/1HmyTram.png'),
+  'my2': require('../assets/img/trams/2myTram.png'),
+  'my2H': require('../assets/img/trams/2HmyTram.png'),
+  'my3': require('../assets/img/trams/3myTram.png'),
+  'my3H': require('../assets/img/trams/3HmyTram.png'),
+  'my4': require('../assets/img/trams/4myTram.png'),
+  'my4H': require('../assets/img/trams/4HmyTram.png'),
+  'my5': require('../assets/img/trams/5myTram.png'),
+  'my5H': require('../assets/img/trams/5HmyTram.png'),
+  'my6': require('../assets/img/trams/6myTram.png'),
+  'my6H': require('../assets/img/trams/6HmyTram.png'),
+  'my6T': require('../assets/img/trams/6TmyTram.png'),
+  'my7': require('../assets/img/trams/7myTram.png'),
+  'my7H': require('../assets/img/trams/7HmyTram.png'),
+  'my8': require('../assets/img/trams/8myTram.png'),
+  'my8H': require('../assets/img/trams/8HmyTram.png'),
+  'my9': require('../assets/img/trams/9myTram.png'),
+  'my9H': require('../assets/img/trams/9HmyTram.png'),
+  'my10': require('../assets/img/trams/10myTram.png'),
+  'my10H': require('../assets/img/trams/10HmyTram.png'),
 }
-/* const myTramIcons = { 
-
-  '1': require('../assets/img/trams/1myTram.png'),
-  '1H': require('../assets/img/trams/1myTram.png'),
-  '2': require('../assets/img/trams/1myTram.png'),
-  '2H': require('../assets/img/trams/1myTram.png'),
-  '3': require('../assets/img/trams/1myTram.png'),
-  '3H': require('../assets/img/trams/1myTram.png'),
-  '4': require('../assets/img/trams/1myTram.png'),
-  '4H': require('../assets/img/trams/1myTram.png'),
-  '5': require('../assets/img/trams/1myTram.png'),
-  '5H': require('../assets/img/trams/1myTram.png'),
-  '6': require('../assets/img/trams/1myTram.png'),
-  '6H': require('../assets/img/trams/1myTram.png'),
-  '6T': require('../assets/img/trams/1myTram.png'),
-  '7': require('../assets/img/trams/1myTram.png'),
-  '7H': require('../assets/img/trams/1myTram.png'),
-  '8': require('../assets/img/trams/1myTram.png'),
-  '8H': require('../assets/img/trams/1myTram.png'),
-  '9': require('../assets/img/trams/1myTram.png'),
-  '9H': require('../assets/img/trams/1myTram.png'),
-  '10': require('../assets/img/trams/1myTram.png'),
-  '10H': require('../assets/img/trams/1myTram.png'),
-} */
+   
 
 const Map = ({
   trams,
@@ -201,7 +179,7 @@ const Map = ({
     return trams && trams.map((tram, i) => {
       if (tram.lat && tram.long) {
         let tramIcon = tramIcons[tram.desi]
-        if (myTram && tram.veh === myTram.veh) {
+        if (tram.veh === myTram.veh) {
           tramIcon = tramIcons['my' + tram.desi]
         }
 
