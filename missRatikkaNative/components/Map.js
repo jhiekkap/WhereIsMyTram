@@ -201,8 +201,8 @@ const Map = ({
         <View
           style={settings.alarm ? styles.alarmOffButton : styles.alarmOnButton}
         >
-          <Button
-            title='alarm'
+          <Button  
+            title='alarm' 
             onPress={() => {
               setAlarm(!settings.alarm)
               console.log(settings.alarm ? 'ALARM ON' : 'ALARM OFF')
@@ -214,11 +214,11 @@ const Map = ({
   }
 
   const showDistance = () => {
-    let distanssi = settings.distance + ' m'
-    if (myTram) {
+    
+    if (myTram && settings.distance  > 0) {
       return (
         <View style={styles.distance}>
-          <Button title={distanssi} />
+          <Button title={settings.distance + ' m'} />
         </View>
       )
     }
@@ -278,8 +278,9 @@ const styles = StyleSheet.create({
     position: 'absolute', //use absolute position to show button on top of the map
     top: '5%',
     right: '5%', //for center align
-    alignSelf: 'flex-end', //for align to right
-    backgroundColor: 'red',
+    alignSelf: 'flex-end', //for align to right'
+    color:'yellow',
+    backgroundColor: '#e1eb34',
     borderWidth: 1,
     borderRadius: 40,
     borderColor: '#ddd',
@@ -295,7 +296,8 @@ const styles = StyleSheet.create({
     top: '5%',
     right: '5%', //for center align
     alignSelf: 'flex-end', //for align to right
-    backgroundColor: 'green',
+    color:'white',
+    backgroundColor: '#eb5934',
     borderWidth: 1,
     borderRadius: 40,
     borderColor: '#ddd',
