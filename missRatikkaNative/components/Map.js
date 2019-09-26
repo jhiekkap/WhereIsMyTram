@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect} from 'react'
 /* import 
  //driverIcon,
   {
@@ -26,6 +26,7 @@ import {
   //setShow,
   setShowLine,
   //setPosition,
+  setDistance,
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
 /* import driverIcon, {
@@ -49,6 +50,7 @@ import {
   Image,
   Alert,
 } from 'react-native'
+import distance from '../utils/helpers'
 
 import MapView, { Marker, Callout, UrlTile } from 'react-native-maps'
 /* import { printDuration } from '../utils/helpers'
@@ -99,6 +101,7 @@ const Map = ({
   setAlarm,
   setShowTrams,
   showTrams,
+  setDistance,
 }) =>
   /*  
   openSidebar,
@@ -112,6 +115,19 @@ const Map = ({
   setPosition,  */
   {
     //console.log('RENDERING MÄPPI')
+
+    useEffect(() => {
+      if (myTram) {
+        let chosenTram = trams.find(tram => tram.veh === myTram.veh)
+        let distanceNow = distance(
+          myStop.lat,
+          myStop.lon,
+          chosenTram.lat,
+          chosenTram.long
+        )
+        setDistance(distanceNow)
+      }
+    }, [trams])
 
     const handleChooseTram = veh => {
       console.log('valitse nro: ', veh)
@@ -255,7 +271,23 @@ const Map = ({
               settings.alarm ? styles.alarmOffButton : styles.alarmOnButton
             }
           >
-            <Button title='alarm' onPress={()=>{setAlarm(!settings.alarm)}}/>
+            <Button
+              title='alarm'
+              onPress={() => {
+                setAlarm(!settings.alarm)
+              }}
+            />
+          </View>
+        )
+      }
+    }
+
+    const showDistance = () => {
+      let distanssi = settings.distance + ' m'
+      if (myTram) {
+        return (
+          <View style={styles.distance}>
+            <Button title={distanssi} />
           </View>
         )
       }
@@ -303,7 +335,7 @@ const Map = ({
         ) : (
           <Text>loading...</Text>
         )}
-
+        {showDistance()}
         {alarmButton()}
       </View>
     )
@@ -353,7 +385,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 1,
   },
-  button2: {
+  distance: {
     position: 'absolute', //use absolute position to show button on top of the map
     top: '5%',
     left: '5%', //for center align
@@ -402,6 +434,7 @@ const mapDispatchToProps = {
   setTrams,
   setShowLine,
   //setPosition,
+  setDistance,
 }
 
 export default connect(
