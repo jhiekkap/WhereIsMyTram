@@ -32,7 +32,7 @@ import play from './../utils/sound'
 import MapView, { Marker, Callout, UrlTile } from 'react-native-maps'
 //import tramIcons from './tramIcons'
 
-  const tramIcons = {
+const tramIcons = {
   ///dynamic 'require' not supported in React Native:)
   '1': require('../assets/img/trams/1tram.png'),
   '1H': require('../assets/img/trams/1Htram.png'),
@@ -77,7 +77,7 @@ import MapView, { Marker, Callout, UrlTile } from 'react-native-maps'
   'my10': require('../assets/img/trams/10myTram.png'),
   'my10H': require('../assets/img/trams/10HmyTram.png'),
 }
-   
+
 
 const Map = ({
   trams,
@@ -129,16 +129,13 @@ const Map = ({
     console.log('TRAM CANCELLED', veh)
     setAlarm(false)
     setMyTram('')
-    setTrams([])
-    /* setShowTrams(trams) */
-   /*  setLine('') */
+    setTrams([]) 
   }
 
   const handleSetMyStop = stop => {
     if (!myTram) {
       console.log('STOP SET: ', stop.name)
-      setMyStop(stop)
-     /*  setLine('') */
+      setMyStop(stop) 
     }
   }
 
@@ -166,10 +163,10 @@ const Map = ({
         <Text> speed:{(tram.spd * 3.6).toFixed(2)} km/h}</Text>
         {tram.stop && <Text> stop: {tram.stop}</Text>}
         <Text> route:{tram.route}</Text>
-        <Text> 
+        <Text>
           {tram.dl > 0 ? ' ahead ' : ' lagging '} {Math.abs(tram.dl)} seconds
         </Text>
-        <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text> 
+        <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text>
         {buttoni()}
       </Callout>
     )
@@ -212,7 +209,7 @@ const Map = ({
             {stop.id === myStop.id && <Text> My Stop:</Text>}
             <Text> {stop.name}</Text>
             <Text> {stop.gtfsId}</Text>
-            {stop.id !== myStop.id && (
+            {!myTram && stop.id !== myStop.id && (
               <Button title='choose' onPress={() => handleSetMyStop(stop)} />
             )}
           </Callout>
@@ -230,8 +227,12 @@ const Map = ({
           <Button
             title='alarm'
             onPress={() => {
-              setAlarm(!settings.alarm)
-              console.log(settings.alarm ? 'ALARM ON' : 'ALARM OFF')
+              if (settings.distance > 50) {
+                setAlarm(!settings.alarm)
+                console.log(settings.alarm ? 'ALARM ON' : 'ALARM OFF')
+              } else {
+                Alert.alert('Tram has alredy arrived!')
+              }
             }}
           />
         </View>
