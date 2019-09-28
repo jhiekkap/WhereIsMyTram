@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { setTrams, setTramRoutesOnMap } from './reducers/tramsReducer'
 import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
 import {
   setPosition,
-  setCenter,
+  setCenter, 
   setPossibleRoutes,
 } from './reducers/settingsReducer'
 import './App.css'
@@ -51,7 +51,7 @@ const App = ({
         }
       })
   }
-
+ 
   useEffect(() => {
     if ('geolocation' in navigator) {
       console.log('geolocation is available')

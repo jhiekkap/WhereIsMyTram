@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
@@ -6,13 +6,11 @@ import { setTrams } from '../reducers/tramsReducer'
 import {
   setCenter,
   setZoom,
-  setShowAlert,
-  openSidebar,
+  setShowAlert, 
   closeSidebar,
   setLine,
   setAlarm,
-  setShowSidebarOpenButton,
-  setIntro,
+  setShowSidebarOpenButton, 
   setShow,
   setShowLine,
   setPosition,
@@ -26,24 +24,16 @@ import driverIcon, {
   lineStopIcon,
   tramIcon,
   myTramIcon,
-} from '../utils/icons'
-import { printDuration } from '../utils/helpers'
-import alarmOnButton from '../img/icon-alarm.png'
-import alarmOffButton from '../img/iconfinder_stop_green_61688.png'
-import centerButton from '../img/icons8-navigation-50.png'
-import tramButton from '../img/icons8-ice-cream-50.png'
-//import { SoundEffect } from './SoundEffect'
-import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
-import Intro from '../components/Intro'
-
-//let horn = {}
+} from '../utils/icons'  
+import alarmSound from '../sounds/foghorn-daniel_simon.mp3' 
+import MapButtons from './MapButtons'
+ 
 
 const LeafletMap = ({
   trams,
   setTrams,
   showTrams,
-  setShowTrams,
-  openSidebar,
+  setShowTrams, 
   closeSidebar,
   setCenter,
   setZoom,
@@ -56,26 +46,13 @@ const LeafletMap = ({
   setShowAlert,
   setLine,
   setAlarm,
-  setShowSidebarOpenButton,
-  setIntro,
+  setShowSidebarOpenButton, 
   setShow,
   tramRoutesOnMap,
   setShowLine,
   stopsQuery,
   setPosition,
-}) => {
-  const [playHorn, setPlayHorn] = useState(false)
-  const initHorn = () => {
-    //horn = new Audio()
-    //console.log('new Audio()', horn)
-    setIntro(false)
-    setPlayHorn(true)
-    setTimeout(() => {
-      setPlayHorn(false)
-    }, 2000)
-    //horn.src={alarmSound}
-    //horn.play()
-  }
+}) => { 
 
   const handleChooseTram = e => {
     console.log('valitse nro: ', e.target.value)
@@ -99,13 +76,11 @@ const LeafletMap = ({
     setMyTram('')
     setTrams([])
     setShowTrams(trams)
-    setLine('')
-    //setZoom(16)
+    setLine('') 
   }
 
   const handleChangeZoom = e => {
-    setZoom(e.target._zoom)
-    //setCenter({lat:e.target._animateToCenter.lat, lng:e.target._animateToCenter.lng})
+    setZoom(e.target._zoom) 
     console.log(
       'ZOOM',
       e.target._zoom,
@@ -113,12 +88,6 @@ const LeafletMap = ({
       e.target._animateToCenter.lat,
       e.target._animateToCenter.lng
     )
-  }
-
-  const handleCenterButton = () => {
-    setCenter(settings.position)
-    setZoom(16)
-    closeSidebar()
   }
 
   const handleSetMyStop = stop => {
@@ -244,142 +213,79 @@ const LeafletMap = ({
         ))}
       </div>
     )
-  }
-
-  const style = settings.showSidebar
-    ? { marginLeft: '20px' }
-    : { marginLeft: '0' }
+  } 
 
   return (
     settings.possibleRoutes && (
-      <div title='Double-click map to set a new center'>
+      <div title='Double-click the map to set a new center'>
         <div>
-          {(settings.showAlert || playHorn) && (
+          {(settings.showAlert) && (
             <audio src={alarmSound} autoPlay />
           )}
         </div>
-        {!settings.intro ? (
-          <div id='mapContainer' style={style}>
-            {/* <SoundEffect initHorn={initHorn} horn={horn} play={settings.showAlert} audioUrl={alarmSound}> 
-          </SoundEffect> */}
-            {settings.showSidebarOpenButton && (
-              <div
-                id='sidebarButton'
-                variant='outline-dark'
-                style={{ display: settings.showSidebar ? 'none' : '' }}
-                onClick={() => openSidebar()}
-              >
-                {settings.showSidebarOpenButton ? '☰' : ''}
-              </div>
-            )}
-            {myTram && <div id='distanceOnMap'>{settings.distance} m</div>}
-            {myTram && (
-              <div id='durationOnMap'>
-                {settings.avgDuration > 0 &&
-                  printDuration(settings.avgDuration)}
-              </div>
-            )}
-            {myTram && (
-              <div id='alarmButtonOnMap'>
-                <img
-                  alt='alarmButton'
-                  id='alarmButton'
-                  src={settings.alarm ? alarmOffButton : alarmOnButton}
-                  onClick={() => setAlarm(!settings.alarm)}
-                />
-              </div>
-            )}
-            <div id='centerButtonOnMap'>
-              <img
-                alt='centerButton'
-                id='centerButton'
-                src={centerButton}
-                onClick={handleCenterButton}
-              />
-            </div>
-            {myTram && (
-              <div id='tramButtonOnMap'>
-                <img
-                  alt='tramButton'
-                  id='tramButton'
-                  src={tramButton}
-                  onClick={() => {
-                    let chosenTram = trams.find(tram => tram.veh == myTram.veh)
-                    setCenter({
-                      lat: chosenTram.lat,
-                      lng: chosenTram.long,
-                    })
-                    closeSidebar()
-                  }}
-                />
-              </div>
-            )}
 
-            {!settings.showAlert && (
-              <Map
-                id='map'
-                center={settings.center}
-                zoom={settings.zoom}
-                onclick={() => {
-                  closeSidebar()
-                  setShow('menu')
-                }}
-                onmoveend={({ target }) => setCenter(target.getCenter())}
-                onzoomend={handleChangeZoom}
-                zoomSnap={0.1}
-                minZoom={12}
-                maxZoom={18}
-                doubleClickZoom={false}
-                ondblclick={handleChangeCenter}
-                zoomControl={true}
-              >
-                <TileLayer
-                  url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                />
-                {ShowChosenTrams()}
-                {showStops()}
-                {settings.showLine && showLineOnMap()}
-                <Marker
-                  icon={driverIcon(settings.zoom)}
-                  position={settings.position}
-                >
-                  <Popup>
-                    We are here! <br /> This is our position!
-                  </Popup>
-                </Marker>
-              </Map>
-            )}
+        <MapButtons />
 
-            <Alert
-              id='alert'
-              show={settings.showAlert}
-              variant={settings.alertVariant ? 'danger' : 'warning'}
+        {!settings.showAlert && (
+          <Map
+            id='map'
+            center={settings.center}
+            zoom={settings.zoom}
+            onclick={() => {
+              closeSidebar()
+              setShow('menu')
+            }}
+            onmoveend={({ target }) => setCenter(target.getCenter())}
+            onzoomend={handleChangeZoom}
+            zoomSnap={0.1}
+            minZoom={12}
+            maxZoom={18}
+            doubleClickZoom={false}
+            ondblclick={handleChangeCenter}
+            zoomControl={true}
+          >
+            <TileLayer
+              url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            />
+            {ShowChosenTrams()}
+            {showStops()}
+            {settings.showLine && showLineOnMap()}
+            <Marker
+              icon={driverIcon(settings.zoom)}
+              position={settings.position}
             >
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <Alert.Heading>How's it going?!</Alert.Heading>
-              <p>Duis mollis, est non commodo luctus</p>
-              <hr />
-              <div className='d-flex justify-content-end'>
-                <Button
-                  onClick={() => {
-                    setShowAlert(false)
-                    setShowSidebarOpenButton(true)
-                  }}
-                  variant='warning'
-                >
-                  Close me ya'll!
-                </Button>
-              </div>
-            </Alert>
-          </div>
-        ) : (
-          <Intro initHorn={initHorn} />
+              <Popup>
+                We are here! <br /> This is our position!
+              </Popup>
+            </Marker>
+          </Map>
         )}
+
+        <Alert
+          id='alert'
+          show={settings.showAlert}
+          variant={settings.alertVariant ? 'danger' : 'warning'}
+        >
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <Alert.Heading>Your tram has arrived!</Alert.Heading>
+          <hr />
+          <div className='d-flex justify-content-end'>
+            <Button
+              onClick={() => {
+                setShowAlert(false)
+                setShowSidebarOpenButton(true)
+              }}
+              variant='warning'
+            >
+              Close me!
+            </Button>
+          </div>
+        </Alert>
       </div>
     )
   )
@@ -405,13 +311,11 @@ const mapDispatchToProps = {
   setMyTram,
   setZoom,
   setCenter,
-  setShowAlert,
-  openSidebar,
+  setShowAlert, 
   closeSidebar,
   setLine,
   setAlarm,
-  setShowSidebarOpenButton,
-  setIntro,
+  setShowSidebarOpenButton, 
   setShow,
   setTrams,
   setShowLine,

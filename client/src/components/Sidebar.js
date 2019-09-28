@@ -12,10 +12,9 @@ import {
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm, 
-  setIntro,
+  setAlarm,  
   setGeolocation,
-  setAlarmDistance,
+  setAlarmDistance, 
   setShow,
   setShowLine,
 } from '../reducers/settingsReducer'
@@ -37,12 +36,7 @@ import distance, {
   sortLineNumbers,
   sortStopNames,
 } from '../utils/helpers'
-import closeX from '../img/icons8-close-window-16.png'
-import { turnOff } from '../utils/turnOnOff'
-//import { SoundEffect } from './SoundEffect'
-//import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
-
-//const horn = {}
+import closeX from '../img/icons8-close-window-16.png'  
 
 const Sidebar = ({
   closeSidebar,
@@ -63,15 +57,11 @@ const Sidebar = ({
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm,
-  horn,
-  setIntro,
+  setAlarm, 
   setGeolocation,
   setAlarmDistance,
   setShow,
-  setShowLine,
-  /* setOn,
-  intervalli, */
+  setShowLine, 
 }) => {
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
@@ -79,12 +69,7 @@ const Sidebar = ({
 
   const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
 
-  /*  const init = () => {
-    setIntro(false)
-    console.log('eka tööt')
-    horn.src={alarmSound}
-    horn.play()
-  }  */
+  
 
   useEffect(() => {
     if (trams.length > 0 && init) {
@@ -129,9 +114,7 @@ const Sidebar = ({
           printDuration(settings.avgDuration)
         ) */
       }
-      if (settings.alarm && settings.distance < settings.alarmDistance) {
-        /*  horn.src={alarmSound}
-        horn.play() */
+      if (settings.alarm && settings.distance < settings.alarmDistance) { 
         reset() 
         closeSidebar()
         setShowAlert(true)
@@ -598,8 +581,7 @@ const mapDispatchToProps = {
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm,
-  setIntro,
+  setAlarm, 
   setGeolocation,
   setAlarmDistance,
   setShow,
