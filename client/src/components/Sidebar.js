@@ -67,7 +67,7 @@ const Sidebar = ({
   const [durations, setDurations] = useState([])
   const [init, setInit] = useState(true)
 
-  const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
+  
 
   
 
@@ -86,8 +86,7 @@ const Sidebar = ({
         chosenTram.lat,
         chosenTram.long
       )
-      setDistance(distanceNow)
-      //setCenter({lat: chosenTram.lat,lng:chosenTram.long})
+      setDistance(distanceNow) 
 
       let speed = chosenTram.spd
       setSpeeds(speeds.concat(speed))
@@ -140,11 +139,7 @@ const Sidebar = ({
   }
 
   const reStart = () => {
-    reset()
-    /* turnOff() */
-   /*  console.log('INTERVALLI', intervalli) */
-    /* clearInterval(intervalli) */
-   /*  setOn(false) */
+    reset() 
   }
 
   const handleChooseMyTram = veh => {
@@ -222,6 +217,8 @@ const Sidebar = ({
   stopsInOrder.sort(sortStopNames)
 
   const buttonVariant = 'outline-secondary'
+
+  const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
 
   return (
     <div style={style} className='sidebar' id='mySidebar'>
@@ -548,11 +545,7 @@ const Sidebar = ({
             </Col>
           </Row>
         </Container>
-      )}
-      {/* <SoundEffect
-        play={settings.showAlert}
-        audioUrl={alarmSound}
-      ></SoundEffect> */}
+      )} 
     </div>
   )
 }

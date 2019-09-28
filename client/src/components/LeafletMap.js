@@ -6,11 +6,11 @@ import { setTrams } from '../reducers/tramsReducer'
 import {
   setCenter,
   setZoom,
-  setShowAlert, 
+  setShowAlert,
   closeSidebar,
   setLine,
   setAlarm,
-  setShowSidebarOpenButton, 
+  setShowSidebarOpenButton,
   setShow,
   setShowLine,
   setPosition,
@@ -24,16 +24,15 @@ import driverIcon, {
   lineStopIcon,
   tramIcon,
   myTramIcon,
-} from '../utils/icons'  
-import alarmSound from '../sounds/foghorn-daniel_simon.mp3' 
+} from '../utils/icons'
+import alarmSound from '../sounds/foghorn-daniel_simon.mp3'
 import MapButtons from './MapButtons'
- 
 
 const LeafletMap = ({
   trams,
   setTrams,
   showTrams,
-  setShowTrams, 
+  setShowTrams,
   closeSidebar,
   setCenter,
   setZoom,
@@ -46,14 +45,13 @@ const LeafletMap = ({
   setShowAlert,
   setLine,
   setAlarm,
-  setShowSidebarOpenButton, 
+  setShowSidebarOpenButton,
   setShow,
   tramRoutesOnMap,
   setShowLine,
   stopsQuery,
   setPosition,
-}) => { 
-
+}) => {
   const handleChooseTram = e => {
     console.log('valitse nro: ', e.target.value)
     let chosenTram = trams.find(tram => tram.veh == e.target.value)
@@ -76,11 +74,11 @@ const LeafletMap = ({
     setMyTram('')
     setTrams([])
     setShowTrams(trams)
-    setLine('') 
+    setLine('')
   }
 
   const handleChangeZoom = e => {
-    setZoom(e.target._zoom) 
+    setZoom(e.target._zoom)
     console.log(
       'ZOOM',
       e.target._zoom,
@@ -109,24 +107,14 @@ const LeafletMap = ({
   const popUp = tram => {
     return (
       <Popup closeButton={false} value={tram.veh} autoPan={false}>
-        {/*  line:{tram.desi}
-        <br /> */}
         vehicle: {tram.veh}
         <br />
         speed: {(tram.spd * 3.6).toFixed(2)} km/h
         <br />
-        {/*  {tram.stop && (
-          <span>
-            stop: {tram.stop}
-            <br />
-          </span>
-        )} */}
         route: {tram.route}
         <br />
         {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
         <br />
-        {/*  {tram.drst === 0 ? 'doors closed' : 'doors open'}
-        <br /> */}
         {(!myTram || (myTram && myTram.veh !== tram.veh)) &&
           settings.possibleRoutes.includes(tram.route) &&
           !settings.alarm && (
@@ -213,16 +201,12 @@ const LeafletMap = ({
         ))}
       </div>
     )
-  } 
+  }
 
   return (
     settings.possibleRoutes && (
       <div title='Double-click the map to set a new center'>
-        <div>
-          {(settings.showAlert) && (
-            <audio src={alarmSound} autoPlay />
-          )}
-        </div>
+        <div>{settings.showAlert && <audio src={alarmSound} autoPlay />}</div>
 
         <MapButtons />
 
@@ -267,11 +251,7 @@ const LeafletMap = ({
           show={settings.showAlert}
           variant={settings.alertVariant ? 'danger' : 'warning'}
         >
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+          <br /><br /><br /><br /><br />
           <Alert.Heading>Your tram has arrived!</Alert.Heading>
           <hr />
           <div className='d-flex justify-content-end'>
@@ -311,11 +291,11 @@ const mapDispatchToProps = {
   setMyTram,
   setZoom,
   setCenter,
-  setShowAlert, 
+  setShowAlert,
   closeSidebar,
   setLine,
   setAlarm,
-  setShowSidebarOpenButton, 
+  setShowSidebarOpenButton,
   setShow,
   setTrams,
   setShowLine,
