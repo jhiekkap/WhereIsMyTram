@@ -11,7 +11,7 @@ import {
   setPossibleRoutes,
 } from './reducers/settingsReducer'
 import client, {
-  tramStopsQuery,
+  vehicleStopsQuery,
   stopsByRadiusQuery,
   checkRoutes,
 } from './utils/queries'
@@ -34,7 +34,7 @@ const Appi = ({
   const [show, setShow] = useState(true)  
   //console.log('RENDERING APPI')
   useEffect(() => {
-    client.query({ query: tramStopsQuery }).then(response => {
+    client.query({ query: vehicleStopsQuery('vehicle') }).then(response => {
       console.log('GRAPHQL - ALLROUTES - QUERY:', response.data.routes.length)
       setVehicleRoutesOnMap(response.data.routes)
     })
