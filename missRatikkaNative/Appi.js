@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import { connect } from 'react-redux'
-import { setTrams, setTramRoutesOnMap } from './reducers/tramsReducer'
+import { setVehicles, setVehicleRoutesOnMap } from './reducers/vehiclesReducer'
 import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
 import {
@@ -19,11 +19,11 @@ import Menu from './components/Menu'
 import Map from './components/Map'
 
 const Appi = ({
-  /* trams,
-  myTram, */
-  setTrams,
+  /* vehicles,
+  myVehicle, */
+  setVehicles,
   myStop,
-  setTramRoutesOnMap,
+  setVehicleRoutesOnMap,
   setPossibleRoutes,
   setStops,
   setMyStop,
@@ -36,7 +36,7 @@ const Appi = ({
   useEffect(() => {
     client.query({ query: tramStopsQuery }).then(response => {
       console.log('GRAPHQL - ALLROUTES - QUERY:', response.data.routes.length)
-      setTramRoutesOnMap(response.data.routes)
+      setVehicleRoutesOnMap(response.data.routes)
     })
   }, [])
 
@@ -91,10 +91,10 @@ const Appi = ({
 
    useEffect(() => {
     const timer = setInterval(() => {   
-      fetch('https://arcane-shore-64535.herokuapp.com/trams')
+      fetch('https://arcane-shore-64535.herokuapp.com/trams') ///////????????????
         .then(response => response.json())
         .then(body => {
-          setTrams(body.map(tram => tram.VP))
+          setVehicles(body.map(vehicle => vehicle.VP))
           console.log(new Date())
           //console.log('MYSTOPPI', myStop)
         })
@@ -162,21 +162,21 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    trams: state.trams.trams,
-    myTram: state.myTram,
+    vehicles: state.vehicles.vehicles,
+    myVehicle: state.myVehicle,
     settings: state.settings,
     myStop: state.myStop,
   }
 }
 
 const mapDispatchToProps = {
-  setTrams,
+  setVehicles,
   setStops,
   setMyStop,
   setPosition,
   setCenter,
   setPossibleRoutes,
-  setTramRoutesOnMap,
+  setVehicleRoutesOnMap,
 }
 
 export default connect(

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { setShowTrams } from '../reducers/showTramsReducer'
-import { setMyTram } from '../reducers/myTramReducer'
-import { setTrams } from '../reducers/tramsReducer'
+import { setShowVehicles } from '../reducers/showVehiclesReducer'
+import { setMyVehicle } from '../reducers/myVehicleReducer'
+import { setVehicles } from '../reducers/vehiclesReducer'
 import { 
   setAlarm, 
   setDistance,
@@ -22,111 +22,111 @@ import {tramIcons} from './tramIcons'
 
 
 const Map = ({
-  trams,
+  vehicles,
   stops,
   myStop,
   settings,
   setMyStop,
-  myTram,
-  setMyTram, /* 
-  setTrams, */
+  myVehicle,
+  setMyVehicle, /* 
+  setVehicles, */
   setAlarm, 
   setDistance,
 }) => {
   useEffect(() => {
-    if (myTram) {
-      let chosenTram = trams.find(tram => tram.veh === myTram.veh)
+    if (myVehicle) {
+      let chosenVehicle = vehicles.find(vehicle => vehicle.veh === myVehicle.veh)
       let distanceNow = distance(
         myStop.lat,
         myStop.lon,
-        chosenTram.lat,
-        chosenTram.long
+        chosenVehicle.lat,
+        chosenVehicle.long
       )
       if (settings.alarm && distanceNow < 50) {
         setAlarm(false)
-        setMyTram('')
+        setMyVehicle('')
         play()
-        Alert.alert('Tram has arrived!')
+        Alert.alert('Vehicle has arrived!')
       }
       setDistance(distanceNow)
     }
-  }, [trams])
+  }, [vehicles])
 
-  const handleChooseTram = veh => {
+  const handleChooseVehicle = veh => {
     console.log('TRAM CHOSEN: ', veh)
-    let chosenTram = trams.find(tram => tram.veh == veh)
-    if (settings.possibleRoutes.includes(chosenTram.route)) {
-      setMyTram(chosenTram)
+    let chosenVehicle = vehicles.find(vehicle => vehicle.veh == veh)
+    if (settings.possibleRoutes.includes(chosenVehicle.route)) {
+      setMyVehicle(chosenVehicle)
     } else {
       console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
     }
   }
 
-  const handleCancelTram = veh => {
+  const handleCancelVehicle = veh => {
     console.log('TRAM CANCELLED', veh)
     setAlarm(false)
-    setMyTram('')
-    //setTrams([]) 
+    setMyVehicle('')
+    //setVehicles([]) 
   }
 
   const handleSetMyStop = stop => {
-    if (!myTram) {
+    if (!myVehicle) {
       console.log('STOP SET: ', stop.name)
       setMyStop(stop) 
     }
   }
 
-  const popUp = tram => {
+  const popUp = vehicle => {
     let buttoni = () => {
-      if (myTram && myTram.veh === tram.veh) {
+      if (myVehicle && myVehicle.veh === vehicle.veh) {
         return (
-          <Button title='cancel' onPress={() => handleCancelTram(tram.veh)} />
+          <Button title='cancel' onPress={() => handleCancelVehicle(vehicle.veh)} />
         )
       } else if (
-        (!myTram || (myTram && myTram.veh !== tram.veh)) &&
-        settings.possibleRoutes.includes(tram.route) &&
+        (!myVehicle || (myVehicle && myVehicle.veh !== vehicle.veh)) &&
+        settings.possibleRoutes.includes(vehicle.route) &&
         !settings.alarm
       ) {
         return (
-          <Button title='choose' onPress={() => handleChooseTram(tram.veh)} />
+          <Button title='choose' onPress={() => handleChooseVehicle(vehicle.veh)} />
         )
       }
     }
 
     return (
       <Callout>
-        <Text> line:{tram.desi}</Text>
-        <Text> vehicle:{tram.veh}</Text>
-        <Text> speed:{(tram.spd * 3.6).toFixed(2)} km/h}</Text>
-        {tram.stop && <Text> stop: {tram.stop}</Text>}
-        <Text> route:{tram.route}</Text>
+        <Text> line:{vehicle.desi}</Text>
+        <Text> vehicle:{vehicle.veh}</Text>
+        <Text> speed:{(vehicle.spd * 3.6).toFixed(2)} km/h}</Text>
+        {vehicle.stop && <Text> stop: {vehicle.stop}</Text>}
+        <Text> route:{vehicle.route}</Text>
         <Text>
-          {tram.dl > 0 ? ' ahead ' : ' lagging '} {Math.abs(tram.dl)} seconds
+          {vehicle.dl > 0 ? ' ahead ' : ' lagging '} {Math.abs(vehicle.dl)} seconds
         </Text>
-        <Text> {tram.drst === 0 ? 'doors closed' : 'doors open'}</Text>
+        <Text> {vehicle.drst === 0 ? 'doors closed' : 'doors open'}</Text>
         {buttoni()}
       </Callout>
     )
   }
 
-  const ShowChosenTrams = () => {
-    return trams && trams.map((tram, i) => {
-      if (tram.lat && tram.long) {
-        let tramIcon = tramIcons[tram.desi]
-        if (tram.veh === myTram.veh) {
-          tramIcon = tramIcons['my' + tram.desi]
+  const ShowChosenVehicles = () => {
+    return vehicles && vehicles.map((vehicle, i) => {
+      if (vehicle.lat && vehicle.long) {
+        let vehicleIcon = tramIcons[vehicle.desi]
+        if (vehicle.veh === myVehicle.veh) {
+          vehicleIcon = tramIcons['my' + vehicle.desi]
         }
 
         return (
           <Marker
             key={i}
-            image={tramIcon}
+            image={vehicleIcon}
             coordinate={{
-              latitude: tram.lat,
-              longitude: tram.long,
+              latitude: vehicle.lat,
+              longitude: vehicle.long,
             }}
           >
-            {popUp(tram)}
+            {popUp(vehicle)}
           </Marker>
         )
       }
@@ -146,7 +146,7 @@ const Map = ({
             {stop.id === myStop.id && <Text> My Stop:</Text>}
             <Text> {stop.name}</Text>
             <Text> {stop.gtfsId}</Text>
-            {!myTram && stop.id !== myStop.id && (
+            {!myVehicle && stop.id !== myStop.id && (
               <Button title='choose' onPress={() => handleSetMyStop(stop)} />
             )}
           </Callout>
@@ -156,7 +156,7 @@ const Map = ({
   }
 
   const alarmButton = () => {
-    if (myTram) {
+    if (myVehicle) {
       return (
         <View
           style={settings.alarm ? styles.alarmOffButton : styles.alarmOnButton}
@@ -168,7 +168,7 @@ const Map = ({
                 setAlarm(!settings.alarm)
                 console.log(settings.alarm ? 'ALARM ON' : 'ALARM OFF')
               } else {
-                Alert.alert('Tram has alredy arrived!')
+                Alert.alert('Vehicle has alredy arrived!')
               }
             }}
           />
@@ -179,7 +179,7 @@ const Map = ({
 
   const showDistance = () => {
 
-    if (myTram && settings.distance > 0) {
+    if (myVehicle && settings.distance > 0) {
       return (
         <View style={styles.distance}>
           <Button title={settings.distance + ' m'} />
@@ -190,7 +190,7 @@ const Map = ({
 
   return (
     <View style={styles.container}>
-      {trams ? (
+      {vehicles ? (
         <MapView
           style={styles.map}
           initialRegion={settings.defaultCenter}
@@ -204,7 +204,7 @@ const Map = ({
               urlTemplate='http://a.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
               maximumZ={19}
             />  */}
-          {ShowChosenTrams()}
+          {ShowChosenVehicles()}
           {showStops()}
           <Marker
             coordinate={{
@@ -292,23 +292,23 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    trams: state.trams.trams,
+    vehicles: state.vehicles.vehicles,
     stops: state.stops,
     settings: state.settings,
     myStop: state.myStop,
-    myTram: state.myTram,
+    myVehicle: state.myVehicle,
   }
 }
 
 const mapDispatchToProps = {
-  setShowTrams,
+  setShowVehicles,
   setMyStop,
-  setMyTram,
+  setMyVehicle,
  /*  setZoom,
   setCenter,
   setLine, */
   setAlarm,
-  setTrams,
+  setVehicles,
   /* setShowLine, */
   setDistance,
 }

@@ -1,19 +1,19 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 //import { composeWithDevTools } from 'redux-devtools-extension'
-import tramsReducer from './reducers/tramsReducer'
-import showTramsReducer from './reducers/showTramsReducer'  
+import vehiclesReducer from './reducers/vehiclesReducer'
+import showVehiclesReducer from './reducers/showVehiclesReducer'  
 import stopsReducer from './reducers/stopsReducer' 
 import myStopReducer from './reducers/myStopReducer'  
-import myTramReducer from './reducers/myTramReducer' 
+import myVehicleReducer from './reducers/myVehicleReducer' 
 import settingsReducer from './reducers/settingsReducer'
 
 const reducer = combineReducers({
-  trams: tramsReducer,
-  showTrams: showTramsReducer,   
+  vehicles: vehiclesReducer,
+  showVehicles: showVehiclesReducer,   
   stops: stopsReducer,
   myStop: myStopReducer,  
-  myTram: myTramReducer,
+  myVehicle: myVehicleReducer,
   settings: settingsReducer,
 })
 
