@@ -21,7 +21,7 @@ export const ComponentLeftUp = () => {
         }}
         style={{ justifyContent: 'center', flexDirection: 'row' }}
       >
-        <Image
+        {/* <Image
           source={require('./../assets/img/icon_size_41px.png')}
           style={{
             resizeMode: 'contain',
@@ -29,7 +29,7 @@ export const ComponentLeftUp = () => {
             height: 20,
             alignSelf: 'center',
           }}
-        />
+        /> */}
         <Text style={{ color: 'black' }}>Back Home</Text>
       </TouchableOpacity>
     </View>

@@ -1,15 +1,4 @@
-// https://www.npmjs.com/package/navigationbar-react-native
 
-import { NavigationBar } from 'navigationbar-react-native'
-import {
-  ComponentLeftUp,
-  ComponentCenterUp,
-  ComponentRightUp,
-  ComponentLeftDown,
-  ComponentCenterDown, 
-  ComponentRightDown,
-} from './components/Components'
-//import play from './utils/sound'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import { connect } from 'react-redux'
@@ -30,8 +19,8 @@ import Menu from './components/Menu'
 import Map from './components/Map'
 
 const Appi = ({
-  trams,
-  myTram,
+  /* trams,
+  myTram, */
   setTrams,
   myStop,
   setTramRoutesOnMap,
@@ -41,8 +30,7 @@ const Appi = ({
   setPosition,
   setCenter,
   settings,
-}) => {
-  //const [counter, setCounter] = useState(0)
+}) => { 
   const [show, setShow] = useState(true)  
   //console.log('RENDERING APPI')
   useEffect(() => {
@@ -130,46 +118,14 @@ const Appi = ({
   }, [myStop])
 
   return (
-    <View style={styles.container}>
-       {/* <NavigationBar
-        componentLeft={() => <ComponentLeftUp  />}
-        componentCenter={() => (
-          <ComponentCenterUp setShow={setShow} show={show} />
-        )}
-        componentRight={() => <ComponentRightUp settings={settings}  setCenter={setCenter}/>}
-        navigationBarStyle={{ backgroundColor: '#6FEFEA' }}
-        statusBarStyle={{ 
-          barStyle: 'light-content',
-          backgroundColor: '#6FEFEA',
-        }}
-      />  */}
-
-       {/* <Text>
-        Open up to fart {trams.length} working on your räppi nr. {counter}!
-      </Text>
-      <Button title='push' onPress={() => setCounter(counter + 1)} />
-  */}
+    <View style={styles.container}> 
       {show ? (
         <Map 
           style={styles.map}
         />
       ) : (
         <Menu style={styles.menu} />
-      )}
- 
-       {/* <NavigationBar
-        style={styles.navbarDown}
-        componentLeft={() => <ComponentLeftDown show={show} setShow={setShow} />}
-        componentCenter={() => (
-          <ComponentCenterDown   settings={settings} setCenter={setCenter}/>
-        )}
-        componentRight={() => <ComponentRightDown trams={trams} myTram={myTram} setCenter={setCenter} settings={settings}/>}
-        navigationBarStyle={{ backgroundColor: '#6FEFEA' }}
-         statusBarStyle={{ 
-          barStyle: 'light-content',
-          backgroundColor: '#6FEFEA',
-        }} 
-      />   */}
+      )} 
     </View>
   )
 }

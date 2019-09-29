@@ -3,80 +3,22 @@ import { connect } from 'react-redux'
 import { setShowTrams } from '../reducers/showTramsReducer'
 import { setMyTram } from '../reducers/myTramReducer'
 import { setTrams } from '../reducers/tramsReducer'
-import {
-  setCenter,
-  setZoom,
-  setLine,
-  setAlarm,
-  setShowLine,
+import { 
+  setAlarm, 
   setDistance,
 } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
+import { 
+  StyleSheet, 
   View,
-  Text,
-  StatusBar,
-  DrawerLayoutAndroid,
-  Button,
-  TouchableHighlight,
-  TouchableOpacity,
-  Image,
+  Text, 
+  Button,  
   Alert,
 } from 'react-native'
 import distance from '../utils/helpers'
-import play from './../utils/sound'
-
-import MapView, { Marker, Callout, UrlTile } from 'react-native-maps'
-//import tramIcons from './tramIcons'
-
-const tramIcons = {
-  ///dynamic 'require' not supported in React Native:)
-  '1': require('../assets/img/trams/1tram.png'),
-  '1H': require('../assets/img/trams/1Htram.png'),
-  '2': require('../assets/img/trams/2tram.png'),
-  '2H': require('../assets/img/trams/2Htram.png'),
-  '3': require('../assets/img/trams/1tram.png'),
-  '3H': require('../assets/img/trams/3Htram.png'),
-  '4': require('../assets/img/trams/4tram.png'),
-  '4H': require('../assets/img/trams/4Htram.png'),
-  '5': require('../assets/img/trams/5tram.png'),
-  '5H': require('../assets/img/trams/5Htram.png'),
-  '6': require('../assets/img/trams/6tram.png'),
-  '6H': require('../assets/img/trams/6Htram.png'),
-  '6T': require('../assets/img/trams/6Ttram.png'),
-  '7': require('../assets/img/trams/7tram.png'),
-  '7H': require('../assets/img/trams/7Htram.png'),
-  '8': require('../assets/img/trams/8tram.png'),
-  '8H': require('../assets/img/trams/8Htram.png'),
-  '9': require('../assets/img/trams/9tram.png'),
-  '9H': require('../assets/img/trams/9Htram.png'),
-  '10': require('../assets/img/trams/10tram.png'),
-  '10H': require('../assets/img/trams/10Htram.png'),
-  'my1': require('../assets/img/trams/1myTram.png'),
-  'my1H': require('../assets/img/trams/1HmyTram.png'),
-  'my2': require('../assets/img/trams/2myTram.png'),
-  'my2H': require('../assets/img/trams/2HmyTram.png'),
-  'my3': require('../assets/img/trams/3myTram.png'),
-  'my3H': require('../assets/img/trams/3HmyTram.png'),
-  'my4': require('../assets/img/trams/4myTram.png'),
-  'my4H': require('../assets/img/trams/4HmyTram.png'),
-  'my5': require('../assets/img/trams/5myTram.png'),
-  'my5H': require('../assets/img/trams/5HmyTram.png'),
-  'my6': require('../assets/img/trams/6myTram.png'),
-  'my6H': require('../assets/img/trams/6HmyTram.png'),
-  'my6T': require('../assets/img/trams/6TmyTram.png'),
-  'my7': require('../assets/img/trams/7myTram.png'),
-  'my7H': require('../assets/img/trams/7HmyTram.png'),
-  'my8': require('../assets/img/trams/8myTram.png'),
-  'my8H': require('../assets/img/trams/8HmyTram.png'),
-  'my9': require('../assets/img/trams/9myTram.png'),
-  'my9H': require('../assets/img/trams/9HmyTram.png'),
-  'my10': require('../assets/img/trams/10myTram.png'),
-  'my10H': require('../assets/img/trams/10HmyTram.png'),
-}
+import play from './../utils/sound' 
+import MapView, { Marker, Callout } from 'react-native-maps' 
+import {tramIcons} from './tramIcons' 
 
 
 const Map = ({
@@ -86,14 +28,9 @@ const Map = ({
   settings,
   setMyStop,
   myTram,
-  setMyTram,
-  setLine,
-  setCenter,
-  setZoom,
-  setShowLine,
-  setTrams,
-  setAlarm,
-  setShowTrams,
+  setMyTram, /* 
+  setTrams, */
+  setAlarm, 
   setDistance,
 }) => {
   useEffect(() => {
@@ -129,7 +66,7 @@ const Map = ({
     console.log('TRAM CANCELLED', veh)
     setAlarm(false)
     setMyTram('')
-    setTrams([]) 
+    //setTrams([]) 
   }
 
   const handleSetMyStop = stop => {
@@ -301,7 +238,7 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
   },
-  alarmOnButton: {
+  alarmOnButton: { 
     position: 'absolute', //use absolute position to show button on top of the map
     top: '5%',
     right: '5%', //for center align
@@ -367,12 +304,12 @@ const mapDispatchToProps = {
   setShowTrams,
   setMyStop,
   setMyTram,
-  setZoom,
+ /*  setZoom,
   setCenter,
-  setLine,
+  setLine, */
   setAlarm,
   setTrams,
-  setShowLine,
+  /* setShowLine, */
   setDistance,
 }
 
