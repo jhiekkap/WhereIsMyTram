@@ -104,63 +104,7 @@ const LeafletMap = ({
     stopsQuery(e.latlng)
   }
 
-  const popUp = tram => {
-    return (
-      <Popup closeButton={false} value={tram.veh} autoPan={false}>
-        vehicle: {tram.veh}
-        <br />
-        speed: {(tram.spd * 3.6).toFixed(2)} km/h
-        <br />
-        route: {tram.route}
-        <br />
-        {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
-        <br />
-        {(!myTram || (myTram && myTram.veh !== tram.veh)) &&
-          settings.possibleRoutes.includes(tram.route) &&
-          !settings.alarm && (
-            <Button value={tram.veh} onClick={handleChooseTram}>
-              CHOOSE
-            </Button>
-          )}
-        {myTram && myTram.veh === tram.veh && (
-          <Button value={tram.veh} onClick={handleCancelTram}>
-            CANCEL
-          </Button>
-        )}
-      </Popup>
-    )
-  }
-
-  const ChosenTrams = () => {
-    let tramsToShow = trams.filter(tram =>
-      showTrams.map(tram => tram.veh).includes(tram.veh)
-    )
-
-    if (tramsToShow) {
-      return tramsToShow.map((tram, i) => (
-        <Marker
-          className='trams'
-          key={i}
-          icon={
-            myTram && myTram.veh === tram.veh
-              ? myTramIcon(settings.zoom, tram.desi)
-              : tramIcon(settings.zoom, tram.desi)
-          }
-          position={{
-            lat: tram.lat,
-            lng: tram.long,
-          }}
-          zIndexOffset={500}
-        >
-          {popUp(tram)}
-        </Marker>
-      ))
-    }
-  }
-
-  
-
-  
+ 
 
   return (
     settings.possibleRoutes && (
@@ -191,7 +135,7 @@ const LeafletMap = ({
               url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
-            <ChosenTrams />
+            <ChosenTrams settings={settings} myTram={myTram} showTrams={showTrams} trams={trams} handleChooseTram={handleChooseTram} handleCancelTram={handleCancelTram}/>
             <Stops settings={settings} myStop={myStop} handleSetMyStop={handleSetMyStop} stops ={stops}/>
             {settings.showLine && <LineOnMap settings={settings} tramRoutesOnMap={tramRoutesOnMap}/>}
             <Marker
@@ -312,3 +256,62 @@ const Stops = ({ settings, myStop, handleSetMyStop, stops}) => {
     ))
   )
 }
+
+const ChosenTrams = ({ settings, myTram, showTrams, trams, handleChooseTram, handleCancelTram }) => {
+
+  const popUp = tram => {
+    return (
+      <Popup closeButton={false} value={tram.veh} autoPan={false}>
+        vehicle: {tram.veh}
+        <br />
+        speed: {(tram.spd * 3.6).toFixed(2)} km/h
+        <br />
+        route: {tram.route}
+        <br />
+        {tram.dl > 0 ? 'ahead ' : 'lagging '} {Math.abs(tram.dl)} seconds
+        <br />
+        {(!myTram || (myTram && myTram.veh !== tram.veh)) &&
+          settings.possibleRoutes.includes(tram.route) &&
+          !settings.alarm && (
+            <Button value={tram.veh} onClick={handleChooseTram}>
+              CHOOSE
+            </Button>
+          )}
+        {myTram && myTram.veh === tram.veh && (
+          <Button value={tram.veh} onClick={handleCancelTram}>
+            CANCEL
+          </Button>
+        )}
+      </Popup>
+    )
+  }
+
+  let tramsToShow = trams.filter(tram =>
+    showTrams.map(tram => tram.veh).includes(tram.veh)
+  )
+
+  if (tramsToShow) {
+    return tramsToShow.map((tram, i) => (
+      <Marker
+        className='trams'
+        key={i}
+        icon={
+          myTram && myTram.veh === tram.veh
+            ? myTramIcon(settings.zoom, tram.desi)
+            : tramIcon(settings.zoom, tram.desi)
+        }
+        position={{
+          lat: tram.lat,
+          lng: tram.long,
+        }}
+        zIndexOffset={500}
+      >
+        {popUp(tram)}
+      </Marker>
+    ))
+  }
+}
+
+
+
+
