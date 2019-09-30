@@ -109,8 +109,7 @@ const LeafletMap = ({
       <div title='Double-click the map to set a new center'>
         <div>{settings.showAlert && <audio src={alarmSound} autoPlay />}</div>
 
-        <MapButtons />
-
+        <MapButtons /> 
         {!settings.showAlert && (
           <Map
             id='map'

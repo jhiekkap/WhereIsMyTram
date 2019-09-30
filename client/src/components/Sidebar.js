@@ -12,9 +12,9 @@ import {
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm,  
+  setAlarm,
   setGeolocation,
-  setAlarmDistance, 
+  setAlarmDistance,
   setShow,
   setShowLine,
 } from '../reducers/settingsReducer'
@@ -22,7 +22,7 @@ import { setMyTram } from '../reducers/myTramReducer'
 import {
   Container,
   Row,
-  Col, 
+  Col,
   Button,
   Dropdown,
   Form,
@@ -36,7 +36,7 @@ import distance, {
   sortLineNumbers,
   sortStopNames,
 } from '../utils/helpers'
-import closeX from '../img/icons8-close-window-16.png'  
+import closeX from '../img/icons8-close-window-16.png'
 
 const Sidebar = ({
   closeSidebar,
@@ -57,19 +57,15 @@ const Sidebar = ({
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm, 
+  setAlarm,
   setGeolocation,
   setAlarmDistance,
   setShow,
-  setShowLine, 
+  setShowLine,
 }) => {
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
   const [init, setInit] = useState(true)
-
-  
-
-  
 
   useEffect(() => {
     if (trams.length > 0 && init) {
@@ -86,7 +82,7 @@ const Sidebar = ({
         chosenTram.lat,
         chosenTram.long
       )
-      setDistance(distanceNow) 
+      setDistance(distanceNow)
 
       let speed = chosenTram.spd
       setSpeeds(speeds.concat(speed))
@@ -113,8 +109,8 @@ const Sidebar = ({
           printDuration(settings.avgDuration)
         ) */
       }
-      if (settings.alarm && settings.distance < settings.alarmDistance) { 
-        reset() 
+      if (settings.alarm && settings.distance < settings.alarmDistance) {
+        reset()
         closeSidebar()
         setShowAlert(true)
       }
@@ -139,7 +135,7 @@ const Sidebar = ({
   }
 
   const reStart = () => {
-    reset() 
+    reset()
   }
 
   const handleChooseMyTram = veh => {
@@ -147,7 +143,7 @@ const Sidebar = ({
     if (veh !== 'reset') {
       let chosenTram = trams.find(tram => tram.veh === veh)
       console.log('chosen Tram:', chosenTram)
-      setMyTram(chosenTram) 
+      setMyTram(chosenTram)
       setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
       setZoom(16)
     } else {
@@ -163,7 +159,7 @@ const Sidebar = ({
   const showMyTram = () => {
     let chosenTram = trams.find(tram => tram.veh === myTram.veh)
     setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
-    console.log('SHOW MY TRAM', chosenTram) 
+    console.log('SHOW MY TRAM', chosenTram)
     setZoom(16)
   }
 
@@ -179,7 +175,7 @@ const Sidebar = ({
     setShowTrams(tramsToShow)
   }
 
-  const handleChooseLine = (line) => {
+  const handleChooseLine = line => {
     setLine(line)
     setShowLine('')
     if (myTram) {
@@ -211,10 +207,7 @@ const Sidebar = ({
     }
   })
   lineNumbers.sort(sortLineNumbers)
-  lineNumbersForTourists.sort(sortLineNumbers)
-
-  const stopsInOrder = [...stops]
-  stopsInOrder.sort(sortStopNames)
+  lineNumbersForTourists.sort(sortLineNumbers) 
 
   const buttonVariant = 'outline-secondary'
 
@@ -233,72 +226,48 @@ const Sidebar = ({
             />
           </Row>
 
-          <Row>
-            <Col xs={12}>
+          <ChooseStopButton myStop={myStop} myTram={myTram} settings={settings} handleChooseStop={handleChooseStop} stops={stops}/>
 
-              {myStop ? !myTram && !settings.line ? (
-                <Dropdown>
-                  <Dropdown.Toggle variant={buttonVariant}>
-                    My stop: <br/>
-                    {myStop.name}  {myStop.gtfsId}
-                  </Dropdown.Toggle>
-                  {myStop && <Dropdown.Menu>
-                    {stopsInOrder.map((stop, i) => (
-                      <Dropdown.Item
-                        id='dropdown-chooseStop'
-                        key={i}
-                        onClick={() => handleChooseStop(stop.gtfsId)}
-                      >
-                        {stop.name} {stop.gtfsId}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>}
-                </Dropdown>
-              ) : (
-                  <Button variant={buttonVariant}>
-                    {myStop.name} {myStop.gtfsId}
-                  </Button>
-                ) : <Button variant={buttonVariant}>
-                  No tram stops available. Go to Helsinki.
-              </Button>}
-            </Col>
-          </Row>
-
-          {myStop && <Row>
-            <Col xs={12}>
-              {!settings.alarm ? (
-                <Dropdown>
-                  <Dropdown.Toggle
-                    variant={!settings.line ? 'outline-danger' : buttonVariant}
-                    id='dropdown-basic'
-                  >
-                    {settings.line !== ''
-                      ? 'Line: ' + settings.line
-                      : 'Choose line'}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    {myTram && (
-                      <Dropdown.Item
-                        onClick={() => handleChooseMyTram('reset')}
-                      >
-                        reset
-                      </Dropdown.Item>
-                    )}
-                    {lineNumbers.map((line, i) => (
-                      <Dropdown.Item
-                        key={i}
-                        onClick={() => handleChooseLine(line)}
-                      >
-                        {line}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown>
-              ) : (
+         
+          {myStop && (
+            <Row>
+              <Col xs={12}>
+                {!settings.alarm ? (
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      variant={
+                        !settings.line ? 'outline-danger' : buttonVariant
+                      }
+                      id='dropdown-basic'
+                    >
+                      {settings.line !== ''
+                        ? 'Line: ' + settings.line
+                        : 'Choose line'}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {myTram && (
+                        <Dropdown.Item
+                          onClick={() => handleChooseMyTram('reset')}
+                        >
+                          reset
+                        </Dropdown.Item>
+                      )}
+                      {lineNumbers.map((line, i) => (
+                        <Dropdown.Item
+                          key={i}
+                          onClick={() => handleChooseLine(line)}
+                        >
+                          {line}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                ) : (
                   <Button variant={buttonVariant}>Line: {settings.line}</Button>
                 )}
-            </Col>
-          </Row>}
+              </Col>
+            </Row>
+          )}
 
           {settings.line && (
             <Row>
@@ -341,8 +310,8 @@ const Sidebar = ({
                     </Dropdown.Menu>
                   </Dropdown>
                 ) : (
-                    <Button variant={buttonVariant}>Vehicle: {myTram.veh}</Button>
-                  )}
+                  <Button variant={buttonVariant}>Vehicle: {myTram.veh}</Button>
+                )}
               </Col>
             </Row>
           )}
@@ -351,9 +320,13 @@ const Sidebar = ({
             <Row>
               <Col>
                 <Button
-                  variant={!settings.alarm ? 'outline-danger' : 'outline-success'}
+                  variant={
+                    !settings.alarm ? 'outline-danger' : 'outline-success'
+                  }
                   onClick={() => {
-                    setAlarm(!settings.alarm);setShowLine('')}}
+                    setAlarm(!settings.alarm)
+                    setShowLine('')
+                  }}
                 >
                   {!settings.alarm ? 'Set alarm' : 'Alarm off'}
                 </Button>
@@ -402,7 +375,10 @@ const Sidebar = ({
                   variant={
                     settings.alarm || myTram ? 'outline-danger' : buttonVariant
                   }
-                  onClick={() => { reset(); setShowLine('') }}
+                  onClick={() => {
+                    reset()
+                    setShowLine('')
+                  }}
                 >
                   Reset
                 </Button>
@@ -461,8 +437,9 @@ const Sidebar = ({
             </Row>
           )}
 
-          {(((!myTram && showTrams.length > 0) ||
-            (myTram && showTrams.length > 1))  && myStop) && (
+          {((!myTram && showTrams.length > 0) ||
+            (myTram && showTrams.length > 1)) &&
+            myStop && (
               <Row>
                 <Col>
                   <Button
@@ -478,32 +455,37 @@ const Sidebar = ({
                     variant={buttonVariant}
                   >
                     Hide all trams
-                </Button>
+                  </Button>
                 </Col>
               </Row>
             )}
 
-          {myStop && <Row>
-            <Col>
-              <Dropdown>
-                <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
-                  Show line{settings.showLine && ': ' + settings.showLine}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {settings.showLine && (
-                    <Dropdown.Item onClick={() => handleShowLine('')}>
-                      clear
-                    </Dropdown.Item>
-                  )}
-                  {lineNumbersForTourists.map((line, i) => (
-                    <Dropdown.Item key={i} onClick={() => handleShowLine(line)}>
-                      {line}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-            </Col>
-          </Row>}
+          {myStop && (
+            <Row>
+              <Col>
+                <Dropdown>
+                  <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
+                    Show line{settings.showLine && ': ' + settings.showLine}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {settings.showLine && (
+                      <Dropdown.Item onClick={() => handleShowLine('')}>
+                        clear
+                      </Dropdown.Item>
+                    )}
+                    {lineNumbersForTourists.map((line, i) => (
+                      <Dropdown.Item
+                        key={i}
+                        onClick={() => handleShowLine(line)}
+                      >
+                        {line}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Col>
+            </Row>
+          )}
 
           <Row>
             <Col>
@@ -545,7 +527,7 @@ const Sidebar = ({
             </Col>
           </Row>
         </Container>
-      )} 
+      )}
     </div>
   )
 }
@@ -574,7 +556,7 @@ const mapDispatchToProps = {
   setAvgDuration,
   setLine,
   setDistance,
-  setAlarm, 
+  setAlarm,
   setGeolocation,
   setAlarmDistance,
   setShow,
@@ -586,3 +568,48 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Sidebar)
+
+const ChooseStopButton = ({ myStop, myTram, settings, handleChooseStop ,stops }) => {
+
+  const stopsInOrder = [...stops]
+  stopsInOrder.sort(sortStopNames)
+
+  const buttonVariant = 'outline-secondary'
+  
+  return (
+  <Row>
+    <Col xs={12}>
+      {myStop ? (
+        !myTram && !settings.line ? (
+          <Dropdown>
+            <Dropdown.Toggle variant={buttonVariant}>
+              My stop: <br />
+              {myStop.name} {myStop.gtfsId}
+            </Dropdown.Toggle>
+            {myStop && (
+              <Dropdown.Menu>
+                {stopsInOrder.map((stop, i) => (
+                  <Dropdown.Item
+                    id='dropdown-chooseStop'
+                    key={i}
+                    onClick={() => handleChooseStop(stop.gtfsId)}
+                  >
+                    {stop.name} {stop.gtfsId}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            )}
+          </Dropdown>
+        ) : (
+          <Button variant={buttonVariant}>
+            {myStop.name} {myStop.gtfsId}
+          </Button>
+        )
+      ) : (
+        <Button variant={buttonVariant}>
+          No tram stops available. Go to Helsinki.
+        </Button>
+      )}
+    </Col>
+  </Row>
+)}
