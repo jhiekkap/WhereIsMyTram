@@ -17,6 +17,8 @@ import {
   DropdownButton,
 } from 'react-bootstrap'
 
+const buttonVariant = 'outline-secondary'
+
 export const ChooseStopButton = ({
   myStop,
   myTram,
@@ -26,8 +28,6 @@ export const ChooseStopButton = ({
 }) => {
   const stopsInOrder = [...stops]
   stopsInOrder.sort(sortStopNames)
-
-  const buttonVariant = 'outline-secondary'
 
   return (
     <Row>
@@ -68,114 +68,162 @@ export const ChooseStopButton = ({
   )
 }
 
-export const ChooseLineButton = ({ settings, myTram, handleChooseMyTram, trams, handleChooseLine }) => {
-    const buttonVariant = 'outline-secondary'
-  
-    const tramsInOrder = [...trams].filter(tram =>
-      settings.possibleRoutes.includes(tram.route)
-    )
-    tramsInOrder.sort(sortByVehicleNumbers)
-    
-    const lineNumbers = []
-    tramsInOrder.forEach(tram => {
-      if (!lineNumbers.includes(tram.desi)) {
-        lineNumbers.push(tram.desi)
-      }
-    })
-    /* const lineNumbersForTourists = []
+export const ChooseLineButton = ({
+  settings,
+  myTram,
+  handleChooseMyTram,
+  trams,
+  handleChooseLine,
+}) => {
+  const tramsInOrder = [...trams].filter(tram =>
+    settings.possibleRoutes.includes(tram.route)
+  )
+  tramsInOrder.sort(sortByVehicleNumbers)
+
+  const lineNumbers = []
+  tramsInOrder.forEach(tram => {
+    if (!lineNumbers.includes(tram.desi)) {
+      lineNumbers.push(tram.desi)
+    }
+  })
+  /* const lineNumbersForTourists = []
     trams.forEach(tram => {
       if (!lineNumbersForTourists.includes(tram.desi)) {
         lineNumbersForTourists.push(tram.desi)
       }
     }) */
-    lineNumbers.sort(sortLineNumbers)
-   /*  lineNumbersForTourists.sort(sortLineNumbers) */ 
-    return (
-      <Row>
-        <Col xs={12}>
-          {!settings.alarm ? (
-            <Dropdown>
-              <Dropdown.Toggle
-                variant={!settings.line ? 'outline-danger' : buttonVariant}
-                id='dropdown-basic'
-              >
-                {settings.line !== '' ? 'Line: ' + settings.line : 'Choose line'}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {myTram && (
-                  <Dropdown.Item onClick={() => handleChooseMyTram('reset')}>
-                    reset
-                  </Dropdown.Item>
-                )}
-                {lineNumbers.map((line, i) => (
-                  <Dropdown.Item key={i} onClick={() => handleChooseLine(line)}>
-                    {line}
+  lineNumbers.sort(sortLineNumbers)
+  /*  lineNumbersForTourists.sort(sortLineNumbers) */
+
+  return (
+    <Row>
+      <Col xs={12}>
+        {!settings.alarm ? (
+          <Dropdown>
+            <Dropdown.Toggle
+              variant={!settings.line ? 'outline-danger' : buttonVariant}
+              id='dropdown-basic'
+            >
+              {settings.line !== '' ? 'Line: ' + settings.line : 'Choose line'}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {myTram && (
+                <Dropdown.Item onClick={() => handleChooseMyTram('reset')}>
+                  reset
+                </Dropdown.Item>
+              )}
+              {lineNumbers.map((line, i) => (
+                <Dropdown.Item key={i} onClick={() => handleChooseLine(line)}>
+                  {line}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+        ) : (
+          <Button variant={buttonVariant}>Line: {settings.line}</Button>
+        )}
+      </Col>
+    </Row>
+  )
+}
+
+export const ChooseTramButton = ({
+  settings,
+  myTram,
+  handleChooseMyTram,
+  trams,
+}) => {
+  const tramsInOrder = [...trams].filter(tram =>
+    settings.possibleRoutes.includes(tram.route)
+  )
+  tramsInOrder.sort(sortByVehicleNumbers)
+
+  return (
+    <Row>
+      <Col xs={12}>
+        {!settings.alarm ? (
+          <Dropdown>
+            <Dropdown.Toggle
+              variant={
+                settings.line && !myTram ? 'outline-danger' : buttonVariant
+              }
+              id='dropdown-basic'
+            >
+              {myTram ? 'Vehicle: ' + myTram.veh : 'Choose vehicle'}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {myTram && (
+                <Dropdown.Item onClick={() => handleChooseMyTram('reset')}>
+                  reset
+                </Dropdown.Item>
+              )}
+              {tramsInOrder
+                .filter(
+                  tram =>
+                    tram.desi == settings.line ||
+                    tram.desi == settings.line + 'T' ||
+                    tram.desi == settings.line + 'H'
+                )
+                .map((tram, i) => (
+                  <Dropdown.Item
+                    key={i}
+                    onClick={() => handleChooseMyTram(tram.veh)}
+                  >
+                    {tram.veh}
                   </Dropdown.Item>
                 ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          ) : (
-            <Button variant={buttonVariant}>Line: {settings.line}</Button>
-          )}
-        </Col>
-      </Row>
-    )
-  }
+            </Dropdown.Menu>
+          </Dropdown>
+        ) : (
+          <Button variant={buttonVariant}>Vehicle: {myTram.veh}</Button>
+        )}
+      </Col>
+    </Row>
+  )
+}
 
-  export const ChooseTramButton = ({ settings, myTram, handleChooseMyTram, trams }) => {
+export const ShowLineButton = ({ settings, handleShowLine, trams }) => {
 
-    const buttonVariant = 'outline-secondary'
     const tramsInOrder = [...trams].filter(tram =>
         settings.possibleRoutes.includes(tram.route)
       )
       tramsInOrder.sort(sortByVehicleNumbers)
-
-      return(
-        <Row>
-        <Col xs={12}>
-          {!settings.alarm ? (
-            <Dropdown>
-              <Dropdown.Toggle
-                variant={
-                  settings.line && !myTram
-                    ? 'outline-danger'
-                    : buttonVariant
-                }
-                id='dropdown-basic'
-              >
-                {myTram ? 'Vehicle: ' + myTram.veh : 'Choose vehicle'}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {myTram && (
-                  <Dropdown.Item
-                    onClick={() => handleChooseMyTram('reset')}
-                  >
-                    reset
-                  </Dropdown.Item>
-                )}
-                {tramsInOrder
-                  .filter(
-                    tram =>
-                      tram.desi == settings.line ||
-                      tram.desi == settings.line + 'T' ||
-                      tram.desi == settings.line + 'H'
-                  )
-                  .map((tram, i) => (
-                    <Dropdown.Item
-                      key={i}
-                      onClick={() => handleChooseMyTram(tram.veh)}
-                    >
-                      {tram.veh}
-                    </Dropdown.Item>
-                  ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          ) : (
-            <Button variant={buttonVariant}>Vehicle: {myTram.veh}</Button>
-          )}
-        </Col>
-      </Row>
-      )
-  }
-
-  
+    
+      const lineNumbers = []
+      tramsInOrder.forEach(tram => {
+        if (!lineNumbers.includes(tram.desi)) {
+          lineNumbers.push(tram.desi)
+        }
+      })
+      const lineNumbersForTourists = []
+        trams.forEach(tram => {
+          if (!lineNumbersForTourists.includes(tram.desi)) {
+            lineNumbersForTourists.push(tram.desi)
+          }
+        })
+      lineNumbers.sort(sortLineNumbers)
+       lineNumbersForTourists.sort(sortLineNumbers)
+  return (
+    <Row>
+      <Col>
+        <Dropdown>
+          <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
+            Show line{settings.showLine && ': ' + settings.showLine}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {settings.showLine && (
+              <Dropdown.Item onClick={() => handleShowLine('')}>
+                clear
+              </Dropdown.Item>
+            )}
+            {lineNumbersForTourists.map((line, i) => (
+              <Dropdown.Item key={i} onClick={() => handleShowLine(line)}>
+                {line}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+      </Col>
+    </Row>
+  )
+}

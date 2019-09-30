@@ -30,16 +30,17 @@ import {
 } from 'react-bootstrap'
 import distance, {
   printDuration,
-  countDuration,
-  sortByVehicleNumbers,
-  sortLineNumbers,
+  countDuration
 } from '../utils/helpers'
 import closeX from '../img/icons8-close-window-16.png'
 import {
   ChooseStopButton,
   ChooseLineButton,
   ChooseTramButton,
+  ShowLineButton,
 } from './SidebarButtons'
+const buttonVariant = 'outline-secondary'
+
 
 const Sidebar = ({
   closeSidebar,
@@ -69,6 +70,7 @@ const Sidebar = ({
   const [speeds, setSpeeds] = useState([])
   const [durations, setDurations] = useState([])
   const [init, setInit] = useState(true)
+  const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
 
   useEffect(() => {
     if (trams.length > 0 && init) {
@@ -191,30 +193,8 @@ const Sidebar = ({
       console.log('STOP CHOSEN: ', stopsGtfsId)
       setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
     }
-  }
-  const tramsInOrder = [...trams].filter(tram =>
-    settings.possibleRoutes.includes(tram.route)
-  )
-  tramsInOrder.sort(sortByVehicleNumbers)
+  } 
 
-  const lineNumbers = []
-  tramsInOrder.forEach(tram => {
-    if (!lineNumbers.includes(tram.desi)) {
-      lineNumbers.push(tram.desi)
-    }
-  })
-  const lineNumbersForTourists = []
-  trams.forEach(tram => {
-    if (!lineNumbersForTourists.includes(tram.desi)) {
-      lineNumbersForTourists.push(tram.desi)
-    }
-  })
-  lineNumbers.sort(sortLineNumbers)
-  lineNumbersForTourists.sort(sortLineNumbers)
-
-  const buttonVariant = 'outline-secondary'
-
-  const style = settings.showSidebar ? { width: '250px' } : { width: '0' }
 
   return (
     <div style={style} className='sidebar' id='mySidebar'>
@@ -401,30 +381,7 @@ const Sidebar = ({
             )}
 
           {myStop && (
-            <Row>
-              <Col>
-                <Dropdown>
-                  <Dropdown.Toggle variant={buttonVariant} id='dropdown-basic'>
-                    Show line{settings.showLine && ': ' + settings.showLine}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    {settings.showLine && (
-                      <Dropdown.Item onClick={() => handleShowLine('')}>
-                        clear
-                      </Dropdown.Item>
-                    )}
-                    {lineNumbersForTourists.map((line, i) => (
-                      <Dropdown.Item
-                        key={i}
-                        onClick={() => handleShowLine(line)}
-                      >
-                        {line}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Col>
-            </Row>
+            <ShowLineButton settings={settings} handleShowLine={handleShowLine} trams={trams}/>
           )}
 
           <Row>
