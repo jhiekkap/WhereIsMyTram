@@ -131,7 +131,7 @@ const LeafletMap = ({
     )
   }
 
-  const ShowChosenTrams = () => {
+  const ChosenTrams = () => {
     let tramsToShow = trams.filter(tram =>
       showTrams.map(tram => tram.veh).includes(tram.veh)
     )
@@ -158,7 +158,7 @@ const LeafletMap = ({
     }
   }
 
-  const showStops = () => {
+  const Stops = () => {
     return (
       stops &&
       stops.map((stop, i) => (
@@ -184,24 +184,7 @@ const LeafletMap = ({
     )
   }
 
-  const showLineOnMap = () => {
-    //console.log('tramRoutesOnMap', tramRoutesOnMap)
-    console.log('showLine', settings.showLine)
-    const coordinates = tramRoutesOnMap.find(
-      route => route.shortName == settings.showLine
-    ).stops
-    return (
-      <div>
-        {coordinates.map((point, i) => (
-          <Marker
-            key={i}
-            icon={lineStopIcon(13.5)}
-            position={{ lat: point.lat, lng: point.lon }}
-          ></Marker>
-        ))}
-      </div>
-    )
-  }
+  
 
   return (
     settings.possibleRoutes && (
@@ -232,9 +215,9 @@ const LeafletMap = ({
               url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
-            {ShowChosenTrams()}
-            {showStops()}
-            {settings.showLine && showLineOnMap()}
+            <ChosenTrams />
+            <Stops />
+            {settings.showLine && <LineOnMap settings={settings} tramRoutesOnMap={tramRoutesOnMap}/>}
             <Marker
               icon={driverIcon(settings.zoom)}
               position={settings.position}
@@ -306,3 +289,24 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(LeafletMap)
+
+
+
+const LineOnMap = ({ settings, tramRoutesOnMap }) => {
+  //console.log('tramRoutesOnMap', tramRoutesOnMap)
+  console.log('showLine', settings.showLine)
+  const coordinates = tramRoutesOnMap.find(
+    route => route.shortName == settings.showLine
+  ).stops
+  return (
+    <div>
+      {coordinates.map((point, i) => (
+        <Marker
+          key={i}
+          icon={lineStopIcon(13.5)}
+          position={{ lat: point.lat, lng: point.lon }}
+        ></Marker>
+      ))}
+    </div>
+  )
+}
