@@ -158,31 +158,7 @@ const LeafletMap = ({
     }
   }
 
-  const Stops = () => {
-    return (
-      stops &&
-      stops.map((stop, i) => (
-        <Marker
-          className='stops'
-          onClick={() => handleSetMyStop(stop)}
-          key={i}
-          icon={
-            stop.id === myStop.id
-              ? myStopIcon(settings.zoom)
-              : stopIcon(settings.zoom)
-          }
-          position={{ lat: stop.lat, lng: stop.lon }}
-          zIndexOffset={-500}
-        >
-          <Popup closeButton={false} autoPan={false}>
-            {stop.name}
-            <br />
-            {stop.gtfsId}
-          </Popup>
-        </Marker>
-      ))
-    )
-  }
+  
 
   
 
@@ -216,7 +192,7 @@ const LeafletMap = ({
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
             <ChosenTrams />
-            <Stops />
+            <Stops settings={settings} myStop={myStop} handleSetMyStop={handleSetMyStop} stops ={stops}/>
             {settings.showLine && <LineOnMap settings={settings} tramRoutesOnMap={tramRoutesOnMap}/>}
             <Marker
               icon={driverIcon(settings.zoom)}
@@ -308,5 +284,31 @@ const LineOnMap = ({ settings, tramRoutesOnMap }) => {
         ></Marker>
       ))}
     </div>
+  )
+}
+
+const Stops = ({ settings, myStop, handleSetMyStop, stops}) => {
+  return (
+    stops &&
+    stops.map((stop, i) => (
+      <Marker
+        className='stops'
+        onClick={() => handleSetMyStop(stop)}
+        key={i}
+        icon={
+          stop.id === myStop.id
+            ? myStopIcon(settings.zoom)
+            : stopIcon(settings.zoom)
+        }
+        position={{ lat: stop.lat, lng: stop.lon }}
+        zIndexOffset={-500}
+      >
+        <Popup closeButton={false} autoPan={false}>
+          {stop.name}
+          <br />
+          {stop.gtfsId}
+        </Popup>
+      </Marker>
+    ))
   )
 }
