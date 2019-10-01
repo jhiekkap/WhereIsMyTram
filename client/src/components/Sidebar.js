@@ -28,10 +28,7 @@ import {
   Form,
   DropdownButton,
 } from 'react-bootstrap'
-import distance, {
-  printDuration,
-  countDuration
-} from '../utils/helpers'
+import distance, { printDuration, countDuration } from '../utils/helpers'
 import closeX from '../img/icons8-close-window-16.png'
 import {
   ChooseStopButton,
@@ -40,7 +37,6 @@ import {
   ShowLineButton,
 } from './SidebarButtons'
 const buttonVariant = 'outline-secondary'
-
 
 const Sidebar = ({
   closeSidebar,
@@ -101,18 +97,6 @@ const Sidebar = ({
         if (durations.length > 4 && speed > 0) {
           setAvgDuration(avgDuration)
         }
-        /* console.log(
-          'DISTANCE NOW: ',
-          distanceNow,
-          ' m',
-          'AVG SPEED: ',
-          (avgSpeed * 3.6).toFixed(2),
-          ' km/h',
-          speed,
-          ' m/s',
-          'ESTIMATED DURATION: ',
-          printDuration(settings.avgDuration)
-        ) */
       }
       if (settings.alarm && settings.distance < settings.alarmDistance) {
         reset()
@@ -193,8 +177,7 @@ const Sidebar = ({
       console.log('STOP CHOSEN: ', stopsGtfsId)
       setMyStop(stops.find(stop => stop.gtfsId === stopsGtfsId))
     }
-  } 
-
+  }
 
   return (
     <div style={style} className='sidebar' id='mySidebar'>
@@ -381,7 +364,11 @@ const Sidebar = ({
             )}
 
           {myStop && (
-            <ShowLineButton settings={settings} handleShowLine={handleShowLine} trams={trams}/>
+            <ShowLineButton
+              settings={settings}
+              handleShowLine={handleShowLine}
+              trams={trams}
+            />
           )}
 
           <Row>

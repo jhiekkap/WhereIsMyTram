@@ -41,6 +41,18 @@ export const myTramIcon = (zoom, line) => new L.Icon({
   iconSize: [Math.round(80 - (19 - zoom) * 4), Math.round(70 - (19 - zoom) * 4)],
 })
 
+export const busIcon = (zoom) => new L.Icon({
+  iconUrl: require(`../img/icons8-bus-64.png`),
+  iconRetinaUrl: require(`../img/icons8-bus-64.png`),
+  iconSize: [Math.round(60 - (19 - zoom) * 4), Math.round(50 - (19 - zoom) * 4)],
+})
+
+export const trainIcon = (zoom) => new L.Icon({
+  iconUrl: require(`../img/icons8-train-40.png`),
+  iconRetinaUrl: require(`../img/icons8-train-40.png`),
+  iconSize: [Math.round(60 - (19 - zoom) * 4), Math.round(50 - (19 - zoom) * 4)],
+})
+
  
 const driverIcon = zoom => new L.Icon({
   iconUrl: require('../img/icons8-policeman-female-48.png'),

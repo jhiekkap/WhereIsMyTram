@@ -1,7 +1,7 @@
 const settingsReducer = (
   state = {
     center: { lat: 60.1698, lng: 24.9395 },
-    defaultCenter: {lat: 60.169748893653164, lng: 24.940102100372314}, 
+    defaultCenter: { lat: 60.169748893653164, lng: 24.940102100372314 },
     showAlert: false,
     alertVariant: true,
     zoom: 16,
@@ -10,16 +10,17 @@ const settingsReducer = (
     init: true,
     avgDuration: 0,
     line: '',
-    distance: 0, 
+    distance: 0,
     alarm: false,
     intro: false,
-    geoLocation: false,
+    geoLocation: true,
     alarmDistance: 50,
-    position: {lat: 60.169748893653164, lng: 24.940102100372314},
+    position: { lat: 60.169748893653164, lng: 24.940102100372314 },
     show: 'menu',
     possibleRoutes: [],
     showLine: '',
     radius: 700,
+    vehicleType: 'TRAM',
   },
   action
 ) => {
@@ -62,6 +63,8 @@ const settingsReducer = (
       return { ...state, showLine: action.data }
     case 'SET_RADIUS':
       return { ...state, radius: action.data }
+    case 'SET_VEHICLETYPE':
+      return { ...state, vehicleType: action.data }
     default:
       return state
   }
@@ -266,5 +269,13 @@ export const setRadius = meters => {
   }
 }
 
+export const setVehicleType = vehicle => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_VEHICLETYPE',
+      data: vehicle,
+    })
+  }
+}
 
 export default settingsReducer

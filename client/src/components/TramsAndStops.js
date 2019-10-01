@@ -5,6 +5,8 @@ import {
   lineStopIcon,
   tramIcon,
   myTramIcon,
+  busIcon,
+  trainIcon,
 } from '../utils/icons'
 
 import { Marker, Popup } from 'react-leaflet'
@@ -66,6 +68,8 @@ export const ChosenTrams = ({
   const popUp = tram => {
     return (
       <Popup closeButton={false} value={tram.veh} autoPan={false}>
+        line {tram.desi}
+        <br />
         vehicle: {tram.veh}
         <br />
         speed: {(tram.spd * 3.6).toFixed(2)} km/h
@@ -97,12 +101,16 @@ export const ChosenTrams = ({
   if (tramsToShow) {
     return tramsToShow.map((tram, i) => (
       <Marker
-        className='trams'
+        className='vehicles'
         key={i}
         icon={
-          myTram && myTram.veh === tram.veh
-            ? myTramIcon(settings.zoom, tram.desi)
-            : tramIcon(settings.zoom, tram.desi)
+          settings.vehicleType === 'TRAM'
+            ? myTram && myTram.veh === tram.veh
+              ? myTramIcon(settings.zoom, tram.desi)
+              : tramIcon(settings.zoom, tram.desi)
+            : 'TRAIN'
+            ? trainIcon(settings.zoom)
+            : busIcon(settings.zoom)
         }
         position={{
           lat: tram.lat,

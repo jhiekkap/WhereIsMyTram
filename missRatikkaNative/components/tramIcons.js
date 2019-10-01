@@ -11,7 +11,7 @@ export  const tramIcons = {
     '4H': require('../assets/img/trams/4Htram.png'),
     '5': require('../assets/img/trams/5tram.png'),
     '5H': require('../assets/img/trams/5Htram.png'),
-    '6': require('../assets/img/trams/6tram.png'),
+    '6': require('../assets/img/trams/6tram.png'), 
     '6H': require('../assets/img/trams/6Htram.png'),
     '6T': require('../assets/img/trams/6Ttram.png'),
     '7': require('../assets/img/trams/7tram.png'),

@@ -34,7 +34,7 @@ const Appi = ({
   const [show, setShow] = useState(true)  
   //console.log('RENDERING APPI')
   useEffect(() => {
-    client.query({ query: vehicleStopsQuery('vehicle') }).then(response => {
+    client.query({ query: vehicleStopsQuery('TRAM') }).then(response => {
       console.log('GRAPHQL - ALLROUTES - QUERY:', response.data.routes.length)
       setVehicleRoutesOnMap(response.data.routes)
     })
@@ -80,7 +80,7 @@ const Appi = ({
         setPosition(...settings.position, {location})
         setCenter(...settings.center, {location})
         stopsQuery({location})
-      })
+      }) 
     } else {
       console.log('DAAAAAA')
       stopsQuery(settings.defaultCenter)

@@ -3,23 +3,13 @@ import { connect } from 'react-redux'
 import { setShowVehicles } from '../reducers/showVehiclesReducer'
 import { setMyVehicle } from '../reducers/myVehicleReducer'
 import { setVehicles } from '../reducers/vehiclesReducer'
-import { 
-  setAlarm, 
-  setDistance,
-} from '../reducers/settingsReducer'
+import { setAlarm, setDistance } from '../reducers/settingsReducer'
 import { setMyStop } from '../reducers/myStopReducer'
-import { 
-  StyleSheet, 
-  View,
-  Text, 
-  Button,  
-  Alert,
-} from 'react-native'
+import { StyleSheet, View, Text, Button, Alert } from 'react-native'
 import distance from '../utils/helpers'
-import play from './../utils/sound' 
-import MapView, { Marker, Callout } from 'react-native-maps' 
-import {tramIcons} from './tramIcons' 
-
+import play from './../utils/sound'
+import MapView, { Marker, Callout } from 'react-native-maps'
+import { tramIcons } from './tramIcons'
 
 const Map = ({
   vehicles,
@@ -28,14 +18,16 @@ const Map = ({
   settings,
   setMyStop,
   myVehicle,
-  setMyVehicle, /* 
-  setVehicles, */
-  setAlarm, 
+  setMyVehicle /* 
+  setVehicles, */,
+  setAlarm,
   setDistance,
 }) => {
   useEffect(() => {
     if (myVehicle) {
-      let chosenVehicle = vehicles.find(vehicle => vehicle.veh === myVehicle.veh)
+      let chosenVehicle = vehicles.find(
+        vehicle => vehicle.veh === myVehicle.veh
+      )
       let distanceNow = distance(
         myStop.lat,
         myStop.lon,
@@ -66,13 +58,13 @@ const Map = ({
     console.log('TRAM CANCELLED', veh)
     setAlarm(false)
     setMyVehicle('')
-    //setVehicles([]) 
+    //setVehicles([])
   }
 
   const handleSetMyStop = stop => {
     if (!myVehicle) {
       console.log('STOP SET: ', stop.name)
-      setMyStop(stop) 
+      setMyStop(stop)
     }
   }
 
@@ -80,7 +72,10 @@ const Map = ({
     let buttoni = () => {
       if (myVehicle && myVehicle.veh === vehicle.veh) {
         return (
-          <Button title='cancel' onPress={() => handleCancelVehicle(vehicle.veh)} />
+          <Button
+            title='cancel'
+            onPress={() => handleCancelVehicle(vehicle.veh)}
+          />
         )
       } else if (
         (!myVehicle || (myVehicle && myVehicle.veh !== vehicle.veh)) &&
@@ -88,7 +83,10 @@ const Map = ({
         !settings.alarm
       ) {
         return (
-          <Button title='choose' onPress={() => handleChooseVehicle(vehicle.veh)} />
+          <Button
+            title='choose'
+            onPress={() => handleChooseVehicle(vehicle.veh)}
+          />
         )
       }
     }
@@ -101,7 +99,8 @@ const Map = ({
         {vehicle.stop && <Text> stop: {vehicle.stop}</Text>}
         <Text> route:{vehicle.route}</Text>
         <Text>
-          {vehicle.dl > 0 ? ' ahead ' : ' lagging '} {Math.abs(vehicle.dl)} seconds
+          {vehicle.dl > 0 ? ' ahead ' : ' lagging '} {Math.abs(vehicle.dl)}{' '}
+          seconds
         </Text>
         <Text> {vehicle.drst === 0 ? 'doors closed' : 'doors open'}</Text>
         {buttoni()}
@@ -110,27 +109,30 @@ const Map = ({
   }
 
   const ShowChosenVehicles = () => {
-    return vehicles && vehicles.map((vehicle, i) => {
-      if (vehicle.lat && vehicle.long) {
-        let vehicleIcon = tramIcons[vehicle.desi]
-        if (vehicle.veh === myVehicle.veh) {
-          vehicleIcon = tramIcons['my' + vehicle.desi]
-        }
+    return (
+      vehicles &&
+      vehicles.map((vehicle, i) => {
+        if (vehicle.lat && vehicle.long) {
+          let vehicleIcon = tramIcons[vehicle.desi]
+          if (vehicle.veh === myVehicle.veh) {
+            vehicleIcon = tramIcons['my' + vehicle.desi]
+          }
 
-        return (
-          <Marker
-            key={i}
-            image={vehicleIcon}
-            coordinate={{
-              latitude: vehicle.lat,
-              longitude: vehicle.long,
-            }}
-          >
-            {popUp(vehicle)}
-          </Marker>
-        )
-      }
-    })
+          return (
+            <Marker
+              key={i}
+              image={vehicleIcon}
+              coordinate={{
+                latitude: vehicle.lat,
+                longitude: vehicle.long,
+              }}
+            >
+              {popUp(vehicle)}
+            </Marker>
+          )
+        }
+      })
+    )
   }
 
   const showStops = () => {
@@ -140,7 +142,12 @@ const Map = ({
         <Marker
           key={i}
           coordinate={{ latitude: stop.lat, longitude: stop.lon }}
-          pinColor={stop.id === myStop.id ? 'blue' : 'red'}
+          image={
+            stop.id === myStop.id
+              ? require('../assets/img/yellowCircle.png')
+              : require('../assets/img/blueCircle.png')
+          }
+          //pinColor={stop.id === myStop.id ? 'blue' : 'red'}
         >
           <Callout>
             {stop.id === myStop.id && <Text> My Stop:</Text>}
@@ -178,7 +185,6 @@ const Map = ({
   }
 
   const showDistance = () => {
-
     if (myVehicle && settings.distance > 0) {
       return (
         <View style={styles.distance}>
@@ -214,12 +220,11 @@ const Map = ({
             title='hei'
             description='tääl ollaan'
             image={require('../assets/img/icons8-policeman-female-48.png')}
-          >
-          </Marker>
+          ></Marker>
         </MapView>
       ) : (
-          <Text>loading...</Text>
-        )}
+        <Text>loading...</Text>
+      )}
       {showDistance()}
       {alarmButton()}
     </View>
@@ -238,7 +243,7 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
   },
-  alarmOnButton: { 
+  alarmOnButton: {
     position: 'absolute', //use absolute position to show button on top of the map
     top: '5%',
     right: '5%', //for center align
@@ -287,7 +292,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
-  }, 
+  },
 })
 
 const mapStateToProps = state => {
@@ -304,7 +309,7 @@ const mapDispatchToProps = {
   setShowVehicles,
   setMyStop,
   setMyVehicle,
- /*  setZoom,
+  /*  setZoom,
   setCenter,
   setLine, */
   setAlarm,

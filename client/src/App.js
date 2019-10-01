@@ -4,7 +4,7 @@ import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
 import {
   setPosition,
-  setCenter, 
+  setCenter,
   setPossibleRoutes,
 } from './reducers/settingsReducer'
 import './App.css'
@@ -12,10 +12,10 @@ import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
 import { connect } from 'react-redux'
 import client, {
-  tramStopsQuery,
+  vehicleStopsQuery,
   stopsByRadiusQuery,
   checkRoutes,
-} from './utils/queries' 
+} from './utils/queries'
 
 const App = ({
   setTrams,
@@ -27,12 +27,14 @@ const App = ({
   setCenter,
   setPossibleRoutes,
   setTramRoutesOnMap,
-}) => { 
+}) => {
   useEffect(() => {
-    client.query({ query: tramStopsQuery }).then(response => {
-      console.log('GRAPHQL - ALLROUTES - QUERY:', response.data.routes)
-      setTramRoutesOnMap(response.data.routes)
-    })
+    client
+      .query({ query: vehicleStopsQuery(settings.vehicleType) })
+      .then(response => {
+        console.log('GRAPHQL - ALLROUTES - QUERY:', response.data.routes)
+        setTramRoutesOnMap(response.data.routes)
+      })
   }, [])
 
   const stopsQuery = location => {
@@ -51,7 +53,7 @@ const App = ({
         }
       })
   }
- 
+
   useEffect(() => {
     if ('geolocation' in navigator) {
       console.log('geolocation is available')
@@ -82,18 +84,23 @@ const App = ({
     }
   }, [settings.geoLocation])
 
-  
-   useEffect(() => {  
-   let interval = setInterval(() => {
-    fetch('/trams')
-      .then(response => response.json())
-      .then(body => {
-        setTrams(body.map(tram => tram.VP))
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }, 1000)
+  useEffect(() => {
+    let interval = setInterval(() => {
+      let endpoint =
+        settings.vehicleType === 'TRAM'
+          ? '/trams'
+          : 'TRAIN'
+          ? '/trains'
+          : '/buses'
+      fetch(endpoint)
+        .then(response => response.json())
+        .then(body => {
+          setTrams(body.map(tram => tram.VP))
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }, 1000)
   }, [])
 
   useEffect(() => {
@@ -110,9 +117,9 @@ const App = ({
   }, [myStop])
 
   return (
-    <div> 
-          <Sidebar/>
-          <LeafletMap stopsQuery={stopsQuery} />{' '} 
+    <div>
+      <Sidebar />
+      <LeafletMap stopsQuery={stopsQuery} />{' '}
     </div>
   )
 }
