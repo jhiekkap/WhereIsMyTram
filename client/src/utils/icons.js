@@ -48,8 +48,8 @@ export const busIcon = (zoom) => new L.Icon({
 })
 
 export const trainIcon = (zoom) => new L.Icon({
-  iconUrl: require(`../img/icons8-train-40.png`),
-  iconRetinaUrl: require(`../img/icons8-train-40.png`),
+  iconUrl: require(`../img/icons8-color-50.png`),
+  iconRetinaUrl: require(`../img/icons8-color-50.png`),
   iconSize: [Math.round(60 - (19 - zoom) * 4), Math.round(50 - (19 - zoom) * 4)],
 })
 

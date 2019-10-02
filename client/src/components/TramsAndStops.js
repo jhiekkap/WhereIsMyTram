@@ -96,7 +96,7 @@ export const ChosenTrams = ({
 
   let tramsToShow = trams.filter(tram =>
     showTrams.map(tram => tram.veh).includes(tram.veh)
-  )
+  ) 
 
   if (tramsToShow) {
     return tramsToShow.map((tram, i) => (

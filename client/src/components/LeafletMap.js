@@ -61,7 +61,7 @@ const LeafletMap = ({
     } else {
       console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
     }
-  }
+  } 
 
   const handleCancelTram = e => {
     console.log('TRAM CANCELLED', e.target.value)

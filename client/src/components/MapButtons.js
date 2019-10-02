@@ -4,7 +4,7 @@ import {
   setCenter,
   setZoom,
   openSidebar,
-  closeSidebar,
+  closeSidebar, 
   setIntro,
   setAlarm,
 } from '../reducers/settingsReducer'

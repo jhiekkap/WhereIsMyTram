@@ -64,7 +64,7 @@ export const ChooseStopButton = ({
           </Button>
         )}
       </Col>
-    </Row>
+    </Row> 
   )
 }
 

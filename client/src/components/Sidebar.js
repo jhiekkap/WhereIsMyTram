@@ -73,7 +73,7 @@ const Sidebar = ({
       console.log('initialized!')
       setShowTrams(trams)
       setInit(false)
-    }
+    } 
 
     if (myTram) {
       let chosenTram = trams.find(tram => tram.veh === myTram.veh)

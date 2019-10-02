@@ -41,9 +41,10 @@ const App = ({
     client
       .query({ query: stopsByRadiusQuery(location, settings.radius) })
       .then(response => {
-        let allStops = response.data.stopsByRadius.edges
-          .map(edge => edge.node.stop)
-          .filter(stop => stop.vehicleType === 0)
+        let allStops = response.data.stopsByRadius.edges.map(
+          edge => edge.node.stop
+        )
+        .filter(stop => stop.vehicleType === 0)
         setStops(allStops)
         console.log('GRAPHQL - stopsByRadiusQuery:', allStops)
         if (allStops.length > 0) {
@@ -86,12 +87,16 @@ const App = ({
 
   useEffect(() => {
     let interval = setInterval(() => {
-      let endpoint =
-        settings.vehicleType === 'TRAM'
-          ? '/trams'
-          : 'TRAIN'
-          ? '/trains'
-          : '/buses'
+      let endpoint
+      if
+        (settings.vehicleType == 'TRAM'){
+          endpoint = '/trams'
+        } else if
+        (settings.vehicleType == 'BUS'){
+          endpoint = '/buses'
+        } else {
+          endpoint = '/trains'
+        } 
       fetch(endpoint)
         .then(response => response.json())
         .then(body => {
