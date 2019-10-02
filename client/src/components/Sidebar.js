@@ -183,7 +183,7 @@ const Sidebar = ({
     <div style={style} className='sidebar' id='mySidebar'>
       {settings.show === 'menu' && (
         <Container>
-          <Row>
+          <Row> 
             <img
               src={closeX}
               alt='trash'

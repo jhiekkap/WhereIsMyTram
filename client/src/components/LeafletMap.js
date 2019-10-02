@@ -55,8 +55,8 @@ const LeafletMap = ({
       setMyTram(chosenTram)
       setLine(chosenTram.desi)
       //setShowTrams([chosenTram])
-      setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
-      setZoom(16)
+      //setCenter({ lat: chosenTram.lat, lng: chosenTram.long })
+      //setZoom(16)
       setShowLine('')
     } else {
       console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
@@ -126,7 +126,7 @@ const LeafletMap = ({
             maxZoom={18}
             doubleClickZoom={false}
             ondblclick={handleChangeCenter}
-            zoomControl={true}
+            zoomControl={true} 
           >
             <TileLayer
               url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
