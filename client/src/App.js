@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { setTrams, setTramRoutesOnMap } from './reducers/tramsReducer'
 import { setStops } from './reducers/stopsReducer'
 import { setMyStop } from './reducers/myStopReducer'
@@ -10,7 +11,7 @@ import {
 import './App.css'
 import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
-import { connect } from 'react-redux'
+
 import client, {
   vehicleStopsQuery,
   stopsByRadiusQuery,
