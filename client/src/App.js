@@ -11,7 +11,6 @@ import {
 import './App.css'
 import LeafletMap from './components/LeafletMap'
 import Sidebar from './components/Sidebar'
-
 import client, {
   vehicleStopsQuery,
   stopsByRadiusQuery,
@@ -29,6 +28,7 @@ const App = ({
   setPossibleRoutes,
   setTramRoutesOnMap,
 }) => {
+
   useEffect(() => {
     client
       .query({ query: vehicleStopsQuery(settings.vehicleType) })
@@ -45,7 +45,7 @@ const App = ({
         let allStops = response.data.stopsByRadius.edges.map(
           edge => edge.node.stop
         )
-        .filter(stop => stop.vehicleType === 0)
+          .filter(stop => stop.vehicleType === 0)
         setStops(allStops)
         console.log('GRAPHQL - stopsByRadiusQuery:', allStops)
         if (allStops.length > 0) {
@@ -66,15 +66,11 @@ const App = ({
       navigator.geolocation.getCurrentPosition(position => {
         let location = settings.geoLocation
           ? {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            }
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          }
           : settings.defaultCenter
-        console.log(
-          1,
-          settings.geoLocation ? 'GEOLOCATION' : 'DEFAULT LOCATION',
-          location
-        )
+        console.log(1, settings.geoLocation ? 'GEOLOCATION' : 'DEFAULT LOCATION', location)
         setPosition(location)
         setCenter(location)
         stopsQuery(location)
@@ -86,19 +82,15 @@ const App = ({
     }
   }, [settings.geoLocation])
 
+  const paths = {
+    'TRAM': '/trams',
+    'BUS': '/buses',
+    'TRAIN': '/trains'
+  }
+
   useEffect(() => {
     let interval = setInterval(() => {
-      let endpoint
-      if
-        (settings.vehicleType == 'TRAM'){
-          endpoint = '/trams'
-        } else if
-        (settings.vehicleType == 'BUS'){
-          endpoint = '/buses'
-        } else {
-          endpoint = '/trains'
-        } 
-      fetch(endpoint)
+      fetch(paths[settings.vehicleType])
         .then(response => response.json())
         .then(body => {
           setTrams(body.map(tram => tram.VP))

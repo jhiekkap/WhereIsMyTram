@@ -61,7 +61,7 @@ const LeafletMap = ({
     } else {
       console.log('ERROR! EI KULJE TÄMÄN PYSÄKIN KAUTTA!')
     }
-  } 
+  }
 
   const handleCancelTram = e => {
     console.log('TRAM CANCELLED', e.target.value)
@@ -109,7 +109,7 @@ const LeafletMap = ({
       <div title='Double-click the map to set a new center'>
         <div>{settings.showAlert && <audio src={alarmSound} autoPlay />}</div>
 
-        <MapButtons /> 
+        <MapButtons />
         {!settings.showAlert && (
           <Map
             id='map'
@@ -126,7 +126,7 @@ const LeafletMap = ({
             maxZoom={18}
             doubleClickZoom={false}
             ondblclick={handleChangeCenter}
-            zoomControl={true} 
+            zoomControl={true}
           >
             <TileLayer
               url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -168,11 +168,7 @@ const LeafletMap = ({
           show={settings.showAlert}
           variant={settings.alertVariant ? 'danger' : 'warning'}
         >
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+          <br /><br /><br /><br /><br />
           <Alert.Heading>Your tram has arrived!</Alert.Heading>
           <hr />
           <div className='d-flex justify-content-end'>
